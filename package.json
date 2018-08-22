@@ -1,10 +1,18 @@
 {
   "scripts": {
-    "build": "watchify -e res/js/src/index.js -o res/js/bundle.js"
+    "build": "watchify -t vueify -e res/js/src/index.js -o res/js/bundle.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://jrc03c@bitbucket.org/jrc03c/visiblepeeps.net.git"
   },
-  "author": "jrc03c"
+  "author": "jrc03c",
+  "dependencies": {
+    "firebase": "^5.4.0",
+    "lodash": "^4.17.10",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vueify": "^9.4.1",
+    "vuex": "^3.0.1"
+  }
 }

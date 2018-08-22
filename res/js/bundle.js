@@ -16071,7 +16071,7 @@ exports.DataSnapshot = DataSnapshot;
 exports.OnDisconnect = OnDisconnect;
 
 }).call(this,require('_process'))
-},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":23,"tslib":10}],4:[function(require,module,exports){
+},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":22,"tslib":10}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -17794,7 +17794,7 @@ var iterator = _wksExt.f('iterator');
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":24,"whatwg-fetch":16}],6:[function(require,module,exports){
+},{"timers":23,"whatwg-fetch":16}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -22760,7 +22760,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":23}],13:[function(require,module,exports){
+},{"_process":22}],13:[function(require,module,exports){
 (function (global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -33711,7 +33711,7 @@ return Vue;
 })));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":24}],14:[function(require,module,exports){
+},{"timers":23}],14:[function(require,module,exports){
 (function (process,global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -41749,7 +41749,7 @@ if (inBrowser) {
 module.exports = Vue;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"_process":23,"timers":24}],15:[function(require,module,exports){
+},{"_process":22,"timers":23}],15:[function(require,module,exports){
 (function (process){
 /**
  * vuex v3.0.1
@@ -42685,7 +42685,7 @@ var index = {
 module.exports = index;
 
 }).call(this,require('_process'))
-},{"_process":23}],16:[function(require,module,exports){
+},{"_process":22}],16:[function(require,module,exports){
 (function(self) {
   'use strict';
 
@@ -43181,7 +43181,7 @@ module.exports = Vue.component("vp-landing", {});
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._v("\n\tThis is the landing.\n")])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._v("\n\tThis is the landing. "),_c('router-link',{attrs:{"to":"/submit"}},[_vm._v("Submit")])],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43190,21 +43190,10 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-2242ded4", __vue__options__)
   } else {
-    hotAPI.reload("data-v-2242ded4", __vue__options__)
+    hotAPI.rerender("data-v-2242ded4", __vue__options__)
   }
 })()}
 },{"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],19:[function(require,module,exports){
-var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
-if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-018e7f34", __vue__options__)
-  } else {
-  }
-})()}
-},{"vue":14,"vue-hot-reload-api":11}],20:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43216,8 +43205,67 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-31551190", __vue__options__)
   }
 })()}
-},{"vue":14,"vue-hot-reload-api":11}],21:[function(require,module,exports){
+},{"vue":14,"vue-hot-reload-api":11}],20:[function(require,module,exports){
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+let Firebase = require("firebase/app");
+
+module.exports = Vue.component("vp-submit", {
+	data: function(){
+		return {
+			authWasInitialized: false,
+			isLoggedIn: false,
+		};
+	},
+	
+	methods: {
+		login: function(){
+			let self = this;
+			let provider = new Firebase.auth.TwitterAuthProvider();
+			
+			Firebase.auth().signInWithPopup(provider).then(function(result){
+				// something
+			}).catch(function(error){
+				console.error(error);
+			});
+		},
+		
+		logout: function(){
+			let self = this;
+			Firebase.auth().signOut();
+			self.$router.push("/");
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		
+		Firebase.auth().onAuthStateChanged(function(user){
+			self.authWasInitialized = true;
+			self.isLoggedIn = !!user;
+		});
+	},
+});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.authWasInitialized)?_c('div',[(!_vm.isLoggedIn)?_c('div',[_vm._v("\n\t\tYou're not logged in. "),_c('button',{on:{"click":_vm.login}},[_vm._v("Log in")])]):_c('div',[_vm._v("\n\t\tYou're logged in. Submit something. "),_c('button',{on:{"click":_vm.logout}},[_vm._v("Log out")])])]):_vm._e()}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -43228,7 +43276,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-523eef2a", __vue__options__)
   }
 })()}
-},{"vue":14,"vue-hot-reload-api":11}],22:[function(require,module,exports){
+},{"firebase/app":7,"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],21:[function(require,module,exports){
 let Vue = require("vue/dist/vue");
 let VueRouter = require("vue-router");
 let Vuex = require("vuex");
@@ -43249,20 +43297,39 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
+	Firebase.auth().onAuthStateChanged(function(user){
+		if (user){
+			if (store.state.adminUsers.indexOf(user.uid) > -1){
+				store.commit("setUserIsAdmin", true);
+			}
+		}
+	});
+	
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
 		{path: "/about", component: require("./components/vp-about.vue")},
 		{path: "/submit", component: require("./components/vp-submit.vue")},
 		{path: "/manage", component: require("./components/vp-manage.vue")},
-		{path: "/login", component: require("./components/vp-login.vue")},
 	];
 	
 	let router = new VueRouter({routes});
 	
 	let store = new Vuex.Store({
-		state: {},
+		state: {
+			userIsAdmin: false,
+			adminUsers: [],
+			redirect: "/submit",
+		},
 		getters: {},
-		mutations: {},
+		mutations: {
+			setUserIsAdmin: function(state, val){
+				state.userIsAdmin = val;
+			},
+			
+			setRedirect: function(state, val){
+				state.redirect = val;
+			},
+		},
 		actions: {},
 	});
 	
@@ -43272,7 +43339,7 @@ window.onload = function(){
 		store,
 	});
 };
-},{"./components/vp-about.vue":17,"./components/vp-landing.vue":18,"./components/vp-login.vue":19,"./components/vp-manage.vue":20,"./components/vp-submit.vue":21,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":12,"vue/dist/vue":13,"vuex":15}],23:[function(require,module,exports){
+},{"./components/vp-about.vue":17,"./components/vp-landing.vue":18,"./components/vp-manage.vue":19,"./components/vp-submit.vue":20,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":12,"vue/dist/vue":13,"vuex":15}],22:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -43458,7 +43525,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -43537,4 +43604,4 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":23,"timers":24}]},{},[22]);
+},{"process/browser.js":22,"timers":23}]},{},[21]);

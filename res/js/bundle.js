@@ -43709,15 +43709,22 @@ module.exports = index;
 //
 //
 //
+//
+//
+//
+//
 
 let Vue = require("vue/dist/vue");
-module.exports = Vue.component("vp-landing", {});
+
+module.exports = Vue.component("vp-landing", {
+	
+});
 
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._v("\n\tThis is the landing.\n\t\n\t"),_c('router-link',{attrs:{"to":"/submit"}},[_vm._v("Submit")])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('router-link',{attrs:{"to":"/submit"}},[_vm._v("Submit")]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.approvedTweets),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet}},[_vm._v(_vm._s(tweet))])])}))],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

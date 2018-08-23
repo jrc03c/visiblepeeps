@@ -22,11 +22,11 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
-	// get list of admin users from database
-	Firebase.database().ref("/admin-users").once("value").then(function(snapshot){
-		let adminUsers = snapshot.val();
-		if (!adminUsers) return;
-		store.commit("setAdminUsers", adminUsers);
+	// get data from database
+	Firebase.database().ref("/").once("value").then(function(snapshot){
+		let data = snapshot.val();
+		if (!data) return;
+		store.state.data = data;
 	});
 	
 	// set up spa routes
@@ -42,7 +42,7 @@ window.onload = function(){
 	let store = new Vuex.Store({
 		state: {
 			currentUserName: null,
-			adminUsers: [],
+			data: {},
 		},
 		
 		getters: {},
@@ -52,13 +52,55 @@ window.onload = function(){
 				state.currentUserName = username;
 				localStorage.setItem("currentUserName", username);
 			},
-			
-			setAdminUsers: function(state, users){
-				state.adminUsers = users;
-			},
 		},
 		
-		actions: {},
+		actions: {
+			addTweetToApprove: function(context, url){
+				if (!context.state.data.tweetsToApprove){
+					context.state.data.tweetsToApprove = [];
+				}
+				
+				context.state.data.tweetsToApprove.push(url);
+				
+				Firebase.database().ref("/tweetsToApprove").set(context.state.data.tweetsToApprove).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			removeTweetToApprove: function(context, url){
+				if (!context.state.data.tweetsToApprove){
+					context.state.data.tweetsToApprove = [];
+				}
+				
+				context.state.data.tweetsToApprove.splice(context.state.data.tweetsToApprove.indexOf(url), 1);
+				
+				Firebase.database().ref("/tweetsToApprove").set(context.state.data.tweetsToApprove).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			approveTweet: function(context, url){
+				if (!context.state.data.approvedTweets){
+					context.state.data.approvedTweets = [];
+				}
+				
+				context.state.data.approvedTweets.push("https://twitter.com" + url.pathname);
+				
+				Firebase.database().ref("/approvedTweets").set(context.state.data.approvedTweets).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
+				
+				context.dispatch("removeTweetToApprove", url);
+			},
+			
+			blockTweet: function(context, url){},
+		},
 	});
 	
 	// create app

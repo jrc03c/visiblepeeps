@@ -43757,24 +43757,10 @@ let Vue = require("vue/dist/vue");
 let Firebase = require("firebase/app");
 
 module.exports = Vue.component("vp-manage", {
-	data: function(){
-		return {
-			tweetsToApprove: [],
-		};
-	},
-	
 	methods: {
 		approve: function(tweet){
 			let self = this;
-			let db = Firebase.database();
-			let ref = db.ref("/approved-tweets");
-			let newApprovedTweet = ref.push();
-			
-			newApprovedTweet.set("https://twitter.com" + tweet.pathname).then(function(){
-				self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
-			}).catch(function(error){
-				console.error(error);
-			});
+			self.$store.dispatch("approveTweet", tweet);
 		},
 		
 		deny: function(tweet){
@@ -43783,26 +43769,13 @@ module.exports = Vue.component("vp-manage", {
 		
 		blockUser: function(username){},
 	},
-	
-	mounted: function(){
-		let self = this;
-		
-		let db = Firebase.database();
-		let ref = db.ref("/tweets-to-approve");
-		
-		ref.once("value").then(function(snapshot){
-			let tweetsToApprove = snapshot.val();
-			if (!tweetsToApprove) return;
-			self.tweetsToApprove = tweetsToApprove;
-		});
-	},
 });
 
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('ul',_vm._l((_vm.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43811,7 +43784,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-31551190", __vue__options__)
   } else {
-    hotAPI.reload("data-v-31551190", __vue__options__)
+    hotAPI.rerender("data-v-31551190", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],22:[function(require,module,exports){
@@ -43843,7 +43816,6 @@ module.exports = Vue.component("vp-submit", {
 			canSubmit: true,
 			url: "",
 			message: "",
-			tweetsToApprove: [],
 		};
 	},
 	
@@ -43865,22 +43837,15 @@ module.exports = Vue.component("vp-submit", {
 			
 			let alreadySubmitted = false;
 			
-			self.tweetsToApprove.forEach(function(tweet){
-				if (tweet.href === self.url) alreadySubmitted = true;
-			});
+			if (self.$store.state.data.tweetsToApprove){
+				self.$store.state.data.tweetsToApprove.forEach(function(tweet){
+					if (tweet.href === self.url) alreadySubmitted = true;
+				});
+			}
 			
 			if (!alreadySubmitted){
 				url.submittedBy = self.$store.state.currentUserName;
-				self.tweetsToApprove.push(url);
-				
-				let db = Firebase.database();
-				let ref = db.ref("/tweets-to-approve");
-				
-				ref.set(self.tweetsToApprove).then(function(){
-					//
-				}).catch(function(error){
-					console.error(error);
-				});
+				self.$store.dispatch("addTweetToApprove", url);
 			}
 			
 			self.url = "";
@@ -43892,16 +43857,6 @@ module.exports = Vue.component("vp-submit", {
 				self.canSubmit = true;
 			}, 5000);
 		},
-	},
-	
-	mounted: function(){
-		let self = this;
-		
-		Firebase.database().ref("/tweets-to-approve").once("value").then(function(snapshot){
-			let tweetsToApprove = snapshot.val();
-			if (!tweetsToApprove) return;
-			self.tweetsToApprove = tweetsToApprove;
-		});
 	},
 });
 
@@ -43918,7 +43873,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-523eef2a", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-523eef2a", __vue__options__)
+    hotAPI.reload("data-v-523eef2a", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"url-parse":13,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],23:[function(require,module,exports){
@@ -44024,11 +43979,11 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
-	// get list of admin users from database
-	Firebase.database().ref("/admin-users").once("value").then(function(snapshot){
-		let adminUsers = snapshot.val();
-		if (!adminUsers) return;
-		store.commit("setAdminUsers", adminUsers);
+	// get data from database
+	Firebase.database().ref("/").once("value").then(function(snapshot){
+		let data = snapshot.val();
+		if (!data) return;
+		store.state.data = data;
 	});
 	
 	// set up spa routes
@@ -44044,7 +43999,7 @@ window.onload = function(){
 	let store = new Vuex.Store({
 		state: {
 			currentUserName: null,
-			adminUsers: [],
+			data: {},
 		},
 		
 		getters: {},
@@ -44054,13 +44009,55 @@ window.onload = function(){
 				state.currentUserName = username;
 				localStorage.setItem("currentUserName", username);
 			},
-			
-			setAdminUsers: function(state, users){
-				state.adminUsers = users;
-			},
 		},
 		
-		actions: {},
+		actions: {
+			addTweetToApprove: function(context, url){
+				if (!context.state.data.tweetsToApprove){
+					context.state.data.tweetsToApprove = [];
+				}
+				
+				context.state.data.tweetsToApprove.push(url);
+				
+				Firebase.database().ref("/tweetsToApprove").set(context.state.data.tweetsToApprove).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			removeTweetToApprove: function(context, url){
+				if (!context.state.data.tweetsToApprove){
+					context.state.data.tweetsToApprove = [];
+				}
+				
+				context.state.data.tweetsToApprove.splice(context.state.data.tweetsToApprove.indexOf(url), 1);
+				
+				Firebase.database().ref("/tweetsToApprove").set(context.state.data.tweetsToApprove).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			approveTweet: function(context, url){
+				if (!context.state.data.approvedTweets){
+					context.state.data.approvedTweets = [];
+				}
+				
+				context.state.data.approvedTweets.push("https://twitter.com" + url.pathname);
+				
+				Firebase.database().ref("/approvedTweets").set(context.state.data.approvedTweets).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
+				
+				context.dispatch("removeTweetToApprove", url);
+			},
+			
+			blockTweet: function(context, url){},
+		},
 	});
 	
 	// create app

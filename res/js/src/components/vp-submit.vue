@@ -25,7 +25,6 @@
 				canSubmit: true,
 				url: "",
 				message: "",
-				tweetsToApprove: [],
 			};
 		},
 		
@@ -47,22 +46,15 @@
 				
 				let alreadySubmitted = false;
 				
-				self.tweetsToApprove.forEach(function(tweet){
-					if (tweet.href === self.url) alreadySubmitted = true;
-				});
+				if (self.$store.state.data.tweetsToApprove){
+					self.$store.state.data.tweetsToApprove.forEach(function(tweet){
+						if (tweet.href === self.url) alreadySubmitted = true;
+					});
+				}
 				
 				if (!alreadySubmitted){
 					url.submittedBy = self.$store.state.currentUserName;
-					self.tweetsToApprove.push(url);
-					
-					let db = Firebase.database();
-					let ref = db.ref("/tweets-to-approve");
-					
-					ref.set(self.tweetsToApprove).then(function(){
-						//
-					}).catch(function(error){
-						console.error(error);
-					});
+					self.$store.dispatch("addTweetToApprove", url);
 				}
 				
 				self.url = "";
@@ -74,16 +66,6 @@
 					self.canSubmit = true;
 				}, 5000);
 			},
-		},
-		
-		mounted: function(){
-			let self = this;
-			
-			Firebase.database().ref("/tweets-to-approve").once("value").then(function(snapshot){
-				let tweetsToApprove = snapshot.val();
-				if (!tweetsToApprove) return;
-				self.tweetsToApprove = tweetsToApprove;
-			});
 		},
 	});
 </script>

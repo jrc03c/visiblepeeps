@@ -2,6 +2,7 @@
 	<div>
 		<form v-if="$store.state.currentUserName" @submit.prevent="submit">
 			<input type="text" v-model="url" @keydown="message = ''">
+			<input type="submit" value="Submit">
 		</form>
 		
 		<div v-else>

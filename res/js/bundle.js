@@ -43752,11 +43752,30 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 let Vue = require("vue/dist/vue");
 let Firebase = require("firebase/app");
 
 module.exports = Vue.component("vp-manage", {
+	data: function(){
+		return {
+			userToBlock: "",
+		};
+	},
+	
 	methods: {
 		approve: function(tweet){
 			let self = this;
@@ -43765,9 +43784,25 @@ module.exports = Vue.component("vp-manage", {
 		
 		deny: function(tweet){
 			let self = this;
+			self.$store.dispatch("denyTweet", tweet);
+			
+			let shouldBlockUser = confirm("Would you also like to block " + tweet.submittedBy + ", the user who submitted the tweet?");
+			
+			if (shouldBlockUser){
+				self.block(tweet.submittedBy);
+			}
 		},
 		
-		blockUser: function(username){},
+		block: function(username){
+			let self = this;
+			self.$store.dispatch("blockUser", username);
+			self.userToBlock = "";
+		},
+		
+		unblock: function(username){
+			let self = this;
+			self.$store.dispatch("unblockUser", username);
+		},
 	},
 });
 
@@ -43775,7 +43810,7 @@ module.exports = Vue.component("vp-manage", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.block(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.blockedUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.unblock(username)}}},[_vm._v("Unblock")])])}))])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43789,6 +43824,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 })()}
 },{"firebase/app":7,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],22:[function(require,module,exports){
 ;(function(){
+//
 //
 //
 //
@@ -43864,7 +43900,7 @@ module.exports = Vue.component("vp-submit", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.$store.state.currentUserName)?_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.submit($event)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text"},domProps:{"value":(_vm.url)},on:{"keydown":function($event){_vm.message = ''},"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}})]):_c('div',[_vm._v("\n\t\tYou're not logged in. Only logged-in users can submit tweets for approval!\n\t")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',[_vm._v("\n\t\t"+_vm._s(_vm.message)+"\n\t")]):_vm._e()])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.$store.state.currentUserName)?_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.submit($event)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text"},domProps:{"value":(_vm.url)},on:{"keydown":function($event){_vm.message = ''},"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Submit"}})]):_c('div',[_vm._v("\n\t\tYou're not logged in. Only logged-in users can submit tweets for approval!\n\t")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',[_vm._v("\n\t\t"+_vm._s(_vm.message)+"\n\t")]):_vm._e()])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -44056,7 +44092,37 @@ window.onload = function(){
 				context.dispatch("removeTweetToApprove", url);
 			},
 			
-			blockTweet: function(context, url){},
+			denyTweet: function(context, url){
+				context.dispatch("removeTweetToApprove", url);
+			},
+			
+			blockUser: function(context, username){
+				if (!context.state.data.blockedUsers){
+					context.state.data.blockedUsers = [];
+				}
+				
+				context.state.data.blockedUsers.push(username);
+				
+				Firebase.database().ref("/blockedUsers").set(context.state.data.blockedUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			unblockUser: function(context, username){
+				if (!context.state.data.blockedUsers){
+					context.state.data.blockedUsers = [];
+				}
+				
+				context.state.data.blockedUsers.splice(context.state.data.blockedUsers.indexOf(username), 1);
+				
+				Firebase.database().ref("/blockedUsers").set(context.state.data.blockedUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
 		},
 	});
 	

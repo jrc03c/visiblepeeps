@@ -99,7 +99,37 @@ window.onload = function(){
 				context.dispatch("removeTweetToApprove", url);
 			},
 			
-			blockTweet: function(context, url){},
+			denyTweet: function(context, url){
+				context.dispatch("removeTweetToApprove", url);
+			},
+			
+			blockUser: function(context, username){
+				if (!context.state.data.blockedUsers){
+					context.state.data.blockedUsers = [];
+				}
+				
+				context.state.data.blockedUsers.push(username);
+				
+				Firebase.database().ref("/blockedUsers").set(context.state.data.blockedUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			unblockUser: function(context, username){
+				if (!context.state.data.blockedUsers){
+					context.state.data.blockedUsers = [];
+				}
+				
+				context.state.data.blockedUsers.splice(context.state.data.blockedUsers.indexOf(username), 1);
+				
+				Firebase.database().ref("/blockedUsers").set(context.state.data.blockedUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
 		},
 	});
 	

@@ -43743,16 +43743,67 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 let Vue = require("vue/dist/vue");
-module.exports = Vue.component("vp-manage", {});
+let Firebase = require("firebase/app");
+
+module.exports = Vue.component("vp-manage", {
+	data: function(){
+		return {
+			tweetsToApprove: [],
+		};
+	},
+	
+	methods: {
+		approve: function(tweet){
+			let self = this;
+			let db = Firebase.database();
+			let ref = db.ref("/approved-tweets");
+			let newApprovedTweet = ref.push();
+			
+			newApprovedTweet.set("https://twitter.com" + tweet.pathname).then(function(){
+				self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
+			}).catch(function(error){
+				console.error(error);
+			});
+		},
+		
+		deny: function(tweet){
+			let self = this;
+		},
+		
+		blockUser: function(username){},
+	},
+	
+	mounted: function(){
+		let self = this;
+		
+		let db = Firebase.database();
+		let ref = db.ref("/tweets-to-approve");
+		
+		ref.once("value").then(function(snapshot){
+			let tweetsToApprove = snapshot.val();
+			if (!tweetsToApprove) return;
+			self.tweetsToApprove = tweetsToApprove;
+		});
+	},
+});
 
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('ul',_vm._l((_vm.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")])])}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -43763,7 +43814,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-31551190", __vue__options__)
   }
 })()}
-},{"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],22:[function(require,module,exports){
+},{"firebase/app":7,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],22:[function(require,module,exports){
 ;(function(){
 //
 //

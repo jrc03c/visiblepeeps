@@ -1,0 +1,64 @@
+---
+permalink: /
+---
+
+<html>
+	<head>
+	</head>
+	<body>
+		<h1>#visiblepeeps</h1>
+		
+		<p>
+			<a href="/submit">Submit</a>
+		</p>
+		
+		<div id="app">
+			<ul v-if="tweets.length > 0">
+				<li v-for="tweet in tweets">
+					{{ tweet }}
+				</li>
+			</ul>
+			
+			<div v-else>
+				Loading...
+			</div>
+		</div>
+		
+		<script src="/res/js/firebase.js"></script>
+		<script src="/res/js/vue.min.js"></script>
+		<script>
+			window.onload = function(){
+				firebase.initializeApp({
+					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
+					authDomain: "visiblewomen-net.firebaseapp.com",
+					databaseURL: "https://visiblewomen-net.firebaseio.com",
+					projectId: "visiblewomen-net",
+					storageBucket: "visiblewomen-net.appspot.com",
+					messagingSenderId: "532732660193"
+				});
+				
+				let app = new Vue({
+					el: "#app",
+					
+					data: {
+						tweets: [],
+					},
+					
+					mounted: function(){
+						let self = this;
+						let db = firebase.database();
+						let ref = db.ref("/approvedTweets");
+						
+						ref.once("value").then(function(snapshot){
+							let tweets = snapshot.val();
+							if (!tweets) return;
+							self.tweets = tweets;
+						}).catch(function(error){
+							console.log(error);
+						});
+					},
+				});
+			};
+		</script>
+	</body>
+</html>

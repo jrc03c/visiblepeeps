@@ -1,0 +1,86 @@
+---
+permalink: /submit
+---
+
+<html>
+	<head>
+	</head>
+	<body>
+		<h1>#visiblepeeps</h1>
+		
+		<p>
+			<a href="/">Home</a>
+		</p>
+		
+		<div id="app">
+			<div v-if="isLoggedIn">				
+				<form @submit.prevent="submit">
+					<input type="text" v-model="url">
+					<input type="submit" value="Submit">
+				</form>
+				
+				<button @click="logout">Log out</button>
+			</div>
+			
+			<div v-else>
+				<p>
+					You're not logged in. Please log in with your Twitter account to submit tweets for approval.
+				</p>
+				
+				<button @click="login">Log in</button>
+			</div>
+		</div>
+		
+		<script src="/res/js/firebase.js"></script>
+		<script src="/res/js/vue.min.js"></script>
+		<script>
+			window.onload = function(){
+				firebase.initializeApp({
+					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
+					authDomain: "visiblewomen-net.firebaseapp.com",
+					databaseURL: "https://visiblewomen-net.firebaseio.com",
+					projectId: "visiblewomen-net",
+					storageBucket: "visiblewomen-net.appspot.com",
+					messagingSenderId: "532732660193"
+				});
+				
+				let app = new Vue({
+					el: "#app",
+					
+					data: {
+						url: "",
+						isLoggedIn: false,
+					},
+					
+					methods: {
+						login: function(){
+							let provider = new firebase.auth.TwitterAuthProvider();
+							
+							firebase.auth().signInWithPopup(provider).then(function(result){
+								// 
+							}).catch(function(error){
+								console.error(error);
+							});
+						},
+						
+						logout: function(){
+							firebase.auth().signOut();
+						},
+						
+						submit: function(){
+							
+						},
+					},
+					
+					mounted: function(){
+						let self = this;
+						
+						firebase.auth().onAuthStateChanged(function(user){
+							self.isLoggedIn = !!user;
+						});
+					},
+				});
+			};
+		</script>
+	</body>
+</html>

@@ -2,7 +2,7 @@
 	<div>
 		<h1>Tweets to Approve</h1>
 		
-		<ul>
+		<ul v-if="$store.state.data.tweetsToApprove && $store.state.data.tweetsToApprove.length > 0">
 			<li v-for="tweet in $store.state.data.tweetsToApprove">
 				<a :href="tweet.href">{{ tweet.href }}</a>
 				
@@ -11,9 +11,24 @@
 			</li>
 		</ul>
 		
-		<h1>Blocked / Denied Tweets</h1>
-		
+		<p v-else>
+			(There are no tweets to approve right now!)
+		</p>
+				
 		<h1>Admin Users</h1>
+		
+		<form @submit.prevent="addAdminUser(userToAdmin)">
+			<input type="text" v-model="userToAdmin">
+			<input type="submit" value="Add Administrator">
+		</form>
+		
+		<ul>
+			<li v-for="username in $store.state.data.adminUsers">
+				<a :href="'https://twitter.com/' + username">{{ username }}</a>
+				
+				<button @click="removeAdminUser(username)">Remove</button>
+			</li>
+		</ul>
 		
 		<h1>Blocked Users</h1>
 		
@@ -40,6 +55,7 @@
 		data: function(){
 			return {
 				userToBlock: "",
+				userToAdmin: "",
 			};
 		},
 		
@@ -69,6 +85,19 @@
 			unblock: function(username){
 				let self = this;
 				self.$store.dispatch("unblockUser", username);
+				self.userToBlock = "";
+			},
+			
+			addAdminUser: function(username){
+				let self = this;
+				self.$store.dispatch("addAdminUser", username);
+				self.userToAdmin = "";
+			},
+			
+			removeAdminUser: function(username){
+				let self = this;
+				self.$store.dispatch("removeAdminUser", username);
+				self.userToAdmin = "";
 			},
 		},
 	});

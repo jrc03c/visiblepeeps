@@ -43765,6 +43765,21 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 let Vue = require("vue/dist/vue");
 let Firebase = require("firebase/app");
@@ -43773,6 +43788,7 @@ module.exports = Vue.component("vp-manage", {
 	data: function(){
 		return {
 			userToBlock: "",
+			userToAdmin: "",
 		};
 	},
 	
@@ -43802,6 +43818,19 @@ module.exports = Vue.component("vp-manage", {
 		unblock: function(username){
 			let self = this;
 			self.$store.dispatch("unblockUser", username);
+			self.userToBlock = "";
+		},
+		
+		addAdminUser: function(username){
+			let self = this;
+			self.$store.dispatch("addAdminUser", username);
+			self.userToAdmin = "";
+		},
+		
+		removeAdminUser: function(username){
+			let self = this;
+			self.$store.dispatch("removeAdminUser", username);
+			self.userToAdmin = "";
 		},
 	},
 });
@@ -43810,7 +43839,7 @@ module.exports = Vue.component("vp-manage", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.block(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.blockedUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.unblock(username)}}},[_vm._v("Unblock")])])}))])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),(_vm.$store.state.data.tweetsToApprove && _vm.$store.state.data.tweetsToApprove.length > 0)?_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})):_c('p',[_vm._v("\n\t\t(There are no tweets to approve right now!)\n\t")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add Administrator"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.adminUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.removeAdminUser(username)}}},[_vm._v("Remove")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.block(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.blockedUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.unblock(username)}}},[_vm._v("Unblock")])])}))])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43819,7 +43848,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-31551190", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-31551190", __vue__options__)
+    hotAPI.reload("data-v-31551190", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],22:[function(require,module,exports){
@@ -43876,6 +43905,12 @@ module.exports = Vue.component("vp-submit", {
 			if (self.$store.state.data.tweetsToApprove){
 				self.$store.state.data.tweetsToApprove.forEach(function(tweet){
 					if (tweet.href === self.url) alreadySubmitted = true;
+				});
+			}
+			
+			if (self.$store.state.data.approvedTweets){
+				self.$store.state.data.approvedTweets.forEach(function(tweet){
+					if (tweet === "https://twitter.com" + url.pathname) alreadySubmitted = true;
 				});
 			}
 			
@@ -44001,8 +44036,21 @@ let Firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
 
+let URL = require("url-parse");
+
 // require main wrapper component
 require("./components/vp-wrapper.vue");
+
+// add set functionality to arrays
+Array.prototype.toSet = function(){
+	let out = [];
+	
+	this.forEach(function(item){
+		if (out.indexOf(item) < 0) out.push(item);
+	});
+	
+	return out;
+};
 
 window.onload = function(){
 	// initialize firebase
@@ -44035,7 +44083,12 @@ window.onload = function(){
 	let store = new Vuex.Store({
 		state: {
 			currentUserName: null,
-			data: {},
+			data: {
+				tweetsToApprove: [],
+				approvedTweets: [],
+				blockedUsers: [],
+				adminUsers: [],
+			},
 		},
 		
 		getters: {},
@@ -44082,6 +44135,7 @@ window.onload = function(){
 				}
 				
 				context.state.data.approvedTweets.push("https://twitter.com" + url.pathname);
+				context.state.data.approvedTweets = context.state.data.approvedTweets.toSet();
 				
 				Firebase.database().ref("/approvedTweets").set(context.state.data.approvedTweets).then(function(){
 					//
@@ -44123,6 +44177,34 @@ window.onload = function(){
 					console.error(error);
 				});
 			},
+			
+			addAdminUser: function(context, username){
+				if (!context.state.data.adminUsers){
+					context.state.data.adminUsers = [];
+				}
+				
+				context.state.data.adminUsers.push(username);
+				
+				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			removeAdminUser: function(context, username){
+				if (!context.state.data.adminUsers){
+					context.state.data.adminUsers = [];
+				}
+				
+				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(username), 1);
+				
+				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
 		},
 	});
 	
@@ -44133,7 +44215,7 @@ window.onload = function(){
 		store,
 	});
 };
-},{"./components/vp-landing.vue":20,"./components/vp-manage.vue":21,"./components/vp-submit.vue":22,"./components/vp-wrapper.vue":23,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":15,"vue/dist/vue":16,"vuex":18}],25:[function(require,module,exports){
+},{"./components/vp-landing.vue":20,"./components/vp-manage.vue":21,"./components/vp-submit.vue":22,"./components/vp-wrapper.vue":23,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"url-parse":13,"vue-router":15,"vue/dist/vue":16,"vuex":18}],25:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

@@ -53,6 +53,12 @@
 					});
 				}
 				
+				if (self.$store.state.data.approvedTweets){
+					self.$store.state.data.approvedTweets.forEach(function(tweet){
+						if (tweet === "https://twitter.com" + url.pathname) alreadySubmitted = true;
+					});
+				}
+				
 				if (!alreadySubmitted){
 					url.submittedBy = self.$store.state.currentUserName;
 					self.$store.dispatch("addTweetToApprove", url);

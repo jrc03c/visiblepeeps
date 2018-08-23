@@ -8,8 +8,21 @@ let Firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
 
+let URL = require("url-parse");
+
 // require main wrapper component
 require("./components/vp-wrapper.vue");
+
+// add set functionality to arrays
+Array.prototype.toSet = function(){
+	let out = [];
+	
+	this.forEach(function(item){
+		if (out.indexOf(item) < 0) out.push(item);
+	});
+	
+	return out;
+};
 
 window.onload = function(){
 	// initialize firebase
@@ -42,7 +55,12 @@ window.onload = function(){
 	let store = new Vuex.Store({
 		state: {
 			currentUserName: null,
-			data: {},
+			data: {
+				tweetsToApprove: [],
+				approvedTweets: [],
+				blockedUsers: [],
+				adminUsers: [],
+			},
 		},
 		
 		getters: {},
@@ -89,6 +107,7 @@ window.onload = function(){
 				}
 				
 				context.state.data.approvedTweets.push("https://twitter.com" + url.pathname);
+				context.state.data.approvedTweets = context.state.data.approvedTweets.toSet();
 				
 				Firebase.database().ref("/approvedTweets").set(context.state.data.approvedTweets).then(function(){
 					//
@@ -125,6 +144,34 @@ window.onload = function(){
 				context.state.data.blockedUsers.splice(context.state.data.blockedUsers.indexOf(username), 1);
 				
 				Firebase.database().ref("/blockedUsers").set(context.state.data.blockedUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			addAdminUser: function(context, username){
+				if (!context.state.data.adminUsers){
+					context.state.data.adminUsers = [];
+				}
+				
+				context.state.data.adminUsers.push(username);
+				
+				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
+					// 
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			removeAdminUser: function(context, username){
+				if (!context.state.data.adminUsers){
+					context.state.data.adminUsers = [];
+				}
+				
+				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(username), 1);
+				
+				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
 					// 
 				}).catch(function(error){
 					console.error(error);

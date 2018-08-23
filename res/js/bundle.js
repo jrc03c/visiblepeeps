@@ -43800,6 +43800,14 @@ module.exports = Vue.component("vp-manage", {
 	},
 	
 	computed: {
+		tweetsToApprove: function(){
+			let self = this;
+			
+			return self.$store.state.data.tweetsToApprove.map(function(url){
+				return JSON.parse(url);
+			});
+		},
+		
 		adminUsers: function(){
 			let self = this;
 			let out = [];
@@ -43880,7 +43888,7 @@ module.exports = Vue.component("vp-manage", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),(_vm.$store.state.data.tweetsToApprove && _vm.$store.state.data.tweetsToApprove.length > 0)?_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})):_c('p',[_vm._v("\n\t\t(There are no tweets to approve right now!)\n\t")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.adminUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v(_vm._s(user.username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.removeAdminUser(user.uid)}}},[_vm._v("Remove")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.block(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.blockedUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.unblock(username)}}},[_vm._v("Unblock")])])}))])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),(_vm.tweetsToApprove && _vm.tweetsToApprove.length > 0)?_c('ul',_vm._l((_vm.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})):_c('p',[_vm._v("\n\t\t(There are no tweets to approve right now!)\n\t")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.adminUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v(_vm._s(user.username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.removeAdminUser(user.uid)}}},[_vm._v("Remove")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.block(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.blockedUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.unblock(username)}}},[_vm._v("Unblock")])])}))])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43976,7 +43984,7 @@ module.exports = Vue.component("vp-submit", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.$store.state.currentUserName)?_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.submit($event)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text"},domProps:{"value":(_vm.url)},on:{"keydown":function($event){_vm.message = ''},"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Submit"}})]):_c('div',[_vm._v("\n\t\tYou're not logged in. Only logged-in users can submit tweets for approval!\n\t")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',[_vm._v("\n\t\t"+_vm._s(_vm.message)+"\n\t")]):_vm._e()])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.$store.state.isLoggedIn)?_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.submit($event)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text"},domProps:{"value":(_vm.url)},on:{"keydown":function($event){_vm.message = ''},"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Submit"}})]):_c('div',[_vm._v("\n\t\tYou're not logged in. Only logged-in users can submit tweets for approval!\n\t")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',[_vm._v("\n\t\t"+_vm._s(_vm.message)+"\n\t")]):_vm._e()])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43985,7 +43993,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-523eef2a", __vue__options__)
   } else {
-    hotAPI.reload("data-v-523eef2a", __vue__options__)
+    hotAPI.rerender("data-v-523eef2a", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"url-parse":13,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],23:[function(require,module,exports){
@@ -44120,6 +44128,10 @@ window.onload = function(){
 	
 	Firebase.auth().onAuthStateChanged(function(user){
 		authHasBeenInitialized = true;
+		
+		if (user){
+			store.state.isLoggedIn = true;
+		}
 	});
 	
 	// set up spa routes
@@ -44149,6 +44161,8 @@ window.onload = function(){
 	// set up store
 	let store = new Vuex.Store({
 		state: {
+			isLoggedIn: false,
+			
 			data: {
 				tweetsToApprove: [],
 				approvedTweets: [],
@@ -44168,7 +44182,7 @@ window.onload = function(){
 					context.state.data.tweetsToApprove = [];
 				}
 				
-				context.state.data.tweetsToApprove.push(url);
+				context.state.data.tweetsToApprove.push(JSON.stringify(url));
 				
 				Firebase.database().ref("/tweetsToApprove").set(context.state.data.tweetsToApprove).then(function(){
 					//

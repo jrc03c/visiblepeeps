@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<form v-if="$store.state.currentUserName" @submit.prevent="submit">
+		<form v-if="$store.state.isLoggedIn" @submit.prevent="submit">
 			<input type="text" v-model="url" @keydown="message = ''">
 			<input type="submit" value="Submit">
 		</form>

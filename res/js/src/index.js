@@ -49,6 +49,10 @@ window.onload = function(){
 	
 	Firebase.auth().onAuthStateChanged(function(user){
 		authHasBeenInitialized = true;
+		
+		if (user){
+			store.state.isLoggedIn = true;
+		}
 	});
 	
 	// set up spa routes
@@ -78,6 +82,8 @@ window.onload = function(){
 	// set up store
 	let store = new Vuex.Store({
 		state: {
+			isLoggedIn: false,
+			
 			data: {
 				tweetsToApprove: [],
 				approvedTweets: [],
@@ -97,7 +103,7 @@ window.onload = function(){
 					context.state.data.tweetsToApprove = [];
 				}
 				
-				context.state.data.tweetsToApprove.push(url);
+				context.state.data.tweetsToApprove.push(JSON.stringify(url));
 				
 				Firebase.database().ref("/tweetsToApprove").set(context.state.data.tweetsToApprove).then(function(){
 					//

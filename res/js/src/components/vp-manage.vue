@@ -2,8 +2,8 @@
 	<div>
 		<h1>Tweets to Approve</h1>
 		
-		<ul v-if="$store.state.data.tweetsToApprove && $store.state.data.tweetsToApprove.length > 0">
-			<li v-for="tweet in $store.state.data.tweetsToApprove">
+		<ul v-if="tweetsToApprove && tweetsToApprove.length > 0">
+			<li v-for="tweet in tweetsToApprove">
 				<a :href="tweet.href">{{ tweet.href }}</a>
 				
 				<button @click="approve(tweet)">Approve</button>
@@ -60,6 +60,14 @@
 		},
 		
 		computed: {
+			tweetsToApprove: function(){
+				let self = this;
+				
+				return self.$store.state.data.tweetsToApprove.map(function(url){
+					return JSON.parse(url);
+				});
+			},
+			
 			adminUsers: function(){
 				let self = this;
 				let out = [];

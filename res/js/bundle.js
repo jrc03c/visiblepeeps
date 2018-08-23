@@ -43783,19 +43783,28 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 
 let Vue = require("vue/dist/vue");
+let Firebase = require("firebase/app");
 let URL = require("url-parse");
 
 module.exports = Vue.component("vp-submit", {
 	data: function(){
 		return {
+			canSubmit: true,
 			url: "",
 			message: "",
+			tweetsToApprove: [],
 		};
 	},
 	
 	methods: {
 		submit: function(){
 			let self = this;
+			
+			if (!self.canSubmit){
+				self.message = "Please wait a few seconds and try again.";
+				return;
+			}
+			
 			let url = new URL(self.url);
 			
 			if (url.hostname !== "twitter.com" || !url.pathname.includes("status")){
@@ -43803,13 +43812,45 @@ module.exports = Vue.component("vp-submit", {
 				return;
 			}
 			
+			let alreadySubmitted = false;
+			
+			self.tweetsToApprove.forEach(function(tweet){
+				if (tweet.href === self.url) alreadySubmitted = true;
+			});
+			
+			if (!alreadySubmitted){
+				url.submittedBy = self.$store.state.currentUserName;
+				self.tweetsToApprove.push(url);
+				
+				let db = Firebase.database();
+				let ref = db.ref("/tweets-to-approve");
+				
+				ref.set(self.tweetsToApprove).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
+			}
+			
 			self.url = "";
 			self.message = "Thanks! We'll look it over!";
+			self.canSubmit = false;
 			
 			setTimeout(function(){
 				self.message = "";
-			}, 3000);
+				self.canSubmit = true;
+			}, 5000);
 		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		
+		Firebase.database().ref("/tweets-to-approve").once("value").then(function(snapshot){
+			let tweetsToApprove = snapshot.val();
+			if (!tweetsToApprove) return;
+			self.tweetsToApprove = tweetsToApprove;
+		});
 	},
 });
 
@@ -43829,7 +43870,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.rerender("data-v-523eef2a", __vue__options__)
   }
 })()}
-},{"url-parse":13,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],23:[function(require,module,exports){
+},{"firebase/app":7,"url-parse":13,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],23:[function(require,module,exports){
 ;(function(){
 //
 //

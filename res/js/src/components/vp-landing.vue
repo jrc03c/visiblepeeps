@@ -1,6 +1,8 @@
 <template>
 	<div>
 		This is the landing.
+		
+		<router-link to="/submit">Submit</router-link>
 	</div>
 </template>
 

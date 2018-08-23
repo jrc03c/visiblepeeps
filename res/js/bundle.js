@@ -16071,7 +16071,7 @@ exports.DataSnapshot = DataSnapshot;
 exports.OnDisconnect = OnDisconnect;
 
 }).call(this,require('_process'))
-},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":20,"tslib":10}],4:[function(require,module,exports){
+},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":22,"tslib":10}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -17794,7 +17794,7 @@ var iterator = _wksExt.f('iterator');
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":21,"whatwg-fetch":16}],6:[function(require,module,exports){
+},{"timers":23,"whatwg-fetch":16}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -22760,7 +22760,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":20}],13:[function(require,module,exports){
+},{"_process":22}],13:[function(require,module,exports){
 (function (global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -33711,7 +33711,7 @@ return Vue;
 })));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":21}],14:[function(require,module,exports){
+},{"timers":23}],14:[function(require,module,exports){
 (function (process,global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -41749,7 +41749,7 @@ if (inBrowser) {
 module.exports = Vue;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"_process":20,"timers":21}],15:[function(require,module,exports){
+},{"_process":22,"timers":23}],15:[function(require,module,exports){
 (function (process){
 /**
  * vuex v3.0.1
@@ -42685,7 +42685,7 @@ var index = {
 module.exports = index;
 
 }).call(this,require('_process'))
-},{"_process":20}],16:[function(require,module,exports){
+},{"_process":22}],16:[function(require,module,exports){
 (function(self) {
   'use strict';
 
@@ -43161,6 +43161,8 @@ module.exports = index;
 //
 //
 //
+//
+//
 
 let Vue = require("vue/dist/vue");
 module.exports = Vue.component("vp-landing", {});
@@ -43169,7 +43171,7 @@ module.exports = Vue.component("vp-landing", {});
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._v("\n\tThis is the landing.\n")])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._v("\n\tThis is the landing.\n\t\n\t"),_c('router-link',{attrs:{"to":"/submit"}},[_vm._v("Submit")])],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43182,6 +43184,88 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   }
 })()}
 },{"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],18:[function(require,module,exports){
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+module.exports = Vue.component("vp-manage", {});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),_c('h1',[_vm._v("Blocked / Denied Tweets")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")])])}]
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-31551190", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-31551190", __vue__options__)
+  }
+})()}
+},{"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],19:[function(require,module,exports){
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+
+module.exports = Vue.component("vp-submit", {
+	data: function(){
+		return {
+			url: "",
+		};
+	},
+	
+	methods: {
+		submit: function(){
+			let self = this;
+			console.log(self.url);
+		},
+	},
+});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.$store.state.currentUserName)?_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.submit($event)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text"},domProps:{"value":(_vm.url)},on:{"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}})]):_c('div',[_vm._v("\n\t\tYou're not logged in. Only logged-in users can submit tweets for approval!\n\t")])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-523eef2a", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-523eef2a", __vue__options__)
+  }
+})()}
+},{"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],20:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -43215,8 +43299,6 @@ module.exports = Vue.component("vp-wrapper", {
 			
 			Firebase.auth().signInWithPopup(provider).then(function(result){
 				console.log(result);
-				
-				// set current user's username in the store
 				self.$store.commit("setCurrentUserName", result.additionalUserInfo.username);
 			}).catch(function(error){
 				console.error(error);
@@ -43226,8 +43308,6 @@ module.exports = Vue.component("vp-wrapper", {
 		logout: function(){
 			let self = this;
 			Firebase.auth().signOut();
-			
-			// remove current user's username from the store
 			self.$store.commit("setCurrentUserName", null);
 		},
 	},
@@ -43238,6 +43318,11 @@ module.exports = Vue.component("vp-wrapper", {
 		// listen for logging in / out
 		Firebase.auth().onAuthStateChanged(function(user){
 			self.isLoggedIn = !!user;
+			
+			if (user && localStorage.hasOwnProperty("currentUserName")){
+				let currentUserName = localStorage.getItem("currentUserName");
+				self.$store.commit("setCurrentUserName", currentUserName);
+			}
 		});
 	},
 });
@@ -43258,7 +43343,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.rerender("data-v-7b968b50", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],19:[function(require,module,exports){
+},{"firebase/app":7,"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],21:[function(require,module,exports){
 let Vue = require("vue/dist/vue");
 let VueRouter = require("vue-router");
 let Vuex = require("vuex");
@@ -43293,6 +43378,8 @@ window.onload = function(){
 	// set up spa routes
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
+		{path: "/submit", component: require("./components/vp-submit.vue")},
+		{path: "/manage", component: require("./components/vp-manage.vue")},
 	];
 	
 	let router = new VueRouter({routes});
@@ -43309,6 +43396,7 @@ window.onload = function(){
 		mutations: {
 			setCurrentUserName: function(state, username){
 				state.currentUserName = username;
+				localStorage.setItem("currentUserName", username);
 			},
 			
 			setAdminUsers: function(state, users){
@@ -43326,7 +43414,7 @@ window.onload = function(){
 		store,
 	});
 };
-},{"./components/vp-landing.vue":17,"./components/vp-wrapper.vue":18,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":12,"vue/dist/vue":13,"vuex":15}],20:[function(require,module,exports){
+},{"./components/vp-landing.vue":17,"./components/vp-manage.vue":18,"./components/vp-submit.vue":19,"./components/vp-wrapper.vue":20,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":12,"vue/dist/vue":13,"vuex":15}],22:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -43512,7 +43600,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -43591,4 +43679,4 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":20,"timers":21}]},{},[19]);
+},{"process/browser.js":22,"timers":23}]},{},[21]);

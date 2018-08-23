@@ -32,6 +32,8 @@ window.onload = function(){
 	// set up spa routes
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
+		{path: "/submit", component: require("./components/vp-submit.vue")},
+		{path: "/manage", component: require("./components/vp-manage.vue")},
 	];
 	
 	let router = new VueRouter({routes});
@@ -48,6 +50,7 @@ window.onload = function(){
 		mutations: {
 			setCurrentUserName: function(state, username){
 				state.currentUserName = username;
+				localStorage.setItem("currentUserName", username);
 			},
 			
 			setAdminUsers: function(state, users){

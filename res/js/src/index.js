@@ -8,9 +8,11 @@ let Firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
 
+// require main wrapper component
 require("./components/vp-wrapper.vue");
 
 window.onload = function(){
+	// initialize firebase
 	Firebase.initializeApp({
 		apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 		authDomain: "visiblewomen-net.firebaseapp.com",
@@ -20,19 +22,43 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
+	// get list of admin users from database
+	Firebase.database().ref("/admin-users").once("value").then(function(snapshot){
+		let adminUsers = snapshot.val();
+		if (!adminUsers) return;
+		store.commit("setAdminUsers", adminUsers);
+	});
+	
+	// set up spa routes
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
 	];
 	
 	let router = new VueRouter({routes});
 	
+	// set up store
 	let store = new Vuex.Store({
-		state: {},
+		state: {
+			currentUserName: null,
+			adminUsers: [],
+		},
+		
 		getters: {},
-		mutations: {},
+		
+		mutations: {
+			setCurrentUserName: function(state, username){
+				state.currentUserName = username;
+			},
+			
+			setAdminUsers: function(state, users){
+				state.adminUsers = users;
+			},
+		},
+		
 		actions: {},
 	});
 	
+	// create app
 	let app = new Vue({
 		el: "#app",
 		router,

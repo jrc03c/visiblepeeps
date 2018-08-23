@@ -43178,7 +43178,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-2242ded4", __vue__options__)
   } else {
-    hotAPI.reload("data-v-2242ded4", __vue__options__)
+    hotAPI.rerender("data-v-2242ded4", __vue__options__)
   }
 })()}
 },{"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],18:[function(require,module,exports){
@@ -43210,23 +43210,32 @@ module.exports = Vue.component("vp-wrapper", {
 	
 	methods: {
 		login: function(){
+			let self = this;
 			let provider = new Firebase.auth.TwitterAuthProvider();
 			
 			Firebase.auth().signInWithPopup(provider).then(function(result){
 				console.log(result);
+				
+				// set current user's username in the store
+				self.$store.commit("setCurrentUserName", result.additionalUserInfo.username);
 			}).catch(function(error){
 				console.error(error);
 			});
 		},
 		
 		logout: function(){
+			let self = this;
 			Firebase.auth().signOut();
+			
+			// remove current user's username from the store
+			self.$store.commit("setCurrentUserName", null);
 		},
 	},
 	
 	mounted: function(){
 		let self = this;
 		
+		// listen for logging in / out
 		Firebase.auth().onAuthStateChanged(function(user){
 			self.isLoggedIn = !!user;
 		});
@@ -43260,9 +43269,11 @@ let Firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
 
+// require main wrapper component
 require("./components/vp-wrapper.vue");
 
 window.onload = function(){
+	// initialize firebase
 	Firebase.initializeApp({
 		apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 		authDomain: "visiblewomen-net.firebaseapp.com",
@@ -43272,19 +43283,43 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
+	// get list of admin users from database
+	Firebase.database().ref("/admin-users").once("value").then(function(snapshot){
+		let adminUsers = snapshot.val();
+		if (!adminUsers) return;
+		store.commit("setAdminUsers", adminUsers);
+	});
+	
+	// set up spa routes
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
 	];
 	
 	let router = new VueRouter({routes});
 	
+	// set up store
 	let store = new Vuex.Store({
-		state: {},
+		state: {
+			currentUserName: null,
+			adminUsers: [],
+		},
+		
 		getters: {},
-		mutations: {},
+		
+		mutations: {
+			setCurrentUserName: function(state, username){
+				state.currentUserName = username;
+			},
+			
+			setAdminUsers: function(state, users){
+				state.adminUsers = users;
+			},
+		},
+		
 		actions: {},
 	});
 	
+	// create app
 	let app = new Vue({
 		el: "#app",
 		router,

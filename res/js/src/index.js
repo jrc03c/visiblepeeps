@@ -8,6 +8,8 @@ let Firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
 
+require("./components/vp-wrapper.vue");
+
 window.onload = function(){
 	Firebase.initializeApp({
 		apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -18,39 +20,16 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
-	Firebase.auth().onAuthStateChanged(function(user){
-		if (user){
-			if (store.state.adminUsers.indexOf(user.uid) > -1){
-				store.commit("setUserIsAdmin", true);
-			}
-		}
-	});
-	
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
-		{path: "/about", component: require("./components/vp-about.vue")},
-		{path: "/submit", component: require("./components/vp-submit.vue")},
-		{path: "/manage", component: require("./components/vp-manage.vue")},
 	];
 	
 	let router = new VueRouter({routes});
 	
 	let store = new Vuex.Store({
-		state: {
-			userIsAdmin: false,
-			adminUsers: [],
-			redirect: "/submit",
-		},
+		state: {},
 		getters: {},
-		mutations: {
-			setUserIsAdmin: function(state, val){
-				state.userIsAdmin = val;
-			},
-			
-			setRedirect: function(state, val){
-				state.redirect = val;
-			},
-		},
+		mutations: {},
 		actions: {},
 	});
 	

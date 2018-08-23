@@ -7,6 +7,10 @@
 		<div v-else>
 			You're not logged in. Only logged-in users can submit tweets for approval!
 		</div>
+		
+		<p v-if="message.length > 0">
+			{{ message }}
+		</p>
 	</div>
 </template>
 
@@ -17,13 +21,19 @@
 		data: function(){
 			return {
 				url: "",
+				message: "",
 			};
 		},
 		
 		methods: {
 			submit: function(){
 				let self = this;
-				console.log(self.url);
+				self.url = "";
+				self.message = "Thanks! We'll look it over!";
+				
+				setTimeout(function(){
+					self.message = "";
+				}, 3000);
 			},
 		},
 	});

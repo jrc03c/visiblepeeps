@@ -43231,6 +43231,10 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
+//
+//
+//
+//
 
 let Vue = require("vue/dist/vue");
 
@@ -43238,13 +43242,19 @@ module.exports = Vue.component("vp-submit", {
 	data: function(){
 		return {
 			url: "",
+			message: "",
 		};
 	},
 	
 	methods: {
 		submit: function(){
 			let self = this;
-			console.log(self.url);
+			self.url = "";
+			self.message = "Thanks! We'll look it over!";
+			
+			setTimeout(function(){
+				self.message = "";
+			}, 3000);
 		},
 	},
 });
@@ -43253,7 +43263,7 @@ module.exports = Vue.component("vp-submit", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.$store.state.currentUserName)?_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.submit($event)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text"},domProps:{"value":(_vm.url)},on:{"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}})]):_c('div',[_vm._v("\n\t\tYou're not logged in. Only logged-in users can submit tweets for approval!\n\t")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.$store.state.currentUserName)?_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.submit($event)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text"},domProps:{"value":(_vm.url)},on:{"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}})]):_c('div',[_vm._v("\n\t\tYou're not logged in. Only logged-in users can submit tweets for approval!\n\t")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',[_vm._v("\n\t\t"+_vm._s(_vm.message)+"\n\t")]):_vm._e()])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43262,7 +43272,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-523eef2a", __vue__options__)
   } else {
-    hotAPI.reload("data-v-523eef2a", __vue__options__)
+    hotAPI.rerender("data-v-523eef2a", __vue__options__)
   }
 })()}
 },{"vue":14,"vue-hot-reload-api":11,"vue/dist/vue":13}],20:[function(require,module,exports){

@@ -68,7 +68,7 @@
 					return self.$store.state.data.allUsers[key];
 				});
 				
-				self.$store.state.data.adminUsers.forEach(function(uid){
+				Object.keys(self.$store.state.data.adminUsers).forEach(function(uid){
 					let user = allUsers.find(function(u){
 						return u.uid === uid;
 					});

@@ -43808,7 +43808,7 @@ module.exports = Vue.component("vp-manage", {
 				return self.$store.state.data.allUsers[key];
 			});
 			
-			self.$store.state.data.adminUsers.forEach(function(uid){
+			Object.keys(self.$store.state.data.adminUsers).forEach(function(uid){
 				let user = allUsers.find(function(u){
 					return u.uid === uid;
 				});
@@ -43889,7 +43889,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-31551190", __vue__options__)
   } else {
-    hotAPI.reload("data-v-31551190", __vue__options__)
+    hotAPI.rerender("data-v-31551190", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],22:[function(require,module,exports){
@@ -44134,10 +44134,8 @@ window.onload = function(){
 				if (!store.state.data.adminUsers){
 					store.state.data.adminUsers = [];
 				}
-				
-				let index = store.state.data.adminUsers.indexOf(Firebase.auth().currentUser.uid);
-				
-				if (index > -1){
+								
+				if (store.state.data.adminUsers[Firebase.auth().currentUser.uid]){
 					return next();
 				}
 				
@@ -44155,7 +44153,7 @@ window.onload = function(){
 				tweetsToApprove: [],
 				approvedTweets: [],
 				blockedUsers: [],
-				adminUsers: [],
+				adminUsers: {},
 				allUsers: [],
 			},
 		},
@@ -44244,13 +44242,12 @@ window.onload = function(){
 			
 			addAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
-					context.state.data.adminUsers = [];
+					context.state.data.adminUsers = {};
 				}
 				
-				context.state.data.adminUsers.push(uid);
-				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
+				context.state.data.adminUsers[uid] = true;
 				
-				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
+				Firebase.database().ref("/adminUsers/" + uid).set(true).then(function(){
 					//
 				}).catch(function(error){
 					console.error(error);
@@ -44259,13 +44256,12 @@ window.onload = function(){
 			
 			removeAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
-					context.state.data.adminUsers = [];
+					context.state.data.adminUsers = {};
 				}
 				
-				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(uid), 1);
-				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
+				delete context.state.data.adminUsers[uid];
 				
-				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
+				Firebase.database().ref("/adminUsers/" + uid).set(null).then(function(){
 					//
 				}).catch(function(error){
 					console.error(error);

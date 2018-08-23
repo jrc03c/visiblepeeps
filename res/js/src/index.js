@@ -63,10 +63,8 @@ window.onload = function(){
 				if (!store.state.data.adminUsers){
 					store.state.data.adminUsers = [];
 				}
-				
-				let index = store.state.data.adminUsers.indexOf(Firebase.auth().currentUser.uid);
-				
-				if (index > -1){
+								
+				if (store.state.data.adminUsers[Firebase.auth().currentUser.uid]){
 					return next();
 				}
 				
@@ -84,7 +82,7 @@ window.onload = function(){
 				tweetsToApprove: [],
 				approvedTweets: [],
 				blockedUsers: [],
-				adminUsers: [],
+				adminUsers: {},
 				allUsers: [],
 			},
 		},
@@ -173,13 +171,12 @@ window.onload = function(){
 			
 			addAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
-					context.state.data.adminUsers = [];
+					context.state.data.adminUsers = {};
 				}
 				
-				context.state.data.adminUsers.push(uid);
-				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
+				context.state.data.adminUsers[uid] = true;
 				
-				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
+				Firebase.database().ref("/adminUsers/" + uid).set(true).then(function(){
 					//
 				}).catch(function(error){
 					console.error(error);
@@ -188,13 +185,12 @@ window.onload = function(){
 			
 			removeAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
-					context.state.data.adminUsers = [];
+					context.state.data.adminUsers = {};
 				}
 				
-				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(uid), 1);
-				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
+				delete context.state.data.adminUsers[uid];
 				
-				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
+				Firebase.database().ref("/adminUsers/" + uid).set(null).then(function(){
 					//
 				}).catch(function(error){
 					console.error(error);

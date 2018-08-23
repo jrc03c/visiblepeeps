@@ -36,17 +36,43 @@ window.onload = function(){
 	});
 	
 	// get data from database
+	let dataHasBeenInitialized = false;
+	let authHasBeenInitialized = false;
+	
 	Firebase.database().ref("/").once("value").then(function(snapshot){
+		dataHasBeenInitialized = true;
+		
 		let data = snapshot.val();
 		if (!data) return;
 		store.state.data = data;
+	});
+	
+	Firebase.auth().onAuthStateChanged(function(user){
+		authHasBeenInitialized = true;
 	});
 	
 	// set up spa routes
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
 		{path: "/submit", component: require("./components/vp-submit.vue")},
-		{path: "/manage", component: require("./components/vp-manage.vue")},
+		{path: "/manage", component: require("./components/vp-manage.vue"), beforeEnter: function(to, from, next){
+			let t = setInterval(function(){
+				if (!authHasBeenInitialized || !dataHasBeenInitialized) return;
+				clearInterval(t);
+				
+				if (!store.state.data.adminUsers){
+					store.state.data.adminUsers = [];
+				}
+				
+				let index = store.state.data.adminUsers.indexOf(Firebase.auth().currentUser.uid);
+				
+				if (index > -1){
+					return next();
+				}
+				
+				return next("/");
+			}, 10);
+		}},
 	];
 	
 	let router = new VueRouter({routes});
@@ -54,23 +80,18 @@ window.onload = function(){
 	// set up store
 	let store = new Vuex.Store({
 		state: {
-			currentUserName: null,
 			data: {
 				tweetsToApprove: [],
 				approvedTweets: [],
 				blockedUsers: [],
 				adminUsers: [],
+				allUsers: [],
 			},
 		},
 		
 		getters: {},
 		
-		mutations: {
-			setCurrentUserName: function(state, username){
-				state.currentUserName = username;
-				localStorage.setItem("currentUserName", username);
-			},
-		},
+		mutations: {},
 		
 		actions: {
 			addTweetToApprove: function(context, url){
@@ -150,29 +171,31 @@ window.onload = function(){
 				});
 			},
 			
-			addAdminUser: function(context, username){
+			addAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
 					context.state.data.adminUsers = [];
 				}
 				
-				context.state.data.adminUsers.push(username);
+				context.state.data.adminUsers.push(uid);
+				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
 				
 				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
-					// 
+					//
 				}).catch(function(error){
 					console.error(error);
 				});
 			},
 			
-			removeAdminUser: function(context, username){
+			removeAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
 					context.state.data.adminUsers = [];
 				}
 				
-				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(username), 1);
+				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(uid), 1);
+				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
 				
 				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
-					// 
+					//
 				}).catch(function(error){
 					console.error(error);
 				});

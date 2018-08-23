@@ -43799,6 +43799,27 @@ module.exports = Vue.component("vp-manage", {
 		};
 	},
 	
+	computed: {
+		adminUsers: function(){
+			let self = this;
+			let out = [];
+			
+			let allUsers = Object.keys(self.$store.state.data.allUsers).map(function(key){
+				return self.$store.state.data.allUsers[key];
+			});
+			
+			self.$store.state.data.adminUsers.forEach(function(uid){
+				let user = allUsers.find(function(u){
+					return u.uid === uid;
+				});
+				
+				out.push(user);
+			});
+			
+			return out;
+		},
+	},
+	
 	methods: {
 		approve: function(tweet){
 			let self = this;
@@ -43830,14 +43851,27 @@ module.exports = Vue.component("vp-manage", {
 		
 		addAdminUser: function(username){
 			let self = this;
-			self.$store.dispatch("addAdminUser", username);
+			
+			let allUsers = Object.keys(self.$store.state.data.allUsers).map(function(key){
+				return self.$store.state.data.allUsers[key];
+			});
+			
+			let user = allUsers.find(function(u){
+				return u.username === username;
+			});
+			
+			if (!user){
+				alert("This user has not logged in yet. Please ask them to log in first.");
+				return;
+			}
+			
+			self.$store.dispatch("addAdminUser", user.uid);
 			self.userToAdmin = "";
 		},
 		
-		removeAdminUser: function(username){
+		removeAdminUser: function(uid){
 			let self = this;
-			self.$store.dispatch("removeAdminUser", username);
-			self.userToAdmin = "";
+			self.$store.dispatch("removeAdminUser", uid);
 		},
 	},
 });
@@ -43846,7 +43880,7 @@ module.exports = Vue.component("vp-manage", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),(_vm.$store.state.data.tweetsToApprove && _vm.$store.state.data.tweetsToApprove.length > 0)?_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})):_c('p',[_vm._v("\n\t\t(There are no tweets to approve right now!)\n\t")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add Administrator"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.adminUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.removeAdminUser(username)}}},[_vm._v("Remove")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.block(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.blockedUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.unblock(username)}}},[_vm._v("Unblock")])])}))])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h1',[_vm._v("Tweets to Approve")]),_vm._v(" "),(_vm.$store.state.data.tweetsToApprove && _vm.$store.state.data.tweetsToApprove.length > 0)?_c('ul',_vm._l((_vm.$store.state.data.tweetsToApprove),function(tweet){return _c('li',[_c('a',{attrs:{"href":tweet.href}},[_vm._v(_vm._s(tweet.href))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approve(tweet)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.deny(tweet)}}},[_vm._v("Deny")])])})):_c('p',[_vm._v("\n\t\t(There are no tweets to approve right now!)\n\t")]),_vm._v(" "),_c('h1',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.adminUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v(_vm._s(user.username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.removeAdminUser(user.uid)}}},[_vm._v("Remove")])])})),_vm._v(" "),_c('h1',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.block(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),_c('ul',_vm._l((_vm.$store.state.data.blockedUsers),function(username){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.unblock(username)}}},[_vm._v("Unblock")])])}))])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -43986,9 +44020,17 @@ module.exports = Vue.component("vp-wrapper", {
 			let self = this;
 			let provider = new Firebase.auth.TwitterAuthProvider();
 			
-			Firebase.auth().signInWithPopup(provider).then(function(result){
-				console.log(result);
-				self.$store.commit("setCurrentUserName", result.additionalUserInfo.username);
+			Firebase.auth().signInWithPopup(provider).then(function(result){					
+				let newUser = Firebase.database().ref("/allUsers").push();
+				
+				newUser.set({
+					username: result.additionalUserInfo.username,
+					uid: result.user.uid,
+				}).then(function(){
+					//
+				}).catch(function(error){
+					console.error(error);
+				});
 			}).catch(function(error){
 				console.error(error);
 			});
@@ -43997,7 +44039,6 @@ module.exports = Vue.component("vp-wrapper", {
 		logout: function(){
 			let self = this;
 			Firebase.auth().signOut();
-			self.$store.commit("setCurrentUserName", null);
 		},
 	},
 	
@@ -44007,11 +44048,6 @@ module.exports = Vue.component("vp-wrapper", {
 		// listen for logging in / out
 		Firebase.auth().onAuthStateChanged(function(user){
 			self.isLoggedIn = !!user;
-			
-			if (user && localStorage.hasOwnProperty("currentUserName")){
-				let currentUserName = localStorage.getItem("currentUserName");
-				self.$store.commit("setCurrentUserName", currentUserName);
-			}
 		});
 	},
 });
@@ -44071,17 +44107,43 @@ window.onload = function(){
 	});
 	
 	// get data from database
+	let dataHasBeenInitialized = false;
+	let authHasBeenInitialized = false;
+	
 	Firebase.database().ref("/").once("value").then(function(snapshot){
+		dataHasBeenInitialized = true;
+		
 		let data = snapshot.val();
 		if (!data) return;
 		store.state.data = data;
+	});
+	
+	Firebase.auth().onAuthStateChanged(function(user){
+		authHasBeenInitialized = true;
 	});
 	
 	// set up spa routes
 	let routes = [
 		{path: "/", component: require("./components/vp-landing.vue")},
 		{path: "/submit", component: require("./components/vp-submit.vue")},
-		{path: "/manage", component: require("./components/vp-manage.vue")},
+		{path: "/manage", component: require("./components/vp-manage.vue"), beforeEnter: function(to, from, next){
+			let t = setInterval(function(){
+				if (!authHasBeenInitialized || !dataHasBeenInitialized) return;
+				clearInterval(t);
+				
+				if (!store.state.data.adminUsers){
+					store.state.data.adminUsers = [];
+				}
+				
+				let index = store.state.data.adminUsers.indexOf(Firebase.auth().currentUser.uid);
+				
+				if (index > -1){
+					return next();
+				}
+				
+				return next("/");
+			}, 10);
+		}},
 	];
 	
 	let router = new VueRouter({routes});
@@ -44089,23 +44151,18 @@ window.onload = function(){
 	// set up store
 	let store = new Vuex.Store({
 		state: {
-			currentUserName: null,
 			data: {
 				tweetsToApprove: [],
 				approvedTweets: [],
 				blockedUsers: [],
 				adminUsers: [],
+				allUsers: [],
 			},
 		},
 		
 		getters: {},
 		
-		mutations: {
-			setCurrentUserName: function(state, username){
-				state.currentUserName = username;
-				localStorage.setItem("currentUserName", username);
-			},
-		},
+		mutations: {},
 		
 		actions: {
 			addTweetToApprove: function(context, url){
@@ -44185,29 +44242,31 @@ window.onload = function(){
 				});
 			},
 			
-			addAdminUser: function(context, username){
+			addAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
 					context.state.data.adminUsers = [];
 				}
 				
-				context.state.data.adminUsers.push(username);
+				context.state.data.adminUsers.push(uid);
+				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
 				
 				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
-					// 
+					//
 				}).catch(function(error){
 					console.error(error);
 				});
 			},
 			
-			removeAdminUser: function(context, username){
+			removeAdminUser: function(context, uid){
 				if (!context.state.data.adminUsers){
 					context.state.data.adminUsers = [];
 				}
 				
-				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(username), 1);
+				context.state.data.adminUsers.splice(context.state.data.adminUsers.indexOf(uid), 1);
+				context.state.data.adminUsers = context.state.data.adminUsers.toSet();
 				
 				Firebase.database().ref("/adminUsers").set(context.state.data.adminUsers).then(function(){
-					// 
+					//
 				}).catch(function(error){
 					console.error(error);
 				});

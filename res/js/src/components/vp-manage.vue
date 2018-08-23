@@ -14,19 +14,19 @@
 		<p v-else>
 			(There are no tweets to approve right now!)
 		</p>
-				
+		
 		<h1>Admin Users</h1>
 		
 		<form @submit.prevent="addAdminUser(userToAdmin)">
 			<input type="text" v-model="userToAdmin">
-			<input type="submit" value="Add Administrator">
+			<input type="submit" value="Block">
 		</form>
 		
 		<ul>
-			<li v-for="username in $store.state.data.adminUsers">
-				<a :href="'https://twitter.com/' + username">{{ username }}</a>
+			<li v-for="user in adminUsers">
+				<a :href="'https://twitter.com/' + user.username">{{ user.username }}</a>
 				
-				<button @click="removeAdminUser(username)">Remove</button>
+				<button @click="removeAdminUser(user.uid)">Remove</button>
 			</li>
 		</ul>
 		
@@ -57,6 +57,27 @@
 				userToBlock: "",
 				userToAdmin: "",
 			};
+		},
+		
+		computed: {
+			adminUsers: function(){
+				let self = this;
+				let out = [];
+				
+				let allUsers = Object.keys(self.$store.state.data.allUsers).map(function(key){
+					return self.$store.state.data.allUsers[key];
+				});
+				
+				self.$store.state.data.adminUsers.forEach(function(uid){
+					let user = allUsers.find(function(u){
+						return u.uid === uid;
+					});
+					
+					out.push(user);
+				});
+				
+				return out;
+			},
 		},
 		
 		methods: {
@@ -90,14 +111,27 @@
 			
 			addAdminUser: function(username){
 				let self = this;
-				self.$store.dispatch("addAdminUser", username);
+				
+				let allUsers = Object.keys(self.$store.state.data.allUsers).map(function(key){
+					return self.$store.state.data.allUsers[key];
+				});
+				
+				let user = allUsers.find(function(u){
+					return u.username === username;
+				});
+				
+				if (!user){
+					alert("This user has not logged in yet. Please ask them to log in first.");
+					return;
+				}
+				
+				self.$store.dispatch("addAdminUser", user.uid);
 				self.userToAdmin = "";
 			},
 			
-			removeAdminUser: function(username){
+			removeAdminUser: function(uid){
 				let self = this;
-				self.$store.dispatch("removeAdminUser", username);
-				self.userToAdmin = "";
+				self.$store.dispatch("removeAdminUser", uid);
 			},
 		},
 	});

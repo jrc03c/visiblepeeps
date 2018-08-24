@@ -19,6 +19,10 @@ permalink: /submit
 					<input type="submit" value="Submit">
 				</form>
 				
+				<p v-if="message.length > 0">
+					<% message %>
+				</p>
+				
 				<button @click="logout">Log out</button>
 			</div>
 			
@@ -47,9 +51,16 @@ permalink: /submit
 				let app = new Vue({
 					el: "#app",
 					
+					delimiters: ["<%", "%>"],
+					
 					data: {
 						url: "",
 						isLoggedIn: false,
+						isBlocked: false,
+						canSubmit: true,
+						message: "",
+						currentUserName: "",
+						tweetsToApprove: [],
 					},
 					
 					methods: {
@@ -57,7 +68,24 @@ permalink: /submit
 							let provider = new firebase.auth.TwitterAuthProvider();
 							
 							firebase.auth().signInWithPopup(provider).then(function(result){
-								// 
+								let db = firebase.database();
+								let username = result.additionalUserInfo.username;
+								
+								let ref1 = db.ref("/usersByUID/" + result.user.uid);
+								
+								ref1.set(username).then(function(){
+									//
+								}).catch(function(error){
+									console.error(error);
+								});
+								
+								let ref2 = db.ref("/usersByName/" + username);
+								
+								ref2.set(result.user.uid).then(function(){
+									//
+								}).catch(function(error){
+									console.error(error);
+								});
 							}).catch(function(error){
 								console.error(error);
 							});
@@ -68,7 +96,59 @@ permalink: /submit
 						},
 						
 						submit: function(){
+							let self = this;
 							
+							if (!self.canSubmit){
+								self.message = "Please wait a moment and then try again.";
+								return;
+							}
+							
+							let urlObj;
+							
+							try {
+								urlObj = new URL(self.url);
+							} catch (error){
+								self.message = "It doesn't look like you entered a valid URL. Please enter a URL that points directly to a tweet.";
+								return;
+							}
+							
+							if (urlObj.hostname !== "twitter.com" || !urlObj.pathname.includes("status")){
+								self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
+								return;
+							}
+							
+							let wasAlreadySubmitted = false;
+							
+							self.tweetsToApprove.forEach(function(tweet){
+								if (tweet.url === "https://twitter.com" + urlObj.pathname){
+									wasAlreadySubmitted = true;
+								}
+							});
+							
+							if (!self.isBlocked && !wasAlreadySubmitted){
+								self.tweetsToApprove.push({
+									url: "https://twitter.com" + urlObj.pathname,
+									submitter: self.currentUserName,
+								});
+								
+								let db = firebase.database();
+								let ref = db.ref("/tweetsToApprove");
+								
+								ref.set(self.tweetsToApprove).then(function(){
+									//
+								}).catch(function(error){
+									console.error(error);
+								});
+							}
+							
+							self.message = "Thanks! We'll check it out!";
+							self.url = "";
+							self.canSubmit = false;
+							
+							setTimeout(function(){
+								self.message = "";
+								self.canSubmit = true;
+							}, 5000);
 						},
 					},
 					
@@ -77,6 +157,34 @@ permalink: /submit
 						
 						firebase.auth().onAuthStateChanged(function(user){
 							self.isLoggedIn = !!user;
+							
+							if (user){
+								let db = firebase.database();
+								
+								let ref1 = db.ref("/usersByUID/" + user.uid);
+								
+								ref1.on("value", function(snapshot){
+									let username = snapshot.val();
+									if (!username) return;
+									self.currentUserName = username;
+								});
+								
+								let ref2 = db.ref("/blockedUsers/" + user.uid);
+								
+								ref2.on("value", function(snapshot){
+									let isBlocked = snapshot.val();
+									if (!isBlocked) return;
+									self.isBlocked = true;
+								});
+								
+								let ref3 = db.ref("/tweetsToApprove");
+								
+								ref3.on("value", function(snapshot){
+									let tweetsToApprove = snapshot.val();
+									if (!tweetsToApprove) return;
+									self.tweetsToApprove = tweetsToApprove;
+								});
+							}
 						});
 					},
 				});

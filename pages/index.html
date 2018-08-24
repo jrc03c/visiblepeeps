@@ -13,11 +13,13 @@ permalink: /
 		</p>
 		
 		<div id="app">
-			<ul v-if="tweets.length > 0">
-				<li v-for="tweet in tweets">
-					{{ tweet }}
-				</li>
-			</ul>
+			<div v-if="tweets.length > 0">
+				<ul>
+					<li v-for="tweet in tweets">
+						<% tweet %>
+					</li>
+				</ul>
+			</div>
 			
 			<div v-else>
 				Loading...
@@ -39,6 +41,8 @@ permalink: /
 				
 				let app = new Vue({
 					el: "#app",
+					
+					delimiters: ["<%", "%>"],
 					
 					data: {
 						tweets: [],

@@ -4,6 +4,11 @@ permalink: /
 
 <html>
 	<head>
+		<style>
+			#app {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>#visiblepeeps</h1>
@@ -13,12 +18,18 @@ permalink: /
 		</p>
 		
 		<div id="app">
-			<div v-if="tweets.length > 0">
-				<ul>
-					<li v-for="tweet in tweets">
-						<% tweet %>
-					</li>
-				</ul>
+			<div v-if="finishedLoading">
+				<div v-if="tweets.length > 0">
+					<ul>
+						<li v-for="tweet in tweets">
+							<% tweet %>
+						</li>
+					</ul>
+				</div>
+				
+				<div v-else>
+					No tweets have been submitted yet!
+				</div>
 			</div>
 			
 			<div v-else>
@@ -46,6 +57,7 @@ permalink: /
 					
 					data: {
 						tweets: [],
+						finishedLoading: false,
 					},
 					
 					mounted: function(){
@@ -54,6 +66,7 @@ permalink: /
 						let ref = db.ref("/approvedTweets");
 						
 						ref.once("value").then(function(snapshot){
+							self.finishedLoading = true;
 							let tweets = snapshot.val();
 							if (!tweets) return;
 							self.tweets = tweets;
@@ -62,6 +75,8 @@ permalink: /
 						});
 					},
 				});
+				
+				document.getElementById("app").style.display = "block";
 			};
 		</script>
 	</body>

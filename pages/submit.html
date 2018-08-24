@@ -4,6 +4,11 @@ permalink: /submit
 
 <html>
 	<head>
+		<style>
+			#app {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>#visiblepeeps</h1>
@@ -156,6 +161,7 @@ permalink: /submit
 						let self = this;
 						
 						firebase.auth().onAuthStateChanged(function(user){
+							document.getElementById("app").style.display = "block";
 							self.isLoggedIn = !!user;
 							
 							if (user){

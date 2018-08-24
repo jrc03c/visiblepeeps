@@ -76,12 +76,11 @@ layout: default
 			data: {
 				url: "",
 				isLoggedIn: false,
-				isBlocked: false,
 				canSubmit: true,
 				message: "",
-				currentUserName: "",
 				tweetsToApprove: [],
 				approvedTweets: [],
+				user: null,
 			},
 			
 			methods: {
@@ -92,21 +91,8 @@ layout: default
 						let db = firebase.database();
 						let username = result.additionalUserInfo.username;
 						
-						let ref1 = db.ref("/usersByUID/" + result.user.uid);
-						
-						ref1.set(username).then(function(){
-							//
-						}).catch(function(error){
-							console.error(error);
-						});
-						
-						let ref2 = db.ref("/usersByName/" + username);
-						
-						ref2.set(result.user.uid).then(function(){
-							//
-						}).catch(function(error){
-							console.error(error);
-						});
+						let ref = db.ref("/allUsers/" + result.user.uid);
+						ref.set({username});
 					}).catch(function(error){
 						console.error(error);
 					});
@@ -114,10 +100,10 @@ layout: default
 				
 				logout: function(){
 					firebase.auth().signOut();
-					ref1.off();
-					ref2.off();
-					ref3.off();
-					ref4.off();
+					if (ref1) ref1.off();
+					if (ref2) ref2.off();
+					if (ref3) ref3.off();
+					if (ref4) ref4.off();
 				},
 				
 				submit: function(){
@@ -156,10 +142,10 @@ layout: default
 						}
 					});
 					
-					if (!self.isBlocked && !wasAlreadySubmitted){
+					if (!self.user.isBlocked && !wasAlreadySubmitted){
 						self.tweetsToApprove.push({
 							url: "https://twitter.com" + urlObj.pathname,
-							submitter: self.currentUserName,
+							submitter: self.user.username,
 						});
 						
 						let db = firebase.database();
@@ -193,20 +179,12 @@ layout: default
 					if (user){
 						let db = firebase.database();
 						
-						ref1 = db.ref("/usersByUID/" + user.uid);
+						ref1 = db.ref("/allUsers/" + user.uid);
 						
 						ref1.on("value", function(snapshot){
-							let username = snapshot.val();
-							if (!username) return;
-							self.currentUserName = username;
-						});
-						
-						ref2 = db.ref("/blockedUsers/" + user.uid);
-						
-						ref2.on("value", function(snapshot){
-							let isBlocked = snapshot.val();
-							if (!isBlocked) return;
-							self.isBlocked = true;
+							let user = snapshot.val();
+							if (!user) return;
+							self.user = user;
 						});
 						
 						ref3 = db.ref("/tweetsToApprove");

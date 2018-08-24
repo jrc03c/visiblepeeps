@@ -42,29 +42,29 @@ permalink: /manage
 				
 				<h2>Admin Users</h2>
 				
-				<form @submit.prevent="addAdminUser">
+				<form @submit.prevent="addAdminUser(userToAdmin)">
 					<input type="text" v-model="userToAdmin">
 					<input type="submit" value="Add">
 				</form>
 				
 				<ul>
-					<li v-for="user in adminUsers">
-						<a :href="'https://twitter.com/' + user.username"><% user.username %></a>
-						<button @click="removeAdminUser(user)">Remove</button>
+					<li v-for="username in adminUsers">
+						<a :href="'https://twitter.com/' + username"><% username %></a>
+						<button @click="removeAdminUser(username)">Remove</button>
 					</li>
 				</ul>
 				
 				<h2>Blocked Users</h2>
 				
-				<form @submit.prevent="blockUser">
+				<form @submit.prevent="blockUser(userToBlock)">
 					<input type="text" v-model="userToBlock">
 					<input type="submit" value="Block">
 				</form>
 				
 				<ul>
-					<li v-for="user in blockedUsers">
-						<a :href="'https://twitter.com/' + user.username"><% user.username %></a>
-						<button @click="unblockUser(user)">Unblock</button>
+					<li v-for="username in blockedUsers">
+						<a :href="'https://twitter.com/' + username"><% username %></a>
+						<button @click="unblockUser(username)">Unblock</button>
 					</li>
 				</ul>
 			</div>
@@ -78,7 +78,7 @@ permalink: /manage
 		<script src="{{ site.baseurl }}/res/js/vue.min.js"></script>
 		<script>
 			window.onload = function(){
-				let ref3, ref4, ref5;
+				let ref3, ref4, ref5, ref6;
 				
 				firebase.initializeApp({
 					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -112,21 +112,8 @@ permalink: /manage
 								let db = firebase.database();
 								let username = result.additionalUserInfo.username;
 								
-								let ref1 = db.ref("/usersByUID/" + result.user.uid);
-								
-								ref1.set(username).then(function(){
-									//
-								}).catch(function(error){
-									console.error(error);
-								});
-								
-								let ref2 = db.ref("/usersByName/" + username);
-								
-								ref2.set(result.user.uid).then(function(){
-									//
-								}).catch(function(error){
-									console.error(error);
-								});
+								let ref = db.ref("/allUsers/" + result.user.uid);
+								ref.set({username});
 							}).catch(function(error){
 								console.error(error);
 							});
@@ -171,66 +158,40 @@ permalink: /manage
 							let shouldBlockUser = confirm("Would you like to block " + tweet.submitter + ", the user who submitted this tweet?");
 							
 							if (shouldBlockUser){
-								db.ref("/usersByName/" + tweet.submitter).once("value").then(function(snapshot){
-									let uid = snapshot.val();
-									if (!uid) return;
-									db.ref("/blockedUsers/" + uid).set(true);
-								});
+								self.blockUser(tweet.submitter);
 							}
 						},
 						
-						addAdminUser: function(){
+						addAdminUser: function(username){
 							let self = this;
 							let db = firebase.database();
-													
-							db.ref("/usersByName/" + self.userToAdmin).once("value").then(function(snapshot){
-								let uid = snapshot.val();
-								
-								if (!uid){
-									alert("This user hasn't logged in yet. Please ask them to log in first, and then try to re-add them as an administrator.");
-									return;
-								}
-								
-								db.ref("/adminUsers/" + uid).set(true);
-							});
-							
+							db.ref("/adminUsers/" + username).set(true);
 							self.userToAdmin = "";
 						},
 						
-						removeAdminUser: function(user){
-							let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + user.username + " as an administrator?");
+						removeAdminUser: function(username){
+							let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + username + " as an administrator?");
 							
 							if (!shouldRemoveAdminUser) return;
 							
 							let db = firebase.database();
-							db.ref("/adminUsers/" + user.uid).set(null);
+							db.ref("/adminUsers/" + username).set(null);
 						},
 						
-						blockUser: function(){
+						blockUser: function(username){
 							let self = this;
 							let db = firebase.database();
-														
-							db.ref("/usersByName/" + self.userToBlock).once("value").then(function(snapshot){
-								let uid = snapshot.val();
-								
-								if (!uid){
-									alert("This user hasn't submitted anything yet...");
-									return;
-								}
-								
-								db.ref("/blockedUsers/" + uid).set(true);
-							});
-							
+							db.ref("/blockedUsers/" + username).set(true);
 							self.userToBlock = "";
 						},
 						
-						unblockUser: function(user){
-							let shouldUnblockUser = confirm("Are you sure that you want to unblock " + user.username + "?");
+						unblockUser: function(username){
+							let shouldUnblockUser = confirm("Are you sure that you want to unblock " + username + "?");
 							
 							if (!shouldUnblockUser) return;
 							
 							let db = firebase.database();
-							db.ref("/blockedUsers/" + user.uid).set(null);
+							db.ref("/blockedUsers/" + username).set(null);
 						},
 					},
 					
@@ -244,34 +205,30 @@ permalink: /manage
 							if (ref3) ref3.off();
 							if (ref4) ref4.off();
 							if (ref5) ref5.off();
+							if (ref6) ref6.off();
 							
 							if (user){
 								let db = firebase.database();
 								
-								ref3 = db.ref("/adminUsers");
+								ref6 = db.ref("/allUsers/" + user.uid);
 								
-								ref3.on("value", function(snapshot){
-									self.adminUsers = [];
-									let adminUsers = snapshot.val();
+								ref6.on("value", function(snapshot){
+									let user = snapshot.val();
+									if (!user) return;
 									
-									if (!adminUsers){
-										window.location.href = "/";
-									}
+									if (ref3) ref3.off();
 									
-									let isAdmin = (Object.keys(adminUsers).indexOf(user.uid) > -1) && adminUsers[user.uid] === true;
+									ref3 = db.ref("/adminUsers");
 									
-									if (!isAdmin){
-										window.location.href = "/";
-									}
-									
-									self.isAdmin = true;
-									
-									Object.keys(adminUsers).forEach(function(uid){
-										db.ref("/usersByUID/" + uid).once("value").then(function(snapshot2){
-											let username = snapshot2.val();
-											if (!username) return;
-											self.adminUsers.push({uid, username});
-										});
+									ref3.on("value", function(snapshot2){
+										let adminUsers = snapshot2.val();
+										
+										if (!adminUsers || !adminUsers[user.username]){
+											window.location.href = "{{ site.baseurl }}/";
+										}
+										
+										self.adminUsers = Object.keys(adminUsers);
+										self.isAdmin = true;
 									});
 								});
 								
@@ -286,20 +243,14 @@ permalink: /manage
 								ref5 = db.ref("/blockedUsers");
 								
 								ref5.on("value", function(snapshot){
-									self.blockedUsers = [];
 									let blockedUsers = snapshot.val();
 									
-									if (!blockedUsers) return;
+									if (!blockedUsers){
+										self.blockedUsers = [];
+										return;
+									}
 									
-									Object.keys(blockedUsers).forEach(function(uid){
-										db.ref("/usersByUID/" + uid).once("value").then(function(snapshot2){
-											let username = snapshot2.val();
-											if (!username) return;
-											self.blockedUsers.push({username, uid});
-										});
-									});
-									
-									window.blockedUsers = self.blockedUsers;
+									self.blockedUsers = Object.keys(blockedUsers);
 								});
 							}
 						});

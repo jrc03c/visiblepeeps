@@ -113,7 +113,7 @@ layout: default
 					if (!tweets) return;
 					
 					setTimeout(function(){
-						Object.keys(tweets).shuffle().forEach(async function(key){
+						Object.keys(tweets).shuffle().slice(0, 10).forEach(async function(key){
 							let blockquote = document.createElement("blockquote");
 							blockquote.className += "twitter-tweet";
 							

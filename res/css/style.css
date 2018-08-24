@@ -290,6 +290,7 @@ input[type="submit"]:hover, button:hover {
 	position:fixed;
 	top:-2px;
 	z-index:10001;
+	color: black;
 }
 
 .mobile-nav:hover {

@@ -36,6 +36,18 @@ permalink: /manage
 				
 				<h2>Admin Users</h2>
 				
+				<form @submit.prevent="addAdminUser">
+					<input type="text" v-model="userToAdmin">
+					<input type="submit" value="Add">
+				</form>
+				
+				<ul>
+					<li v-for="user in adminUsers">
+						<a :href="'https://twitter.com/' + user.username"><% user.username %></a>
+						<button @click="removeAdminUser(user)">Remove</button>
+					</li>
+				</ul>
+				
 				<h2>Blocked Users</h2>
 			</div>
 			
@@ -68,6 +80,8 @@ permalink: /manage
 						isAdmin: false,
 						currentUserName: "",
 						tweetsToApprove: [],
+						userToAdmin: "",
+						adminUsers: [],
 					},
 					
 					methods: {
@@ -137,6 +151,31 @@ permalink: /manage
 								});
 							}
 						},
+						
+						addAdminUser: function(){
+							let self = this;
+							let db = firebase.database();
+							
+							db.ref("/usersByName/" + self.userToAdmin).once("value").then(function(snapshot){
+								let uid = snapshot.val();
+								
+								if (!uid){
+									alert("This user hasn't logged in yet. Please ask them to log in first, and then try to re-add them as an administrator.");
+									return;
+								}
+								
+								db.ref("/adminUsers/" + uid).set(true);
+							});
+						},
+						
+						removeAdminUser: function(user){
+							let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + user.username + " as an administrator?");
+							
+							if (!shouldRemoveAdminUser) return;
+							
+							let db = firebase.database();
+							db.ref("/adminUsers/" + user.uid).set(null);
+						}
 					},
 					
 					mounted: function(){
@@ -146,19 +185,36 @@ permalink: /manage
 							document.getElementById("app").style.display = "block";
 							self.isLoggedIn = !!user;
 							
+							if (ref3) ref3.off();
+							if (ref4) ref4.off();
+							
 							if (user){
 								let db = firebase.database();
 								
-								ref3 = db.ref("/adminUsers/" + user.uid);
+								ref3 = db.ref("/adminUsers");
 								
 								ref3.on("value", function(snapshot){
-									let isAdmin = snapshot.val();
+									let adminUsers = snapshot.val();
+									
+									if (!adminUsers){
+										window.location.href = "/";
+									}
+									
+									let isAdmin = (Object.keys(adminUsers).indexOf(user.uid) > -1) && adminUsers[user.uid] === true;
 									
 									if (!isAdmin){
 										window.location.href = "/";
 									}
 									
 									self.isAdmin = true;
+									
+									Object.keys(adminUsers).forEach(function(uid){
+										db.ref("/usersByUID/" + uid).once("value").then(function(snapshot2){
+											let username = snapshot2.val();
+											if (!username) return;
+											self.adminUsers.push({uid, username});
+										});
+									});
 								});
 								
 								ref4 = db.ref("/tweetsToApprove");

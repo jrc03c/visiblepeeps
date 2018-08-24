@@ -48,7 +48,7 @@ permalink: /manage
 		<script src="/res/js/vue.min.js"></script>
 		<script>
 			window.onload = function(){
-				let ref1;
+				let ref3, ref4;
 				
 				firebase.initializeApp({
 					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -100,7 +100,42 @@ permalink: /manage
 						
 						logout: function(){
 							firebase.auth().signOut();
-							ref1.off();
+							ref3.off();
+							ref4.off();
+						},
+						
+						approve: function(tweet){
+							let self = this;
+							let db = firebase.database();
+							let ref = db.ref("/approvedTweets");
+							
+							ref.once("value").then(function(snapshot){
+								let approvedTweets = snapshot.val();
+								if (!approvedTweets) approvedTweets = [];
+								approvedTweets.push(tweet.url);
+								ref.set(approvedTweets);
+								
+								self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
+								db.ref("/tweetsToApprove").set(self.tweetsToApprove);
+							});
+						},
+						
+						deny: function(tweet){
+							let self = this;
+							let db = firebase.database();
+							
+							self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
+							db.ref("/tweetsToApprove").set(self.tweetsToApprove);
+							
+							let shouldBlockUser = confirm("Would you like to block " + tweet.submitter + ", the user who submitted this tweet?");
+							
+							if (shouldBlockUser){
+								db.ref("/usersByName/" + tweet.submitter).once("value").then(function(snapshot){
+									let uid = snapshot.val();
+									if (!uid) return;
+									db.ref("/blockedUsers/" + uid).set(true);
+								});
+							}
 						},
 					},
 					
@@ -114,9 +149,9 @@ permalink: /manage
 							if (user){
 								let db = firebase.database();
 								
-								ref1 = db.ref("/adminUsers/" + user.uid);
+								ref3 = db.ref("/adminUsers/" + user.uid);
 								
-								ref1.on("value", function(snapshot){
+								ref3.on("value", function(snapshot){
 									let isAdmin = snapshot.val();
 									
 									if (!isAdmin){
@@ -124,6 +159,14 @@ permalink: /manage
 									}
 									
 									self.isAdmin = true;
+								});
+								
+								ref4 = db.ref("/tweetsToApprove");
+								
+								ref4.on("value", function(snapshot){
+									let tweetsToApprove = snapshot.val();
+									if (!tweetsToApprove) return;
+									self.tweetsToApprove = tweetsToApprove;
 								});
 							}
 						});

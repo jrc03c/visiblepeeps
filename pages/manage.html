@@ -4,6 +4,8 @@ permalink: /manage
 
 <html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
 		<style>
 			#app {
 				display: none;
@@ -145,8 +147,14 @@ permalink: /manage
 							ref.once("value").then(function(snapshot){
 								let approvedTweets = snapshot.val();
 								if (!approvedTweets) approvedTweets = [];
-								approvedTweets.push(tweet.url);
-								ref.set(approvedTweets);
+								else approvedTweets = Object.keys(approvedTweets).map(function(key){
+									return approvedTweets[key];
+								});
+								
+								if (approvedTweets.indexOf(tweet.url) < 0){
+									approvedTweets.push(tweet.url);
+									ref.set(approvedTweets);
+								}
 								
 								self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
 								db.ref("/tweetsToApprove").set(self.tweetsToApprove);

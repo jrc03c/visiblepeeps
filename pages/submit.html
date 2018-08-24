@@ -57,7 +57,7 @@ layout: default
 
 <script>
 	window.onload = function(){
-		let ref1, ref2, ref3;
+		let ref1, ref2, ref3, ref4;
 		
 		firebase.initializeApp({
 			apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -81,6 +81,7 @@ layout: default
 				message: "",
 				currentUserName: "",
 				tweetsToApprove: [],
+				approvedTweets: [],
 			},
 			
 			methods: {
@@ -116,6 +117,7 @@ layout: default
 					ref1.off();
 					ref2.off();
 					ref3.off();
+					ref4.off();
 				},
 				
 				submit: function(){
@@ -144,6 +146,12 @@ layout: default
 					
 					self.tweetsToApprove.forEach(function(tweet){
 						if (tweet.url === "https://twitter.com" + urlObj.pathname){
+							wasAlreadySubmitted = true;
+						}
+					});
+					
+					self.approvedTweets.forEach(function(tweet){
+						if (tweet === "https://twitter.com" + urlObj.pathname){
 							wasAlreadySubmitted = true;
 						}
 					});
@@ -207,6 +215,18 @@ layout: default
 							let tweetsToApprove = snapshot.val();
 							if (!tweetsToApprove) return;
 							self.tweetsToApprove = tweetsToApprove;
+						});
+						
+						ref4 = db.ref("/approvedTweets");
+						
+						ref4.on("value", function(snapshot){
+							self.approvedTweets = [];
+							let approvedTweets = snapshot.val();
+							if (!approvedTweets) return;
+							
+							Object.keys(approvedTweets).forEach(function(key){
+								self.approvedTweets.push(approvedTweets[key]);
+							});
 						});
 					}
 				});

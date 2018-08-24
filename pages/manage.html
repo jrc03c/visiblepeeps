@@ -49,6 +49,18 @@ permalink: /manage
 				</ul>
 				
 				<h2>Blocked Users</h2>
+				
+				<form @submit.prevent="blockUser">
+					<input type="text" v-model="userToBlock">
+					<input type="submit" value="Block">
+				</form>
+				
+				<ul>
+					<li v-for="user in blockedUsers">
+						<a :href="'https://twitter.com/' + user.username"><% user.username %></a>
+						<button @click="unblockUser(user)">Unblock</button>
+					</li>
+				</ul>
 			</div>
 			
 			<div v-else>
@@ -60,7 +72,7 @@ permalink: /manage
 		<script src="/res/js/vue.min.js"></script>
 		<script>
 			window.onload = function(){
-				let ref3, ref4;
+				let ref3, ref4, ref5;
 				
 				firebase.initializeApp({
 					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -82,6 +94,8 @@ permalink: /manage
 						tweetsToApprove: [],
 						userToAdmin: "",
 						adminUsers: [],
+						userToBlock: "",
+						blockedUsers: [],
 					},
 					
 					methods: {
@@ -116,6 +130,7 @@ permalink: /manage
 							firebase.auth().signOut();
 							ref3.off();
 							ref4.off();
+							ref5.off();
 						},
 						
 						approve: function(tweet){
@@ -155,7 +170,7 @@ permalink: /manage
 						addAdminUser: function(){
 							let self = this;
 							let db = firebase.database();
-							
+													
 							db.ref("/usersByName/" + self.userToAdmin).once("value").then(function(snapshot){
 								let uid = snapshot.val();
 								
@@ -166,6 +181,8 @@ permalink: /manage
 								
 								db.ref("/adminUsers/" + uid).set(true);
 							});
+							
+							self.userToAdmin = "";
 						},
 						
 						removeAdminUser: function(user){
@@ -175,7 +192,34 @@ permalink: /manage
 							
 							let db = firebase.database();
 							db.ref("/adminUsers/" + user.uid).set(null);
-						}
+						},
+						
+						blockUser: function(){
+							let self = this;
+							let db = firebase.database();
+														
+							db.ref("/usersByName/" + self.userToBlock).once("value").then(function(snapshot){
+								let uid = snapshot.val();
+								
+								if (!uid){
+									alert("This user hasn't submitted anything yet...");
+									return;
+								}
+								
+								db.ref("/blockedUsers/" + uid).set(true);
+							});
+							
+							self.userToBlock = "";
+						},
+						
+						unblockUser: function(user){
+							let shouldUnblockUser = confirm("Are you sure that you want to unblock " + user.username + "?");
+							
+							if (!shouldUnblockUser) return;
+							
+							let db = firebase.database();
+							db.ref("/blockedUsers/" + user.uid).set(null);
+						},
 					},
 					
 					mounted: function(){
@@ -187,6 +231,7 @@ permalink: /manage
 							
 							if (ref3) ref3.off();
 							if (ref4) ref4.off();
+							if (ref5) ref5.off();
 							
 							if (user){
 								let db = firebase.database();
@@ -194,6 +239,7 @@ permalink: /manage
 								ref3 = db.ref("/adminUsers");
 								
 								ref3.on("value", function(snapshot){
+									self.adminUsers = [];
 									let adminUsers = snapshot.val();
 									
 									if (!adminUsers){
@@ -223,6 +269,25 @@ permalink: /manage
 									let tweetsToApprove = snapshot.val();
 									if (!tweetsToApprove) return;
 									self.tweetsToApprove = tweetsToApprove;
+								});
+								
+								ref5 = db.ref("/blockedUsers");
+								
+								ref5.on("value", function(snapshot){
+									self.blockedUsers = [];
+									let blockedUsers = snapshot.val();
+									
+									if (!blockedUsers) return;
+									
+									Object.keys(blockedUsers).forEach(function(uid){
+										db.ref("/usersByUID/" + uid).once("value").then(function(snapshot2){
+											let username = snapshot2.val();
+											if (!username) return;
+											self.blockedUsers.push({username, uid});
+										});
+									});
+									
+									window.blockedUsers = self.blockedUsers;
 								});
 							}
 						});

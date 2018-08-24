@@ -1,3 +1,135 @@
 ---
 permalink: /manage
 ---
+
+<html>
+	<head>
+		<style>
+			#app {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>#visiblepeeps</h1>
+		
+		<p>
+			<a href="/">Home</a>
+			<a href="/submit">Submit</a>
+		</p>
+		
+		<div id="app">
+			<div v-if="isLoggedIn && isAdmin">
+				<p>
+					<button @click="logout">Log out</button>
+				</p>
+				
+				<h2>Tweets to Approve</h2>
+				
+				<ul>
+					<li v-for="tweet in tweetsToApprove">
+						<a :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
+						<button @click="approve(tweet)">Approve</button>
+						<button @click="deny(tweet)">Deny</button>
+					</li>
+				</ul>
+				
+				<h2>Admin Users</h2>
+				
+				<h2>Blocked Users</h2>
+			</div>
+			
+			<div v-else>
+				<button @click="login">Log in</button>
+			</div>
+		</div>
+		
+		<script src="/res/js/firebase.js"></script>
+		<script src="/res/js/vue.min.js"></script>
+		<script>
+			window.onload = function(){
+				let ref1;
+				
+				firebase.initializeApp({
+					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
+					authDomain: "visiblewomen-net.firebaseapp.com",
+					databaseURL: "https://visiblewomen-net.firebaseio.com",
+					projectId: "visiblewomen-net",
+					storageBucket: "visiblewomen-net.appspot.com",
+					messagingSenderId: "532732660193"
+				});
+				
+				let app = new Vue({
+					el: "#app",
+					delimiters: ["<%", "%>"],
+					
+					data: {
+						isLoggedIn: false,
+						isAdmin: false,
+						currentUserName: "",
+						tweetsToApprove: [],
+					},
+					
+					methods: {
+						login: function(){
+							let provider = new firebase.auth.TwitterAuthProvider();
+							
+							firebase.auth().signInWithPopup(provider).then(function(result){
+								let db = firebase.database();
+								let username = result.additionalUserInfo.username;
+								
+								let ref1 = db.ref("/usersByUID/" + result.user.uid);
+								
+								ref1.set(username).then(function(){
+									//
+								}).catch(function(error){
+									console.error(error);
+								});
+								
+								let ref2 = db.ref("/usersByName/" + username);
+								
+								ref2.set(result.user.uid).then(function(){
+									//
+								}).catch(function(error){
+									console.error(error);
+								});
+							}).catch(function(error){
+								console.error(error);
+							});
+						},
+						
+						logout: function(){
+							firebase.auth().signOut();
+							ref1.off();
+						},
+					},
+					
+					mounted: function(){
+						let self = this;
+						
+						firebase.auth().onAuthStateChanged(function(user){
+							document.getElementById("app").style.display = "block";
+							self.isLoggedIn = !!user;
+							
+							if (user){
+								let db = firebase.database();
+								
+								ref1 = db.ref("/adminUsers/" + user.uid);
+								
+								ref1.on("value", function(snapshot){
+									let isAdmin = snapshot.val();
+									
+									if (!isAdmin){
+										window.location.href = "/";
+									}
+									
+									self.isAdmin = true;
+								});
+							}
+						});
+					},
+				});
+			};
+		</script>
+	</body>
+</html>

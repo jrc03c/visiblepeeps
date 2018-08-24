@@ -44,6 +44,8 @@ permalink: /submit
 		<script src="/res/js/vue.min.js"></script>
 		<script>
 			window.onload = function(){
+				let ref1, ref2, ref3;
+				
 				firebase.initializeApp({
 					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 					authDomain: "visiblewomen-net.firebaseapp.com",
@@ -98,6 +100,9 @@ permalink: /submit
 						
 						logout: function(){
 							firebase.auth().signOut();
+							ref1.off();
+							ref2.off();
+							ref3.off();
 						},
 						
 						submit: function(){
@@ -167,7 +172,7 @@ permalink: /submit
 							if (user){
 								let db = firebase.database();
 								
-								let ref1 = db.ref("/usersByUID/" + user.uid);
+								ref1 = db.ref("/usersByUID/" + user.uid);
 								
 								ref1.on("value", function(snapshot){
 									let username = snapshot.val();
@@ -175,7 +180,7 @@ permalink: /submit
 									self.currentUserName = username;
 								});
 								
-								let ref2 = db.ref("/blockedUsers/" + user.uid);
+								ref2 = db.ref("/blockedUsers/" + user.uid);
 								
 								ref2.on("value", function(snapshot){
 									let isBlocked = snapshot.val();
@@ -183,7 +188,7 @@ permalink: /submit
 									self.isBlocked = true;
 								});
 								
-								let ref3 = db.ref("/tweetsToApprove");
+								ref3 = db.ref("/tweetsToApprove");
 								
 								ref3.on("value", function(snapshot){
 									let tweetsToApprove = snapshot.val();

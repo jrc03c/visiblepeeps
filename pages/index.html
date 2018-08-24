@@ -2,43 +2,104 @@
 permalink: /
 ---
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
+		<meta charset="UTF-8" >
+		<meta name="author" content="Andreas Werchmeister" >
+		<meta name="keywords" content="Visible Peeps" >
+		<meta name="description" content="Visible Peeps" >
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" type="text/css" href="/res/css/style.css"/>	
+		
+		<link href="https://fonts.googleapis.com/css?family=Halant:400|Raleway:500|Roboto:400,500,700" rel="stylesheet">
+			
+		<title>Visible Peeps · Women, non-binary & trans creators on Twitter</title>
+		
 		<style>
 			#app {
 				display: none;
 			}
 		</style>
 	</head>
+
 	<body>
-		<h1>#visiblepeeps</h1>
+		<button class="mobile-nav">&#x2630;</button>
 		
-		<p>
-			<a href="/submit">Submit</a>
-		</p>
-		
-		<div id="app">
-			<div v-if="finishedLoading">
-				<div v-if="tweets.length > 0">
-					<ul>
-						<li v-for="tweet in tweets">
-							<% tweet %>
-						</li>
-					</ul>
+		<div id="side-menu">
+			<ul class="category dynamic-height">
+				<li><a style="font-weight:500;" href="">SHOW ALL</a></li>
+				
+				<br><br>
+				
+				<li><a style="font-weight:500;" href="">RANDOM</a></li>
+				
+				<br><br>
+				
+				<li style="color:rgb(240,0,0); font-weight:500;  padding-bottom:0.25em;">FILTER BY LEVEL</li>	
+				<li style="	font-weight:500;"><a href="">Professional Creatives</a></li>	
+				<li style="	font-weight:500;"><a href="">Students</a></li>	
+				<li style="	font-weight:500;"><a href="">Hobbyists</a></li>
+				
+				<br><br>
+				
+				<li style="color:rgb(240,0,0); font-weight:500; padding-bottom:0.25em;">FILTER BY PROFESSION</li>	
+				<li><a href="">Artists</a></li>			
+				<li><a href="">Illustrators</a></li>			
+				<li><a href="">Concept Artists</a></li>			
+				<li><a href="">3D Artists</a></li>			
+				<li><a href="">Photographers</a></li>			
+				<li><a href="no-beans.php">Designers</a></li>			
+				<li><a href="">Comic Artists</a></li>			
+				<li><a href="">Cartoonists</a></li>			
+				<li><a href="">Animators</a></li>			
+				<li><a href="">Storyboard Artists</a></li>
+				<li><a href="">Vis Dev Artists</a></li>
+				<li><a href="">Background Artists</a></li>
+				<li><a href="">Film Makers</a></li>
+				<li><a href="">Character Designers</a></li>
+				<li><a href="">3D Environment Artists</a></li>
+				<li><a href="">3D Character Artists</a></li>
+				<li><a href="">Game Artists</a></li>
+				<li><a href="">Craft Artists</a></li>
+				
+				<br><br><br>
+				
+				<li style="	font-weight:500;"><a href="/about">ABOUT</a></li>
+			</ul>
+			
+		</div>
+				
+		<div id="main-content">
+			<a href="/"><h1>Visible Peeps</h1></a>
+			
+			<h2>An index of artists & creators on Twitter from the hashtags <br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/visiblewoman?src=hash">#VisibleWoman</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a> · <a href="https://twitter.com/hashtag/VisibleNBs?src=hash">#VisibleNBs</a></h2>
+			
+			<p>
+				<a href="/submit" class="submit-button">SUBMIT TWEET</a>
+			</p>
+			
+			<div class="text-area tracking-scary">
+				<p>Oh nuuuu. You have an extension that blocks tracking and thereby Tweets. Please whitelist this site or disable the extension, and refresh the page! Thank you! :(</p>
+			</div>
+			
+			<div id="app">
+				<div v-if="finishedLoading" class="module-grid" ref="tweetContainer">
+					
 				</div>
 				
 				<div v-else>
-					No tweets have been submitted yet!
+					Loading...
 				</div>
-			</div>
-			
-			<div v-else>
-				Loading...
 			</div>
 		</div>
 		
 		<script src="/res/js/firebase.js"></script>
 		<script src="/res/js/vue.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="/res/js/toggle-menu.js"></script>
+
 		<script>
 			window.onload = function(){
 				firebase.initializeApp({
@@ -69,7 +130,23 @@ permalink: /
 							self.finishedLoading = true;
 							let tweets = snapshot.val();
 							if (!tweets) return;
-							self.tweets = tweets;
+							
+							setTimeout(function(){
+								Object.keys(tweets).forEach(async function(key){
+									let blockquote = document.createElement("blockquote");
+									blockquote.className += "twitter-tweet";
+									
+									let a = document.createElement("a");
+									a.href = tweets[key];
+									
+									let script = document.createElement("script");
+									script.src = "https://platform.twitter.com/widgets.js";
+									
+									blockquote.appendChild(a);
+									self.$refs.tweetContainer.appendChild(blockquote);
+									self.$refs.tweetContainer.appendChild(script);
+								});
+							}, 0);
 						}).catch(function(error){
 							console.log(error);
 						});

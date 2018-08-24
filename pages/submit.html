@@ -57,7 +57,7 @@ layout: default
 
 <script>
 	window.onload = function(){
-		let ref1, ref2, ref3, ref4;
+		let ref1, ref2, ref3, ref4, ref5;
 		
 		firebase.initializeApp({
 			apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -104,6 +104,7 @@ layout: default
 					if (ref2) ref2.off();
 					if (ref3) ref3.off();
 					if (ref4) ref4.off();
+					if (ref5) ref5.off();
 				},
 				
 				submit: function(){
@@ -185,6 +186,15 @@ layout: default
 							let user = snapshot.val();
 							if (!user) return;
 							self.user = user;
+							
+							if (ref5) ref5.off();
+							
+							ref5 = db.ref("/blockedUsers/" + user.username);
+							
+							ref5.on("value", function(snapshot2){
+								let isBlocked = snapshot2.val();
+								self.user.isBlocked = !!isBlocked;
+							});
 						});
 						
 						ref3 = db.ref("/tweetsToApprove");

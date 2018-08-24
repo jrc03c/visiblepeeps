@@ -1,205 +1,216 @@
 ---
 permalink: /submit
+layout: default
 ---
 
-<html>
-	<head>
-		<style>
-			#app {
-				display: none;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>#visiblepeeps</h1>
-		
-		<p>
-			<a href="/">Home</a>
-		</p>
-		
-		<div id="app">
-			<div v-if="isLoggedIn">				
+<style>
+	input {
+		font-family: "Roboto", sans-serif;
+		font-size: 13.5px;
+		letter-spacing: 1px;
+		padding: 1em 1.25em;
+		border-radius: 4px;
+	}
+	
+	#main-content {
+		width:100%;
+		margin:0 auto;
+	}
+	
+	p {
+		margin-bottom: 1rem;
+	}
+</style>
+
+<div id="main-content">
+	<a href="/"><h1>Visible Peeps</h1></a>
+	
+	<h2>An index of artists & creators on Twitter from the hashtags <br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/visiblewoman?src=hash">#VisibleWoman</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a> · <a href="https://twitter.com/hashtag/VisibleNBs?src=hash">#VisibleNBs</a></h2>
+
+	<div id="app">
+		<div v-if="isLoggedIn">
+			<p>
 				<form @submit.prevent="submit">
 					<input type="text" v-model="url">
 					<input type="submit" value="Submit">
 				</form>
-				
-				<p v-if="message.length > 0">
-					<% message %>
-				</p>
-				
-				<button @click="logout">Log out</button>
-			</div>
+			</p>
 			
-			<div v-else>
-				<p>
-					You're not logged in. Please log in with your Twitter account to submit tweets for approval.
-				</p>
-				
-				<button @click="login">Log in</button>
-			</div>
+			<br>
+			<p v-if="message.length > 0">
+				<% message %>
+			</p>
+			
+			<br><br>
+			<button @click="logout">Log out</button>
 		</div>
 		
-		<script src="/res/js/firebase.js"></script>
-		<script src="/res/js/vue.min.js"></script>
-		<script>
-			window.onload = function(){
-				let ref1, ref2, ref3;
-				
-				firebase.initializeApp({
-					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
-					authDomain: "visiblewomen-net.firebaseapp.com",
-					databaseURL: "https://visiblewomen-net.firebaseio.com",
-					projectId: "visiblewomen-net",
-					storageBucket: "visiblewomen-net.appspot.com",
-					messagingSenderId: "532732660193"
-				});
-				
-				let app = new Vue({
-					el: "#app",
+		<div v-else>
+			<p>
+				You're not logged in. Please log in with your Twitter account to submit tweets for approval.
+			</p>
+			
+			<button @click="login">Log in</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	window.onload = function(){
+		let ref1, ref2, ref3;
+		
+		firebase.initializeApp({
+			apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
+			authDomain: "visiblewomen-net.firebaseapp.com",
+			databaseURL: "https://visiblewomen-net.firebaseio.com",
+			projectId: "visiblewomen-net",
+			storageBucket: "visiblewomen-net.appspot.com",
+			messagingSenderId: "532732660193"
+		});
+		
+		let app = new Vue({
+			el: "#app",
+			
+			delimiters: ["<%", "%>"],
+			
+			data: {
+				url: "",
+				isLoggedIn: false,
+				isBlocked: false,
+				canSubmit: true,
+				message: "",
+				currentUserName: "",
+				tweetsToApprove: [],
+			},
+			
+			methods: {
+				login: function(){
+					let provider = new firebase.auth.TwitterAuthProvider();
 					
-					delimiters: ["<%", "%>"],
-					
-					data: {
-						url: "",
-						isLoggedIn: false,
-						isBlocked: false,
-						canSubmit: true,
-						message: "",
-						currentUserName: "",
-						tweetsToApprove: [],
-					},
-					
-					methods: {
-						login: function(){
-							let provider = new firebase.auth.TwitterAuthProvider();
-							
-							firebase.auth().signInWithPopup(provider).then(function(result){
-								let db = firebase.database();
-								let username = result.additionalUserInfo.username;
-								
-								let ref1 = db.ref("/usersByUID/" + result.user.uid);
-								
-								ref1.set(username).then(function(){
-									//
-								}).catch(function(error){
-									console.error(error);
-								});
-								
-								let ref2 = db.ref("/usersByName/" + username);
-								
-								ref2.set(result.user.uid).then(function(){
-									//
-								}).catch(function(error){
-									console.error(error);
-								});
-							}).catch(function(error){
-								console.error(error);
-							});
-						},
+					firebase.auth().signInWithPopup(provider).then(function(result){
+						let db = firebase.database();
+						let username = result.additionalUserInfo.username;
 						
-						logout: function(){
-							firebase.auth().signOut();
-							ref1.off();
-							ref2.off();
-							ref3.off();
-						},
+						let ref1 = db.ref("/usersByUID/" + result.user.uid);
 						
-						submit: function(){
-							let self = this;
-							
-							if (!self.canSubmit){
-								self.message = "Please wait a moment and then try again.";
-								return;
-							}
-							
-							let urlObj;
-							
-							try {
-								urlObj = new URL(self.url);
-							} catch (error){
-								self.message = "It doesn't look like you entered a valid URL. Please enter a URL that points directly to a tweet.";
-								return;
-							}
-							
-							if (urlObj.hostname !== "twitter.com" || !urlObj.pathname.includes("status")){
-								self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
-								return;
-							}
-							
-							let wasAlreadySubmitted = false;
-							
-							self.tweetsToApprove.forEach(function(tweet){
-								if (tweet.url === "https://twitter.com" + urlObj.pathname){
-									wasAlreadySubmitted = true;
-								}
-							});
-							
-							if (!self.isBlocked && !wasAlreadySubmitted){
-								self.tweetsToApprove.push({
-									url: "https://twitter.com" + urlObj.pathname,
-									submitter: self.currentUserName,
-								});
-								
-								let db = firebase.database();
-								let ref = db.ref("/tweetsToApprove");
-								
-								ref.set(self.tweetsToApprove).then(function(){
-									//
-								}).catch(function(error){
-									console.error(error);
-								});
-							}
-							
-							self.message = "Thanks! We'll check it out!";
-							self.url = "";
-							self.canSubmit = false;
-							
-							setTimeout(function(){
-								self.message = "";
-								self.canSubmit = true;
-							}, 5000);
-						},
-					},
-					
-					mounted: function(){
-						let self = this;
-						
-						firebase.auth().onAuthStateChanged(function(user){
-							document.getElementById("app").style.display = "block";
-							self.isLoggedIn = !!user;
-							
-							if (user){
-								let db = firebase.database();
-								
-								ref1 = db.ref("/usersByUID/" + user.uid);
-								
-								ref1.on("value", function(snapshot){
-									let username = snapshot.val();
-									if (!username) return;
-									self.currentUserName = username;
-								});
-								
-								ref2 = db.ref("/blockedUsers/" + user.uid);
-								
-								ref2.on("value", function(snapshot){
-									let isBlocked = snapshot.val();
-									if (!isBlocked) return;
-									self.isBlocked = true;
-								});
-								
-								ref3 = db.ref("/tweetsToApprove");
-								
-								ref3.on("value", function(snapshot){
-									let tweetsToApprove = snapshot.val();
-									if (!tweetsToApprove) return;
-									self.tweetsToApprove = tweetsToApprove;
-								});
-							}
+						ref1.set(username).then(function(){
+							//
+						}).catch(function(error){
+							console.error(error);
 						});
-					},
+						
+						let ref2 = db.ref("/usersByName/" + username);
+						
+						ref2.set(result.user.uid).then(function(){
+							//
+						}).catch(function(error){
+							console.error(error);
+						});
+					}).catch(function(error){
+						console.error(error);
+					});
+				},
+				
+				logout: function(){
+					firebase.auth().signOut();
+					ref1.off();
+					ref2.off();
+					ref3.off();
+				},
+				
+				submit: function(){
+					let self = this;
+					
+					if (!self.canSubmit){
+						self.message = "Please wait a moment and then try again.";
+						return;
+					}
+					
+					let urlObj;
+					
+					try {
+						urlObj = new URL(self.url);
+					} catch (error){
+						self.message = "It doesn't look like you entered a valid URL. Please enter a URL that points directly to a tweet.";
+						return;
+					}
+					
+					if (urlObj.hostname !== "twitter.com" || !urlObj.pathname.includes("status")){
+						self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
+						return;
+					}
+					
+					let wasAlreadySubmitted = false;
+					
+					self.tweetsToApprove.forEach(function(tweet){
+						if (tweet.url === "https://twitter.com" + urlObj.pathname){
+							wasAlreadySubmitted = true;
+						}
+					});
+					
+					if (!self.isBlocked && !wasAlreadySubmitted){
+						self.tweetsToApprove.push({
+							url: "https://twitter.com" + urlObj.pathname,
+							submitter: self.currentUserName,
+						});
+						
+						let db = firebase.database();
+						let ref = db.ref("/tweetsToApprove");
+						
+						ref.set(self.tweetsToApprove).then(function(){
+							//
+						}).catch(function(error){
+							console.error(error);
+						});
+					}
+					
+					self.message = "Thanks! We'll check it out!";
+					self.url = "";
+					self.canSubmit = false;
+					
+					setTimeout(function(){
+						self.message = "";
+						self.canSubmit = true;
+					}, 5000);
+				},
+			},
+			
+			mounted: function(){
+				let self = this;
+				
+				firebase.auth().onAuthStateChanged(function(user){
+					document.getElementById("app").style.display = "block";
+					self.isLoggedIn = !!user;
+					
+					if (user){
+						let db = firebase.database();
+						
+						ref1 = db.ref("/usersByUID/" + user.uid);
+						
+						ref1.on("value", function(snapshot){
+							let username = snapshot.val();
+							if (!username) return;
+							self.currentUserName = username;
+						});
+						
+						ref2 = db.ref("/blockedUsers/" + user.uid);
+						
+						ref2.on("value", function(snapshot){
+							let isBlocked = snapshot.val();
+							if (!isBlocked) return;
+							self.isBlocked = true;
+						});
+						
+						ref3 = db.ref("/tweetsToApprove");
+						
+						ref3.on("value", function(snapshot){
+							let tweetsToApprove = snapshot.val();
+							if (!tweetsToApprove) return;
+							self.tweetsToApprove = tweetsToApprove;
+						});
+					}
 				});
-			};
-		</script>
-	</body>
-</html>
+			},
+		});
+	};
+</script>

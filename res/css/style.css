@@ -260,7 +260,7 @@ input[name="tweet"]:focus, select[name="profession"]:focus, select[name="level"]
 	outline-color:rgb(240,0,0);
 }
 
-input[type="submit"], input[type="checkbox"] {
+input[type="submit"], input[type="checkbox"], button {
 	color:rgb(254,254,254);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;
@@ -272,7 +272,7 @@ input[type="submit"], input[type="checkbox"] {
 	background:rgb(240,0,0);	
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover, button:hover {
 	cursor:pointer;
 	background:rgb(254,254,254);
 	color:rgb(240,0,0);	

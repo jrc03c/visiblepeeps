@@ -59,11 +59,12 @@ layout: default
 	</div>
 	
 	<div id="app">
-		<div v-if="finishedLoading" class="module-grid" ref="tweetContainer"></div>
+		<div class="module-grid" ref="tweetContainer"></div>
 		
-		<div v-else>
+		<div v-if="!finishedLoading">
 			<br><br><br>
 			Loading...
+			<br><br><br>
 		</div>
 	</div>
 </div>
@@ -99,7 +100,33 @@ layout: default
 			
 			data: {
 				tweets: [],
+				index: 0,
 				finishedLoading: false,
+				canLoadMoreTweets: true,
+			},
+			
+			methods: {
+				loadMoreTweets: function(){
+					let self = this;
+					if (!self.canLoadMoreTweets) return;
+					
+					self.tweets.slice(self.index, self.index + 10).forEach(async function(url){
+						let blockquote = document.createElement("blockquote");
+						blockquote.className += "twitter-tweet";
+						
+						let a = document.createElement("a");
+						a.href = url;
+						
+						let script = document.createElement("script");
+						script.src = "https://platform.twitter.com/widgets.js";
+						
+						blockquote.appendChild(a);
+						self.$refs.tweetContainer.appendChild(blockquote);
+						self.$refs.tweetContainer.appendChild(script);
+					});
+					
+					self.index += 10;
+				},
 			},
 			
 			mounted: function(){
@@ -112,24 +139,30 @@ layout: default
 					let tweets = snapshot.val();
 					if (!tweets) return;
 					
-					setTimeout(function(){
-						Object.keys(tweets).shuffle().slice(0, 10).forEach(async function(key){
-							let blockquote = document.createElement("blockquote");
-							blockquote.className += "twitter-tweet";
-							
-							let a = document.createElement("a");
-							a.href = tweets[key];
-							
-							let script = document.createElement("script");
-							script.src = "https://platform.twitter.com/widgets.js";
-							
-							blockquote.appendChild(a);
-							self.$refs.tweetContainer.appendChild(blockquote);
-							self.$refs.tweetContainer.appendChild(script);
-						});
-					}, 0);
+					self.tweets = Object.keys(tweets).map(function(key){
+						return tweets[key];
+					});
+					
+					self.tweets = self.tweets.shuffle();
+					
+					setTimeout(self.loadMoreTweets, 0);
 				}).catch(function(error){
 					console.log(error);
+				});
+				
+				window.addEventListener("scroll", function(event){
+					let percent = window.scrollY / document.body.scrollHeight;
+					
+					if (percent > 0.75 && self.index < self.tweets.length){
+						self.loadMoreTweets();
+						self.canLoadMoreTweets = false;
+						self.finishedLoading = false;
+						
+						setTimeout(function(){
+							self.canLoadMoreTweets = true;
+							self.finishedLoading = true;
+						}, 3000);
+					}
 				});
 			},
 		});

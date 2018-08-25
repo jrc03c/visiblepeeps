@@ -114,12 +114,12 @@ img.peeps-lettering {
 	max-width:900px;
 	font-weight:500;
 	margin:0 auto;
-	line-height:28px;
+	line-height:30px;
 	letter-spacing:1px;
 }
 
 #main-content h2 a {
-	color:rgb(240,0,0);
+	color:hsl(192, 96%, 45%);
 }
 
 #main-content h2 a:hover {

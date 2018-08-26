@@ -70,7 +70,7 @@ permalink: /manage
 							<li v-for="tweet in tweetsToApprove">
 								<button @click="approve(tweet)">Approve</button>
 								<button style="margin:0 2em 0 0" @click="deny(tweet)">Deny</button>
-								<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
+								<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a style="font-weight:500" :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
 								
 							</li>
 						</ul>

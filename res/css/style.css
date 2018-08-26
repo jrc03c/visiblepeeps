@@ -371,7 +371,32 @@ input[type="submit"]:hover, button:hover {
 	display:block;
 	width:calc(100% - 250px);
 	height:auto;
-	margin:0 0 0 250px;
+	margin:5em 0 0 calc(5em + 250px);
+	text-align:left;
+}
+
+#manage-content #app h2 {
+	font-family: 'Roboto', sans-serif;
+	padding:0 0 2.5em;
+	font-size:16px;
+	max-width:900px;
+	font-weight:500;
+	line-height:30px;
+	letter-spacing:1px;
+	color:hsl(192, 96%, 45%);
+	text-transform:uppercase;
+}
+
+#manage-content #app ul.tweetiesToApprove li {
+	padding:0.5em 0;
+	border-bottom:1px solid rgb(220,220,220);
+	font-size:13px;
+	font-family: 'Roboto', sans-serif;
+}
+
+#manage-content #app ul.tweetiesToApprove li button {
+	font-size:10px;
+	padding:0.75em 1em;	
 }
 
 #manage-menu {

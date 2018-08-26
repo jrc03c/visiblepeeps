@@ -371,7 +371,7 @@ input[type="submit"]:hover, button:hover {
 	display:block;
 	width:calc(100% - 250px);
 	height:auto;
-	margin:0 0 0 250px;
+	margin:0 0 0 calc(5em + 250px);
 	text-align:left;
 }
 
@@ -394,9 +394,14 @@ input[type="submit"]:hover, button:hover {
 	font-family: 'Roboto', sans-serif;
 }
 
-#manage-content #app button {
+#manage-content #app ul.manage-text li button {
 	font-size:10px;
 	padding:0.75em 1em;	
+}
+
+#manage-content #app input[type="submit"] {
+	font-size:10px;
+	padding:0.75em 1em;
 }
 
 #manage-menu {

@@ -345,6 +345,7 @@ input[type="submit"]:hover, button:hover {
 	grid-row-gap:0;
     -ms-grid-columns:auto auto auto;
 	grid-template-columns:auto auto auto;
+	-ms-grid-column:3;
 	justify-content:center;
 }
 

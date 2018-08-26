@@ -200,7 +200,7 @@ ul.category li a:hover {
 	color:rgb(240,0,0);	
 }
 
-form.submit {
+.submit-page {
 	margin:0 auto;
 	width:90%;
 	max-width:900px;
@@ -209,7 +209,7 @@ form.submit {
 	text-align:left;
 }
 
-form.submit p {
+.submit-page p {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;
@@ -217,7 +217,7 @@ form.submit p {
 	line-height:28px;
 }
 
-input[name="tweet"] {
+input[type=text] {
 	width:100%;
 	height:60px;
 	border:0;

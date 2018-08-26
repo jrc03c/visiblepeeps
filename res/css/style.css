@@ -339,17 +339,19 @@ input[type="submit"]:hover, button:hover {
 	margin:0 auto;
 	width:90%;
 	padding:5em 0 5em;
+	display: -ms-grid;
     display: grid;
 	grid-column-gap:1em;
 	grid-row-gap:0;
+    -ms-grid-columns:minmax(min-content, 1fr) minmax(min-content, 1fr);
 	grid-template-columns:auto auto auto;
-	-ms-grid-column:3;
 	justify-content:center;
 }
 
 @media (max-width:1850px) {
 
 	.module-grid {
+    	-ms-grid-columns:auto auto;
 		grid-template-columns:auto auto;
 	}
 }
@@ -357,6 +359,7 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1350px) {
 
 	.module-grid {
+		-ms-grid-columns:auto;
 		grid-template-columns:auto;
 	}
 

@@ -94,8 +94,13 @@ permalink: /manage
 		<script src="{{ site.baseurl }}/res/js/vue.min.js"></script>
 		<script>
 			window.onload = function(){
+				// We listen to a bunch of database references. I'm not sure
+				// whether this is optimal or not, but it is what it is. :) 
+				// Anyway, I'm making references to them here so that I can 
+				// turn them off when the user logs out.
 				let ref3, ref4, ref5, ref6;
 				
+				// Initialize the Firebase app settings.
 				firebase.initializeApp({
 					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 					authDomain: "visiblewomen-net.firebaseapp.com",
@@ -105,14 +110,23 @@ permalink: /manage
 					messagingSenderId: "532732660193"
 				});
 				
+				// Create the Vue app.
 				let app = new Vue({
+					// Use the #app element.
 					el: "#app",
+					
+					// These are necessary to avoid compilation problems
+					// with Jekyll, which uses "{{" and "}}" delimiters.
 					delimiters: ["<%", "%>"],
 					
+					// We use the isLoggedIn and isAdmin variables to hide 
+					// the management page from non-logged-in, non-admin users.
+					// We also keep lists of tweetsToApprove, adminUsers, and
+					// blockedUsers. Finally, the userToAdmin and userToBlock
+					// variables represent the text input field data.
 					data: {
 						isLoggedIn: false,
 						isAdmin: false,
-						currentUserName: "",
 						tweetsToApprove: [],
 						userToAdmin: "",
 						adminUsers: [],
@@ -121,13 +135,20 @@ permalink: /manage
 					},
 					
 					methods: {
+						// This is the typical Firebase / Twitter auth flow.
 						login: function(){
 							let provider = new firebase.auth.TwitterAuthProvider();
 							
 							firebase.auth().signInWithPopup(provider).then(function(result){
 								let db = firebase.database();
+								
+								// We make sure that we grab the user's Twitter username.
+								// For some stupid reason, this is the only time that
+								// this information is available to us.
 								let username = result.additionalUserInfo.username;
 								
+								// We store the username in the database under their 
+								// Firebase auth UID.
 								let ref = db.ref("/allUsers/" + result.user.uid);
 								ref.set({username});
 							}).catch(function(error){
@@ -135,77 +156,134 @@ permalink: /manage
 							});
 						},
 						
+						// This the typical Firebase sign-out method, though
+						// this is where we also stop listening to the database
+						// references.
 						logout: function(){
 							firebase.auth().signOut();
-							ref3.off();
-							ref4.off();
-							ref5.off();
+							if (ref3) ref3.off();
+							if (ref4) ref4.off();
+							if (ref5) ref5.off();
 						},
 						
+						// This is where we approve tweets.
 						approve: function(tweet){
 							let self = this;
+							
+							// Get a reference to the /approvedTweets location
+							// in the database.
 							let db = firebase.database();
 							let ref = db.ref("/approvedTweets");
 							
+							// Get its value one time.
 							ref.once("value").then(function(snapshot){
+								// Get the data.
 								let approvedTweets = snapshot.val();
+								
+								// If there's no data there, then create
+								// an empty array.
 								if (!approvedTweets) approvedTweets = [];
+								
+								// Otherwise, return an array of the approved tweets.
+								// (We have to do this weird mapping thing because
+								// Firebase occasionally turns arrays into objects.)
 								else approvedTweets = Object.keys(approvedTweets).map(function(key){
 									return approvedTweets[key];
 								});
 								
+								// If the tweet url is not already in the list of
+								// approved tweets, then...
 								if (approvedTweets.indexOf(tweet.url) < 0){
+									// Push it into the list.
 									approvedTweets.push(tweet.url);
+									
+									// Push the list up to the database.
 									ref.set(approvedTweets);
 								}
 								
+								// Remove the tweet from the list of tweetsToApprove.
 								self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
+								
+								// And then push the tweetsToApprove list up to
+								// the database as well.
 								db.ref("/tweetsToApprove").set(self.tweetsToApprove);
 							});
 						},
 						
+						// This is where we deny a tweet.
 						deny: function(tweet){
 							let self = this;
 							let db = firebase.database();
 							
+							// Remove the tweet from the list of tweets to approve.
 							self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
+							
+							// Push the tweetsToApprove list up to the database.
 							db.ref("/tweetsToApprove").set(self.tweetsToApprove);
 							
+							// Check to see if the user should be blocked.
 							let shouldBlockUser = confirm("Would you like to block " + tweet.submitter + ", the user who submitted this tweet?");
 							
+							// If the user should be blocked, the call the blockUser method.
 							if (shouldBlockUser){
 								self.blockUser(tweet.submitter);
 							}
 						},
 						
+						// This is where we add admin users.
 						addAdminUser: function(username){
 							let self = this;
 							let db = firebase.database();
+							
+							// Get a reference to the /adminUsers list
+							// in the database and set their username's
+							// value to true.
 							db.ref("/adminUsers/" + username).set(true);
+							
+							// Reset the userToAdmin variable, which will
+							// reset the text input field.
 							self.userToAdmin = "";
 						},
 						
+						// This is where we remove an admin user.
 						removeAdminUser: function(username){
+							// Prompt for confirmation that this is really 
+							// what we want to do.
 							let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + username + " as an administrator?");
 							
+							// If we decide not to remove them, then return.
 							if (!shouldRemoveAdminUser) return;
 							
+							// Otherwise, get a reference to /adminUsers in the 
+							// database and set their username's value to null.
 							let db = firebase.database();
 							db.ref("/adminUsers/" + username).set(null);
 						},
 						
+						// This is where we block a user.
 						blockUser: function(username){
 							let self = this;
 							let db = firebase.database();
+							
+							// Get a reference to /blockedUsers	in the database
+							// and set their username's value to true.
 							db.ref("/blockedUsers/" + username).set(true);
+							
+							// Reset the userToBlock variable, which will reset
+							// the text input field.
 							self.userToBlock = "";
 						},
 						
+						// This is where we unblock a user.
 						unblockUser: function(username){
+							// Confirm that we really want to unblock them.
 							let shouldUnblockUser = confirm("Are you sure that you want to unblock " + username + "?");
 							
+							// If we change our minds, then return.
 							if (!shouldUnblockUser) return;
 							
+							// Get a reference to /blockedUsers in the database
+							// and set their username's value to null.
 							let db = firebase.database();
 							db.ref("/blockedUsers/" + username).set(null);
 						},
@@ -214,58 +292,90 @@ permalink: /manage
 					mounted: function(){
 						let self = this;
 						
+						// Listen for users logging in and out, and then...
 						firebase.auth().onAuthStateChanged(function(user){
+							// Unhide the #app element, which was hidden so as
+							// not to show the weird markup.
 							document.getElementById("app").style.display = "block";
+							
+							// Set the isLoggedIn variable.
 							self.isLoggedIn = !!user;
 							
+							// If the references are still listening, then 
+							// turn them off.
 							if (ref3) ref3.off();
 							if (ref4) ref4.off();
 							if (ref5) ref5.off();
 							if (ref6) ref6.off();
 							
+							// If the user is logged in, then...
 							if (user){
 								let db = firebase.database();
 								
+								// Get a reference to the logged-in user's data
+								// in the database.
 								ref6 = db.ref("/allUsers/" + user.uid);
 								
+								// Listen to this reference in case their data changes.
 								ref6.on("value", function(snapshot){
+									// Get their data.
 									let user = snapshot.val();
+									
+									// If the data doesn't exist, then return.
 									if (!user) return;
 									
-									if (ref3) ref3.off();
-									
+									// Get a reference to the list of /adminUsers.
 									ref3 = db.ref("/adminUsers");
 									
+									// Listen to this reference.
 									ref3.on("value", function(snapshot2){
+										// Get the data.
 										let adminUsers = snapshot2.val();
 										
+										// If there are no admin users, or if this user's
+										// username is not in the list of adminUsers, then
+										// redirect the user back to the home page.
 										if (!adminUsers || !adminUsers[user.username]){
 											window.location.href = "{{ site.baseurl }}/";
 										}
 										
+										// Otherwise, store the list of adminUsers for later,
+										// since we'll be adding and removing people from it.
 										self.adminUsers = Object.keys(adminUsers);
+										
+										// Indicate that this user is an administrator.
 										self.isAdmin = true;
 									});
 								});
 								
+								// Get a reference to /tweetsToApprove.
 								ref4 = db.ref("/tweetsToApprove");
 								
+								// Listen to this reference.
 								ref4.on("value", function(snapshot){
 									let tweetsToApprove = snapshot.val();
 									if (!tweetsToApprove) return;
 									self.tweetsToApprove = tweetsToApprove;
 								});
 								
+								// Get a reference to /blockedUsers.
 								ref5 = db.ref("/blockedUsers");
 								
+								// Listen to this reference.
 								ref5.on("value", function(snapshot){
+									// Get the data.
 									let blockedUsers = snapshot.val();
 									
+									// If there are no blocked users, then
+									// set blockedUsers to be an empty array,
+									// then return.
 									if (!blockedUsers){
 										self.blockedUsers = [];
 										return;
 									}
 									
+									// Set blockedUsers to the list of usernames,
+									// which are the keys to the data object.
 									self.blockedUsers = Object.keys(blockedUsers);
 								});
 							}
@@ -274,7 +384,5 @@ permalink: /manage
 				});
 			};
 		</script>
-			
-		</div>
 	</body>
 </html>

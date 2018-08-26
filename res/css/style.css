@@ -366,7 +366,7 @@ input[type="submit"]:hover, button:hover {
 
 /* --- Manage page --- */
 
-#manage-content {
+#app #manage-content {
 	position:relative;
 	display:block;
 	width:calc(100% - 250px);
@@ -375,7 +375,7 @@ input[type="submit"]:hover, button:hover {
 	text-align:left;
 }
 
-#manage-content #app h2 {
+#app #manage-content h2 {
 	font-family: 'Roboto', sans-serif;
 	padding:5em 0 2.5em;
 	font-size:16px;
@@ -387,29 +387,29 @@ input[type="submit"]:hover, button:hover {
 	text-transform:uppercase;
 }
 
-#manage-content #app ul.manage-text li, #manage-content #app p {
+#app #manage-content ul.manage-text li, #app #manage-content p {
 	padding:0.5em 0;
 	border-bottom:1px solid rgb(220,220,220);
 	font-size:13px;
 	font-family: 'Roboto', sans-serif;
 }
 
-#manage-content #app p {
+#app #manage-content p {
 	padding:0;
 	border-bottom:0;
 }
 
-#manage-content #app ul.manage-text li button {
+#app #manage-content ul.manage-text li button {
 	font-size:10px;
 	padding:0.75em 1em;	
 }
 
-#manage-content #app input[type="submit"] {
+#app #manage-content input[type="submit"] {
 	font-size:10px;
 	padding:0.75em 1em;
 }
 
-#manage-content #app input[type="text"] {
+#app #manage-content input[type="text"] {
 	width:300px;
 	height:35px;
 	border:0;
@@ -418,11 +418,11 @@ input[type="submit"]:hover, button:hover {
 	margin:0 1em 1em 0;
 }
 
-#manage-content #app input[type="text"]:focus {
+#app #manage-content input[type="text"]:focus {
 	outline-color:hsl(192, 96%, 45%);
 }
 
-#manage-menu {
+#app #manage-menu {
 	display:block;
 	margin:0;
 	position:fixed;
@@ -432,18 +432,18 @@ input[type="submit"]:hover, button:hover {
 	top:0;
 }
 
-#manage-menu img {
+#app #manage-menu img {
 	max-width:75%;
 	padding:4em 0 0;
 }
 
-#manage-menu ul {
+#app #manage-menu ul {
 	position:relative;
 	top:0;
 	padding:2em 0 2.5em;
 }
 
-#manage-menu ul li a {
+#app #manage-menu ul li a {
 	display:block;
 	padding:1.75em 0;
 	color:rgb(75,75,75);
@@ -456,7 +456,7 @@ input[type="submit"]:hover, button:hover {
 	text-transform:uppercase;
 }
 
-#manage-menu ul li a:hover {
+#app #manage-menu ul li a:hover {
 	color:rgb(246,246,246);
 	background:hsl(192, 96%, 45%);
 }

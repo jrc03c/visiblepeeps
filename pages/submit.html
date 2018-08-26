@@ -62,7 +62,7 @@ layout: default
 
 	<div class="submit-page">
 		
-		<p>Bacon ipsum dolor amet venison short loin ipsum tenderloin non proident. Rump andouille velit tempor nisi qui in cupidatat hamburger proident ea spare ribs. Ham ground round mollit ea porchetta drumstick reprehenderit lorem minim flank turducken. Non leberkas venison commodo. Labore sirloin ex culpa prosciutto dolore cupidatat cillum exercitation drumstick incididunt laboris tempor tri-tip meatloaf. Pork belly deserunt esse magna elit. Id rump aliquip ut.</p>	
+		<p>After logging in with your Twitter account this page will act as your profile. Once you have made a submission and it has been approved, you'll be able to log in, update your submitted tweet, and any categories you have picked.</p>	
 	
 		<br><br><br>
 		
@@ -70,7 +70,7 @@ layout: default
 			<div v-if="isLoggedIn">
 
 				<p style="font-weight:500;">Tweet URL</p>
-				<p>Copy / paste the URL to your tweet here</p>			
+				<p>Copy / paste the URL to your tweet here.</p>			
 
 				<p>
 					<form @submit.prevent="submit">
@@ -80,7 +80,7 @@ layout: default
 					</form>
 				</p>
 
-				<!-- <button @click="logout">Log out</button> --> <!-- Move this to the side menu? -->
+				<button @click="logout">Log out</button> 
 
 				<br>
 				<p v-if="message.length > 0">
@@ -91,7 +91,7 @@ layout: default
 
 			<div v-else>
 				<p>
-					Please log in with your Twitter account to submit tweets for approval.
+					Please log in with your Twitter account to submit your tweet.
 				</p>
 
 				<button @click="login">Log in</button>

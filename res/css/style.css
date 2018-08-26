@@ -375,6 +375,16 @@ input[type="submit"]:hover, button:hover {
 	text-align:left;
 }
 
+#manage-content h2 {
+	font-family: 'Raleway', sans-serif;
+	padding:0 0 2.5em;
+	font-size:16px;
+	max-width:900px;
+	font-weight:500;
+	line-height:30px;
+	letter-spacing:1px;
+}
+
 #manage-menu {
 	display:block;
 	margin:0;

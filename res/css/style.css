@@ -120,7 +120,7 @@ img.peeps-lettering {
 }
 
 #main-content h2 a {
-	color:rgb(29,161,242);
+	color:hsl(192, 96%, 45%);
 }
 
 #main-content h2 a:hover {
@@ -176,7 +176,7 @@ ul.category li {
 }
 
 ul.category li a:hover {
-	color:rgb(29,161,242);
+	color:hsl(192, 96%, 45%);
 }
 
 .submit-button {
@@ -389,7 +389,7 @@ input[type="submit"]:hover, button:hover {
 	font-weight:500;
 	line-height:30px;
 	letter-spacing:1px;
-	color:rgb(29,161,242);
+	color:hsl(192, 96%, 45%);
 	text-transform:uppercase;
 }
 
@@ -425,7 +425,7 @@ input[type="submit"]:hover, button:hover {
 }
 
 #app #manage-content input[type="text"]:focus {
-	outline-color:rgb(29,161,242);
+	outline-color:hsl(192, 96%, 45%);
 }
 
 #app #manage-menu {
@@ -464,5 +464,5 @@ input[type="submit"]:hover, button:hover {
 
 #app #manage-menu ul li a:hover {
 	color:rgb(246,246,246);
-	background:rgb(29,161,242);
+	background:hsl(192, 96%, 45%);
 }

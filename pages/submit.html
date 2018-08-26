@@ -110,7 +110,7 @@ layout: default
 		// whether this is optimal or not, but it is what it is. :) 
 		// Anyway, I'm making references to them here so that I can 
 		// turn them off when the user logs out.
-		let ref1, ref2, ref3, ref4, ref5;
+		let ref1;
 		
 		// Initialize the Firebase app settings.
 		firebase.initializeApp({
@@ -191,10 +191,6 @@ layout: default
 				logout: function(){
 					firebase.auth().signOut();
 					if (ref1) ref1.off();
-					if (ref2) ref2.off();
-					if (ref3) ref3.off();
-					if (ref4) ref4.off();
-					if (ref5) ref5.off();
 				},
 				
 				// This is where we do all the submission magic.
@@ -264,54 +260,6 @@ layout: default
 							// Set their info into the user variable.
 							self.user = userData;
 							self.user.uid = user.uid;
-							
-							// If we've already been listening to the blockedUsers
-							// reference, then stop listening, since we're about to
-							// start listening again, possibly at a new location.
-							if (ref5) ref5.off();
-							
-							// Get a reference to /blockedUsers/username.
-							ref5 = db.ref("/blockedUsers/" + userData.username);
-							
-							// Listen to that reference.
-							ref5.on("value", function(snapshot2){
-								// Set the isBlocked member of the user variable.
-								let isBlocked = snapshot2.val();
-								self.user.isBlocked = !!isBlocked;
-							});
-						});
-						
-						// Get a reference to the tweetsToApprove list.
-						ref3 = db.ref("/tweetsToApprove");
-						
-						// Listen to that reference.
-						ref3.on("value", function(snapshot){
-							let tweetsToApprove = snapshot.val();
-							if (!tweetsToApprove) return;
-							
-							// Store the data in the tweetsToApprove variable.
-							self.tweetsToApprove = tweetsToApprove;
-						});
-						
-						// Get a reference to the approvedTweets list.
-						ref4 = db.ref("/approvedTweets");
-						
-						// Listen to that reference.
-						ref4.on("value", function(snapshot){
-							// Reset the approvedTweets variable.
-							self.approvedTweets = [];
-							
-							// Get the data.
-							let approvedTweets = snapshot.val();
-							if (!approvedTweets) return;
-							
-							// Since Firebase does weird stuff with lists
-							// (e.g., sometimes turning an array into an object),
-							// we make sure to get each individual tweet object
-							// and push it into the approvedTweets array here.
-							Object.keys(approvedTweets).forEach(function(key){
-								self.approvedTweets.push(approvedTweets[key]);
-							});
 						});
 					}
 				});

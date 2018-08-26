@@ -371,7 +371,7 @@ input[type="submit"]:hover, button:hover {
 	display:block;
 	width:calc(100% - 250px);
 	height:auto;
-	margin:0 0 0 250px;
+	margin:2em 0 0 250px;
 }
 
 #manage-menu {

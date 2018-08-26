@@ -249,7 +249,7 @@ option, input[type=text] {
 	padding:0.25em 0 0.25em 0.5em;
 }
 
-input[name="tweet"]:focus, select[name="profession"]:focus, select[name="level"]:focus {
+input[type=text]:focus, select[name="profession"]:focus, select[name="level"]:focus {
 	outline-color:hsl(192, 96%, 45%);
 }
 

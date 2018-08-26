@@ -179,7 +179,7 @@ ul.category li a:hover {
 	color:hsl(192, 96%, 45%);
 }
 
-.submit-button {
+/*.submit-button {
 	color:rgb(254,254,254);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;
@@ -195,14 +195,14 @@ ul.category li a:hover {
 	cursor:pointer;
 	background:rgb(254,254,254);
 	color:rgb(240,0,0);	
-}
+}*/
 
 .submit-page {
 	margin:0 auto;
 	width:90%;
 	max-width:900px;
-	padding:-1em 0 15em;	
-	margin:0 auto;
+	padding:0 0 15em;	
+	margin:-2em auto 0;
 	text-align:left;
 }
 
@@ -240,7 +240,7 @@ select[name="level"] {
 	height:40px;
 }
 
-option, input[name="tweet"] {
+option, input[type=text] {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;

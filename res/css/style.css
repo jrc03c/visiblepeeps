@@ -387,11 +387,16 @@ input[type="submit"]:hover, button:hover {
 	text-transform:uppercase;
 }
 
-#manage-content #app ul.manage-text li {
+#manage-content #app ul.manage-text li, #manage-content #app p {
 	padding:0.5em 0;
 	border-bottom:1px solid rgb(220,220,220);
 	font-size:13px;
 	font-family: 'Roboto', sans-serif;
+}
+
+#manage-content #app p {
+	padding:0;
+	border-bottom:0;
 }
 
 #manage-content #app ul.manage-text li button {
@@ -411,6 +416,10 @@ input[type="submit"]:hover, button:hover {
 	background:rgb(247,247,247);
 	resize:none;
 	margin:0 1em 1em 0;
+}
+
+#manage-content #app input[type="text"]:focus {
+	outline-color:hsl(192, 96%, 45%);
 }
 
 #manage-menu {

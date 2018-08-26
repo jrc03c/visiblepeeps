@@ -3,19 +3,6 @@ permalink: /submit
 layout: default
 ---
 
-<style>
-	input {
-		font-family: "Roboto", sans-serif;
-		font-size: 13.5px;
-		letter-spacing: 1px;
-		padding: 1em 1.25em;
-		border-radius: 4px;
-	}
-	
-	p {
-		margin-bottom: 1rem;
-	}
-</style>
 
 <button class="mobile-nav">&#x2630;</button>
 
@@ -68,8 +55,14 @@ layout: default
 
 	 	<h2>Women, non-binary and trans creators on Twitter<br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a></h2>
 
+	 	<p>Bacon ipsum dolor amet venison short loin ipsum tenderloin non proident. Rump andouille velit tempor nisi qui in cupidatat hamburger proident ea spare ribs. Ham ground round mollit ea porchetta drumstick reprehenderit lorem minim flank turducken. Non leberkas venison commodo. Labore sirloin ex culpa prosciutto dolore cupidatat cillum exercitation drumstick incididunt laboris tempor tri-tip meatloaf. Pork belly deserunt esse magna elit. Id rump aliquip ut.</p>	
+	
 	<div id="app">
 		<div v-if="isLoggedIn">
+			
+			<p style="font-weight:500;">Tweet URL</p>
+			<p>Copy / paste the URL to your tweet here</p>			
+			
 			<p>
 				<form @submit.prevent="submit">
 					<input type="text" v-model="url">

@@ -60,14 +60,16 @@ layout: default
 
 	<h2>Women, non-binary and trans creators on Twitter<br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a></h2>
 
-	<div class="submit-page">
-		
-		<p>This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to log in, update your submitted tweet, and any categories you have picked.</p>	
+	<div class="submit-page">	
 	
 		<br><br><br>
 		
 		<div id="app">
 			<div v-if="isLoggedIn">
+
+				<p>Blah blah blah</p>
+
+				<br><br>
 
 				<p style="font-weight:500;">Tweet URL</p>
 				<p>Copy / paste the URL to your tweet here.</p>			
@@ -89,8 +91,10 @@ layout: default
 				
 			</div>
 
-			<div style="text-align:center; padding:0 0 0.5em" v-else>
-				<p>
+			<div v-else>
+				<p style="text-align:center; padding:0 0 0.5em">
+					This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to log in, update your submitted tweet, and any categories you have picked.<br><br>
+
 					Please log in with your Twitter account.
 				</p>
 

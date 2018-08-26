@@ -250,7 +250,7 @@ option, input[type=text] {
 }
 
 input[name="tweet"]:focus, select[name="profession"]:focus, select[name="level"]:focus {
-	outline-color:rgb(240,0,0);
+	outline-color:hsl(192, 96%, 45%);
 }
 
 input[type="submit"], input[type="checkbox"], button {

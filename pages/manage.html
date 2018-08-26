@@ -45,9 +45,10 @@ permalink: /manage
 				
 				<ul class="tweetiesToApprove" v-if="tweetsToApprove.length > 0">
 					<li v-for="tweet in tweetsToApprove">
-						<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
 						<button style="margin:0 0 0 2em" @click="approve(tweet)">Approve</button>
 						<button @click="deny(tweet)">Deny</button>
+						<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
+						
 					</li>
 				</ul>
 				

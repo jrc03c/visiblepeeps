@@ -10,84 +10,119 @@ permalink: /manage
 		<style>
 			#app {
 				display: none;
+				margin-top: 2rem;
+			}
+			
+			.fake-a {
+				cursor: pointer;
 			}
 		</style>
 	</head>
 	<body>
 		
 	
-		
-		<div id="manage-menu">
-
-			<img src="{{ site.baseurl }}/res/img/visiblepeeps.png">
-
-			<ul class="menu-menu">
-
-				<li><a href="{{ site.baseurl }}/" style="border-top:1px solid rgb(235,235,235);">Home</a></li>
-				<li><a href="{{ site.baseurl }}/submit">Submit</a></li>
-				<li><a href="">Adminstrators</a></li>
-				<li><a href="">Blocked Users</a></li>
-				<li><a href="">Log in / Out</a></li>
-
-			</ul>
-
-		</div>
-		
-		<div id="manage-content">
-		
 		<div id="app">
-			<div v-if="isLoggedIn && isAdmin">
-				<p>
-					<button @click="logout">Log out</button>
-				</p>
-				
-				<h2>Tweets to Approve</h2>
-				
-				<ul class="manage-text" v-if="tweetsToApprove.length > 0">
-					<li v-for="tweet in tweetsToApprove">
-						<button @click="approve(tweet)">Approve</button>
-						<button style="margin:0 2em 0 0" @click="deny(tweet)">Deny</button>
-						<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
-						
+
+			<div id="manage-menu">
+
+				<img src="{{ site.baseurl }}/res/img/visiblepeeps.png">
+
+				<ul class="menu-menu">
+
+					<li>
+						<a href="{{ site.baseurl }}/" style="border-top:1px solid rgb(235,235,235);">
+							Home
+						</a>
 					</li>
-				</ul>
-				
-				<p v-else>
-					There are no tweets to approve at this time.
-				</p>
-				
-				<h2>Admin Users</h2>
-				
-				<form @submit.prevent="addAdminUser(userToAdmin)">
-					<input type="text" v-model="userToAdmin">
-					<input type="submit" value="Add">
-				</form>
-				
-				<ul class="manage-text">
-					<li v-for="username in adminUsers">
-						<button style="margin:0 2em 0 0" @click="removeAdminUser(username)">Remove</button>
-						<a :href="'https://twitter.com/' + username"><% username %></a>
+					
+					<li>
+						<a href="{{ site.baseurl }}/submit">
+							Submit
+						</a>
 					</li>
-				</ul>
-				
-				<h2>Blocked Users</h2>
-				
-				<form @submit.prevent="blockUser(userToBlock)">
-					<input type="text" v-model="userToBlock">
-					<input type="submit" value="Block">
-				</form>
-				
-				<ul class="manage-text">
-					<li v-for="username in blockedUsers">
-						<button style="margin:0 2em 0 0" @click="unblockUser(username)">Unblock</button>
-						<a :href="'https://twitter.com/' + username"><% username %></a>
+					
+					<li>
+						<a @click="currentView = 'tweetsToApprove'" class="fake-a">
+							Tweets to Approve
+						</a>
 					</li>
+					
+					<li>
+						<a @click="currentView = 'adminUsers'" class="fake-a">
+							Adminstrators
+						</a>
+					</li>
+					
+					<li>
+						<a @click="currentView = 'blockedUsers'" class="fake-a">
+							Blocked Users
+						</a>
+					</li>
+					
+					<li>
+						<a @click="logInOrOut" class="fake-a">
+							Log in / Out
+						</a>
+					</li>
+
 				</ul>
+
 			</div>
 			
-			<div v-else>
-				<button @click="login">Log in</button>
+			<div id="manage-content">
+		
+				<div v-if="isLoggedIn && isAdmin">
+					<div v-if="currentView === 'tweetsToApprove'">
+						<h2>Tweets to Approve</h2>
+						
+						<ul class="manage-text" v-if="tweetsToApprove.length > 0">
+							<li v-for="tweet in tweetsToApprove">
+								<button @click="approve(tweet)">Approve</button>
+								<button style="margin:0 2em 0 0" @click="deny(tweet)">Deny</button>
+								<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
+								
+							</li>
+						</ul>
+						
+						<p v-else>
+							There are no tweets to approve at this time.
+						</p>
+					</div>
+					
+					<div v-if="currentView === 'adminUsers'">
+						<h2>Admin Users</h2>
+						
+						<form @submit.prevent="addAdminUser(userToAdmin)">
+							<input type="text" v-model="userToAdmin">
+							<input type="submit" value="Add">
+						</form>
+						
+						<ul class="manage-text">
+							<li v-for="username in adminUsers">
+								<button style="margin:0 2em 0 0" @click="removeAdminUser(username)">Remove</button>
+								<a :href="'https://twitter.com/' + username"><% username %></a>
+							</li>
+						</ul>
+					</div>
+					
+					<div v-if="currentView === 'blockedUsers'">
+						<h2>Blocked Users</h2>
+						
+						<form @submit.prevent="blockUser(userToBlock)">
+							<input type="text" v-model="userToBlock">
+							<input type="submit" value="Block">
+						</form>
+						
+						<ul class="manage-text">
+							<li v-for="username in blockedUsers">
+								<button style="margin:0 2em 0 0" @click="unblockUser(username)">Unblock</button>
+								<a :href="'https://twitter.com/' + username"><% username %></a>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
+			
 		</div>
 		
 		<script src="{{ site.baseurl }}/res/js/firebase.js"></script>
@@ -132,9 +167,14 @@ permalink: /manage
 						adminUsers: [],
 						userToBlock: "",
 						blockedUsers: [],
+						currentView: "tweetsToApprove",
 					},
 					
 					methods: {
+						logInOrOut: function(){
+							
+						},
+						
 						// This is the typical Firebase / Twitter auth flow.
 						login: function(){
 							let provider = new firebase.auth.TwitterAuthProvider();

@@ -67,7 +67,7 @@ layout: default
 		<div id="app">
 			<div v-if="isLoggedIn">
 
-				<p>Blah blah blah</p>
+				<p>Hi! If you'd like to update your tweet, just change the URL in the input field, or change any of the categories you have previously selected, and hit submit! Anything you want :D</p>
 
 				<br><br>
 
@@ -95,13 +95,14 @@ layout: default
 				<p>
 					This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to log in, update your submitted tweet, and any categories you have picked.
 				</p>	
-
 					<br><br>
-				<p style="text-align:center; padding:0 0 1em">
+				<p style="text-align:center;">
 					Please log in with your Twitter account.
+					<br>
+					<button @click="login">Log in</button>
 				</p>
 
-				<button style="margin:0 auto;" @click="login">Log in</button>
+				
 			</div>
 		</div>
 

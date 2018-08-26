@@ -387,6 +387,11 @@ input[type="submit"]:hover, button:hover {
 	text-transform:uppercase;
 }
 
+#manage-content #app ul.tweetiesToApprove li {
+	padding:0.5em 0;
+	border-bottom:1px solid rgb(220,220,220);
+}
+
 #manage-menu {
 	display:block;
 	margin:0;

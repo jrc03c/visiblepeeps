@@ -150,14 +150,12 @@ img.peeps-lettering {
 	width:250px;
 	overflow-y:scroll;
 	height:100%;
-	-ms-overflow-style: -ms-autohiding-scrollbar;
+	-ms-overflow-style: none;
 }
 
 #side-menu::-webkit-scrollbar { 
     display:none; 
 }
-
-#
 
 ul.category {
 	position:absolute;

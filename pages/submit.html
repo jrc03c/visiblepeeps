@@ -57,8 +57,13 @@ layout: default
 
 <script>
 	window.onload = function(){
+		// We listen to a bunch of database references. I'm not sure
+		// whether this is optimal or not, but it is what it is. :) 
+		// Anyway, I'm making references to them here so that I can 
+		// turn them off when the user logs out.
 		let ref1, ref2, ref3, ref4, ref5;
 		
+		// Initialize the Firebase app settings.
 		firebase.initializeApp({
 			apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 			authDomain: "visiblewomen-net.firebaseapp.com",
@@ -68,11 +73,31 @@ layout: default
 			messagingSenderId: "532732660193"
 		});
 		
+		// Create the view app.
 		let app = new Vue({
+			// Use the #app DOM element.
 			el: "#app",
 			
+			// These are necessary to avoid compilation problems
+			// with Jekyll, which uses "{{" and "}}" delimiters.
 			delimiters: ["<%", "%>"],
 			
+			// The url variable keeps track of what the user types
+			// into the text input field. The isLoggedIn makes it
+			// so that only logged-in users can see the submission form.
+			// The canSubmit variable helps to prevent spamming of 
+			// the form; we use a 5-second timeout between submissions,
+			// during which the canSubmit variable is set to false.
+			// The message variable shows a message to the user if
+			// something is wrong with the submission (like if their
+			// url doesn't come from twitter.com, or if it doesn't contain
+			// "status", or if they don't wait long enough between 
+			// submissions). We also download the tweetsToApprove and 
+			// the approvedTweets to make sure that we don't let the user
+			// add duplicates. And finally, we download the user's data
+			// so that we can attach their username to the tweet they
+			// submit, which makes it easy for us to block them later
+			// if we don't like the submissions they're making.
 			data: {
 				url: "",
 				isLoggedIn: false,
@@ -84,13 +109,20 @@ layout: default
 			},
 			
 			methods: {
+				// This is the typical Firebase / Twitter auth flow.
 				login: function(){
 					let provider = new firebase.auth.TwitterAuthProvider();
 					
 					firebase.auth().signInWithPopup(provider).then(function(result){
 						let db = firebase.database();
+						
+						// We make sure that we grab the user's Twitter username.
+						// For some stupid reason, this is the only time that
+						// this information is available to us.
 						let username = result.additionalUserInfo.username;
 						
+						// We store the username in the database under their 
+						// Firebase auth UID.
 						let ref = db.ref("/allUsers/" + result.user.uid);
 						ref.set({username});
 					}).catch(function(error){
@@ -98,6 +130,9 @@ layout: default
 					});
 				},
 				
+				// This the typical Firebase sign-out method, though
+				// this is where we also stop listening to the database
+				// references.
 				logout: function(){
 					firebase.auth().signOut();
 					if (ref1) ref1.off();
@@ -107,28 +142,38 @@ layout: default
 					if (ref5) ref5.off();
 				},
 				
+				// This is where we do all the submission magic.
 				submit: function(){
 					let self = this;
 					
+					// If the 5-second submission timer hasn't timed out yet,
+					// then tell the user about it and then return.
 					if (!self.canSubmit){
 						self.message = "Please wait a moment and then try again.";
 						return;
 					}
 					
+					// Try to make a URL object out of the user's submission.
 					let urlObj;
 					
 					try {
 						urlObj = new URL(self.url);
 					} catch (error){
+						// If it fails, then it's probably because they didn't enter
+						// a valid URL. Let them know about it and then return.
 						self.message = "It doesn't look like you entered a valid URL. Please enter a URL that points directly to a tweet.";
 						return;
 					}
 					
+					// If the user's submission doesn't come from twitter.come or doesn't
+					// include "status", then let them know about it and then return.
 					if (urlObj.hostname !== "twitter.com" || !urlObj.pathname.includes("status")){
 						self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
 						return;
 					}
 					
+					// Check to make sure that the URL isn't already in the list
+					// of tweetsToApprove or in the list of approvedTweets.
 					let wasAlreadySubmitted = false;
 					
 					self.tweetsToApprove.forEach(function(tweet){
@@ -143,27 +188,42 @@ layout: default
 						}
 					});
 					
+					// If the tweet was already submitted, or if the user is blocked,
+					// then DON'T tell them about it. However, if they're not blocked
+					// and if the tweet is new, then...
 					if (!self.user.isBlocked && !wasAlreadySubmitted){
+						// Push the tweet URL as well as the submitter's username
+						// into the list of tweetsToApprove.
 						self.tweetsToApprove.push({
 							url: "https://twitter.com" + urlObj.pathname,
 							submitter: self.user.username,
 						});
 						
+						// Get a reference to the /tweetsToApprove location
+						// in the database and set the tweetsToApprove list
+						// as its value. Again, this assumes that there are 
+						// not very many tweets to approve; if this list ever
+						// grows very large (e.g., millions of tweets to approve),
+						// then we might have to revisit this structure.
 						let db = firebase.database();
 						let ref = db.ref("/tweetsToApprove");
-						
-						ref.set(self.tweetsToApprove).then(function(){
-							//
-						}).catch(function(error){
-							console.error(error);
-						});
+						ref.set(self.tweetsToApprove);
 					}
 					
+					// Let the user know that we'll check it out.
 					self.message = "Thanks! We'll check it out!";
+					
+					// Clear out the url variable, which will reset
+					// the text input field.
 					self.url = "";
+					
+					// Start the timer that prevents the user from
+					// submitting for five seconds.
 					self.canSubmit = false;
 					
 					setTimeout(function(){
+						// At the end of the time, clear the message and
+						// allow the user to make new submissions.
 						self.message = "";
 						self.canSubmit = true;
 					}, 5000);
@@ -173,45 +233,79 @@ layout: default
 			mounted: function(){
 				let self = this;
 				
+				// Listen for users logging in and out, and then...
 				firebase.auth().onAuthStateChanged(function(user){
+					// Unhide the #app element, which was hidden so as not
+					// to show off its weird markup.
 					document.getElementById("app").style.display = "block";
+					
+					// Set the isLoggedIn variable.
 					self.isLoggedIn = !!user;
 					
+					// If the user is logged in, then...
 					if (user){
 						let db = firebase.database();
 						
+						// Get a reference to the user's data in the database.
 						ref1 = db.ref("/allUsers/" + user.uid);
 						
+						// Listen to that reference, in case the user suddenly
+						// gets blocked or their data changes in some other way.
 						ref1.on("value", function(snapshot){
+							// Get their data.
 							let user = snapshot.val();
+							
+							// If for some reason the data doesn't exist,
+							// then return.
 							if (!user) return;
+							
+							// Set their info into the user variable.
 							self.user = user;
 							
+							// If we've already been listening to the blockedUsers
+							// reference, then stop listening, since we're about to
+							// start listening again, possibly at a new location.
 							if (ref5) ref5.off();
 							
+							// Get a reference to /blockedUsers/username.
 							ref5 = db.ref("/blockedUsers/" + user.username);
 							
+							// Listen to that reference.
 							ref5.on("value", function(snapshot2){
+								// Set the isBlocked member of the user variable.
 								let isBlocked = snapshot2.val();
 								self.user.isBlocked = !!isBlocked;
 							});
 						});
 						
+						// Get a reference to the tweetsToApprove list.
 						ref3 = db.ref("/tweetsToApprove");
 						
+						// Listen to that reference.
 						ref3.on("value", function(snapshot){
 							let tweetsToApprove = snapshot.val();
 							if (!tweetsToApprove) return;
+							
+							// Store the data in the tweetsToApprove variable.
 							self.tweetsToApprove = tweetsToApprove;
 						});
 						
+						// Get a reference to the approvedTweets list.
 						ref4 = db.ref("/approvedTweets");
 						
+						// Listen to that reference.
 						ref4.on("value", function(snapshot){
+							// Reset the approvedTweets variable.
 							self.approvedTweets = [];
+							
+							// Get the data.
 							let approvedTweets = snapshot.val();
 							if (!approvedTweets) return;
 							
+							// Since Firebase does weird stuff with lists
+							// (e.g., sometimes turning an array into an object),
+							// we make sure to get each individual tweet object
+							// and push it into the approvedTweets array here.
 							Object.keys(approvedTweets).forEach(function(key){
 								self.approvedTweets.push(approvedTweets[key]);
 							});

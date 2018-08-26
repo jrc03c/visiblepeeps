@@ -5,7 +5,8 @@ permalink: /manage
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>	
+ 		<link href="https://fonts.googleapis.com/css?family=Halant:400|Raleway:500|Roboto:400,500,700" rel="stylesheet">
 		<style>
 			#app {
 				display: none;
@@ -13,13 +14,21 @@ permalink: /manage
 		</style>
 	</head>
 	<body>
-		<h1>#visiblepeeps</h1>
-		
-		<p>
-			<a href="{{ site.baseurl }}/">Home</a>
-			<a href="{{ site.baseurl }}/submit">Submit</a>
-		</p>
-		
+		<div id="manage-menu">
+
+			<img src="img/visiblepeeps.png">
+
+			<ul class="menu-menu">
+
+				<li><a href="{{ site.baseurl }}/" style="border-top:1px solid rgb(220,220,220);">Home</a></li>
+				<li><a href="{{ site.baseurl }}/submit">Submit</a></li>
+				<li><a href="">Adminstrators</a></li>
+				<li><a href="">Blocked Users</a></li>
+				<li><a href="">Log in / Out</a></li>
+
+			</ul>
+
+		</div>
 		<div id="app">
 			<div v-if="isLoggedIn && isAdmin">
 				<p>

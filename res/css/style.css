@@ -405,12 +405,12 @@ input[type="submit"]:hover, button:hover {
 }
 
 #manage-content #app input[type="text"] {
-	width:250px;
-	height:40px;
+	width:300px;
+	height:35px;
 	border:0;
 	background:rgb(247,247,247);
 	resize:none;
-	padding:0 1em 1em 0;
+	margin:0 1em 1em 0;
 }
 
 #manage-menu {

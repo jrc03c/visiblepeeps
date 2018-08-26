@@ -43,10 +43,10 @@ permalink: /manage
 				
 				<h2>Tweets to Approve</h2>
 				
-				<ul class="tweetiesToApprove" v-if="tweetsToApprove.length > 0">
+				<ul class="manage-text" v-if="tweetsToApprove.length > 0">
 					<li v-for="tweet in tweetsToApprove">
-						<button style="margin:0 0 0 2em" @click="approve(tweet)">Approve</button>
-						<button @click="deny(tweet)">Deny</button>
+						<button @click="approve(tweet)">Approve</button>
+						<button style="margin:0 2em 0 0" @click="deny(tweet)">Deny</button>
 						<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
 						
 					</li>
@@ -63,10 +63,10 @@ permalink: /manage
 					<input type="submit" value="Add">
 				</form>
 				
-				<ul>
+				<ul class="manage-text">
 					<li v-for="username in adminUsers">
+						<button style="margin:0 2em 0 0" @click="removeAdminUser(username)">Remove</button>
 						<a :href="'https://twitter.com/' + username"><% username %></a>
-						<button @click="removeAdminUser(username)">Remove</button>
 					</li>
 				</ul>
 				
@@ -77,10 +77,10 @@ permalink: /manage
 					<input type="submit" value="Block">
 				</form>
 				
-				<ul>
+				<ul class="manage-text">
 					<li v-for="username in blockedUsers">
+						<button style="margin:0 2em 0 0" @click="unblockUser(username)">Unblock</button>
 						<a :href="'https://twitter.com/' + username"><% username %></a>
-						<button @click="unblockUser(username)">Unblock</button>
 					</li>
 				</ul>
 			</div>

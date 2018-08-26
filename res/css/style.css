@@ -371,13 +371,13 @@ input[type="submit"]:hover, button:hover {
 	display:block;
 	width:calc(100% - 250px);
 	height:auto;
-	margin:5em 0 0 calc(5em + 250px);
+	margin:0 0 0 calc(5em + 250px);
 	text-align:left;
 }
 
 #manage-content #app h2 {
 	font-family: 'Roboto', sans-serif;
-	padding:0 0 2.5em;
+	padding:5em 0 2.5em;
 	font-size:16px;
 	max-width:900px;
 	font-weight:500;
@@ -387,16 +387,30 @@ input[type="submit"]:hover, button:hover {
 	text-transform:uppercase;
 }
 
-#manage-content #app ul.tweetiesToApprove li {
+#manage-content #app ul.manage-text li {
 	padding:0.5em 0;
 	border-bottom:1px solid rgb(220,220,220);
 	font-size:13px;
 	font-family: 'Roboto', sans-serif;
 }
 
-#manage-content #app ul.tweetiesToApprove li button {
+#manage-content #app ul.manage-text li button {
 	font-size:10px;
 	padding:0.75em 1em;	
+}
+
+#manage-content #app input[type="submit"] {
+	font-size:10px;
+	padding:0.75em 1em;
+}
+
+#manage-content #app input[type="text"] {
+	width:250px;
+	height:40px;
+	border:0;
+	background:rgb(247,247,247);
+	resize:none;
+	padding:0 1em 1em 0;
 }
 
 #manage-menu {

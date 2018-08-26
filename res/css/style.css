@@ -223,7 +223,7 @@ input[type=text] {
 	border:0;
 	background:rgb(247,247,247);
 	resize:none;
-	margin:2em 0;
+	margin:1em 0;
 }
 
 select[name="profession"], select[name="level"] {

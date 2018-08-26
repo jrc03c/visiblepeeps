@@ -178,8 +178,8 @@ ul.category li {
 	border:0;
 }
 
-ul.category li:hover {
-	color:rgb(240,0,0)
+ul.category li a:hover {
+	color:hsl(192, 96%, 45%);
 }
 
 .submit-button {
@@ -381,13 +381,13 @@ input[type="submit"]:hover, button:hover {
 	padding:4em 0 0;
 }
 
-ul.menu-menu {
+#manage-menu ul {
 	position:relative;
 	top:0;
 	padding:2em 0 2.5em;
 }
 
-ul.menu-menu li a {
+#manage-menu ul li a {
 	display:block;
 	padding:1.75em 0;
 	color:rgb(75,75,75);
@@ -400,7 +400,7 @@ ul.menu-menu li a {
 	text-transform:uppercase;
 }
 
-ul.menu-menu li a:hover {
-	color:rgb(246,246,246)
+#manage-menu ul li a:hover {
+	color:rgb(246,246,246);
 	background:hsl(192, 96%, 45%);
 }

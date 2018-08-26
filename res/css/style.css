@@ -120,7 +120,7 @@ img.peeps-lettering {
 }
 
 #main-content h2 a {
-	color:hsl(192, 96%, 45%);
+	color:hsl(189, 100%, 86%);
 }
 
 #main-content h2 a:hover {
@@ -176,7 +176,7 @@ ul.category li {
 }
 
 ul.category li a:hover {
-	color:hsl(192, 96%, 45%);
+	color:hsl(189, 100%, 86%);
 }
 
 .submit-button {
@@ -250,7 +250,7 @@ option, input[type=text] {
 }
 
 input[type=text]:focus, select[name="profession"]:focus, select[name="level"]:focus {
-	outline-color:hsl(192, 96%, 45%);
+	outline-color:hsl(189, 100%, 86%);
 }
 
 input[type="submit"], input[type="checkbox"], button {
@@ -388,7 +388,7 @@ input[type="submit"]:hover, button:hover {
 	font-weight:500;
 	line-height:30px;
 	letter-spacing:1px;
-	color:hsl(192, 96%, 45%);
+	color:hsl(189, 100%, 86%);
 	text-transform:uppercase;
 }
 
@@ -424,7 +424,7 @@ input[type="submit"]:hover, button:hover {
 }
 
 #app #manage-content input[type="text"]:focus {
-	outline-color:hsl(192, 96%, 45%);
+	outline-color:hsl(189, 100%, 86%);
 }
 
 #app #manage-menu {
@@ -463,5 +463,5 @@ input[type="submit"]:hover, button:hover {
 
 #app #manage-menu ul li a:hover {
 	color:rgb(246,246,246);
-	background:hsl(192, 96%, 45%);
+	background:hsl(189, 100%, 86%);
 }

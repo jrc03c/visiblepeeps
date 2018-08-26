@@ -72,6 +72,7 @@ layout: default
 					<form @submit.prevent="submit">
 						<input type="text" v-model="url">
 						<input type="submit" value="Submit">
+						<button @click="logout">Log out</button>
 					</form>
 				</p>
 
@@ -79,14 +80,12 @@ layout: default
 				<p v-if="message.length > 0">
 					<% message %>
 				</p>
-
-				<br><br>
-				<button @click="logout">Log out</button>
+				
 			</div>
 
 			<div v-else>
 				<p>
-					You're not logged in. Please log in with your Twitter account to submit tweets for approval.
+					Please log in with your Twitter account to submit tweets for approval.
 				</p>
 
 				<button @click="login">Log in</button>

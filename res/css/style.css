@@ -376,13 +376,15 @@ input[type="submit"]:hover, button:hover {
 }
 
 #manage-content #app h2 {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	padding:0 0 2.5em;
 	font-size:16px;
 	max-width:900px;
 	font-weight:500;
 	line-height:30px;
 	letter-spacing:1px;
+	color:hsl(192, 96%, 45%);
+	text-transform:uppercase;
 }
 
 #manage-menu {

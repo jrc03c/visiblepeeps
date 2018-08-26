@@ -16,6 +16,12 @@ permalink: /manage
 			.fake-a {
 				cursor: pointer;
 			}
+			
+			h2 {
+				font-weight: bold;
+				font-size: 2rem;
+				margin-bottom: 2rem;
+			}
 		</style>
 	</head>
 	<body>
@@ -25,7 +31,9 @@ permalink: /manage
 
 			<div id="manage-menu">
 
-				<img src="{{ site.baseurl }}/res/img/visiblepeeps.png">
+				<a href="{{ site.baseurl }}/">
+					<img src="{{ site.baseurl }}/res/img/visiblepeeps.png">
+				</a>
 
 				<ul class="menu-menu">
 
@@ -42,14 +50,14 @@ permalink: /manage
 					</li>
 					
 					<li>
-						<a @click="currentView = 'tweetsToApprove'" class="fake-a">
-							Tweets to Approve
+						<a @click="currentView = 'adminUsers'" class="fake-a">
+							Admin Users
 						</a>
 					</li>
 					
 					<li>
-						<a @click="currentView = 'adminUsers'" class="fake-a">
-							Adminstrators
+						<a @click="currentView = 'flaggedUsers'" class="fake-a">
+							Flagged Users
 						</a>
 					</li>
 					
@@ -72,23 +80,6 @@ permalink: /manage
 			<div id="manage-content">
 		
 				<div v-if="isLoggedIn && isAdmin">
-					<div v-if="currentView === 'tweetsToApprove'">
-						<h2>Tweets to Approve</h2>
-						
-						<ul class="manage-text" v-if="tweetsToApprove.length > 0">
-							<li v-for="tweet in tweetsToApprove">
-								<button @click="approve(tweet)">Approve</button>
-								<button style="margin:0 2em 0 0" @click="deny(tweet)">Deny</button>
-								<a target="_blank" :href="tweet.url"><% tweet.url %></a> submitted by <a :href="'https://twitter.com/' + tweet.submitter"><% tweet.submitter %></a>
-								
-							</li>
-						</ul>
-						
-						<p v-else>
-							There are no tweets to approve at this time.
-						</p>
-					</div>
-					
 					<div v-if="currentView === 'adminUsers'">
 						<h2>Admin Users</h2>
 						
@@ -105,6 +96,29 @@ permalink: /manage
 						</ul>
 					</div>
 					
+					<div v-if="currentView === 'flaggedUsers'">
+						<h2>Flagged Users</h2>
+						
+						<ul v-if="flaggedUsers.length > 0" class="manage-text">
+							<li v-for="user in flaggedUsers">
+								<a :href="'https://twitter.com/' + user.username">
+									<% user.username %>
+								</a> / 
+								
+								<a :href="user.profileTweet">
+									<% user.profileTweet %>
+								</a>
+								
+								<button @click="ignoreUser(user)">Ignore</button>
+								<button @click="ignoreUser(user); blockUser(user.username)">Block</button>
+							</li>
+						</ul>
+						
+						<div v-else>
+							There are currently no flagged users.
+						</div>
+					</div>
+					
 					<div v-if="currentView === 'blockedUsers'">
 						<h2>Blocked Users</h2>
 						
@@ -113,12 +127,16 @@ permalink: /manage
 							<input type="submit" value="Block">
 						</form>
 						
-						<ul class="manage-text">
+						<ul v-if="blockedUsers.length > 0" class="manage-text">
 							<li v-for="username in blockedUsers">
 								<button style="margin:0 2em 0 0" @click="unblockUser(username)">Unblock</button>
 								<a :href="'https://twitter.com/' + username"><% username %></a>
 							</li>
 						</ul>
+						
+						<div v-else>
+							There are currently no blocked users.
+						</div>
 					</div>
 				</div>
 				
@@ -133,12 +151,6 @@ permalink: /manage
 		<script src="{{ site.baseurl }}/res/js/vue.min.js"></script>
 		<script>
 			window.onload = function(){
-				// We listen to a bunch of database references. I'm not sure
-				// whether this is optimal or not, but it is what it is. :) 
-				// Anyway, I'm making references to them here so that I can 
-				// turn them off when the user logs out.
-				let ref3, ref4, ref5, ref6;
-				
 				// Initialize the Firebase app settings.
 				firebase.initializeApp({
 					apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -160,18 +172,18 @@ permalink: /manage
 					
 					// We use the isLoggedIn and isAdmin variables to hide 
 					// the management page from non-logged-in, non-admin users.
-					// We also keep lists of tweetsToApprove, adminUsers, and
+					// We also keep lists of adminUsers, flaggedUsers, and
 					// blockedUsers. Finally, the userToAdmin and userToBlock
 					// variables represent the text input field data.
 					data: {
 						isLoggedIn: false,
 						isAdmin: false,
-						tweetsToApprove: [],
 						userToAdmin: "",
 						adminUsers: [],
 						userToBlock: "",
 						blockedUsers: [],
-						currentView: "tweetsToApprove",
+						flaggedUsers: [],
+						currentView: "flaggedUsers",
 					},
 					
 					methods: {
@@ -195,8 +207,8 @@ permalink: /manage
 								
 								// We store the username in the database under their 
 								// Firebase auth UID.
-								let ref = db.ref("/allUsers/" + result.user.uid);
-								ref.set({username});
+								let ref = db.ref("/allUsers/" + result.user.uid + "/username");
+								ref.set(username);
 							}).catch(function(error){
 								console.error(error);
 							});
@@ -207,73 +219,6 @@ permalink: /manage
 						// references.
 						logout: function(){
 							firebase.auth().signOut();
-							if (ref3) ref3.off();
-							if (ref4) ref4.off();
-							if (ref5) ref5.off();
-						},
-						
-						// This is where we approve tweets.
-						approve: function(tweet){
-							let self = this;
-							
-							// Get a reference to the /approvedTweets location
-							// in the database.
-							let db = firebase.database();
-							let ref = db.ref("/approvedTweets");
-							
-							// Get its value one time.
-							ref.once("value").then(function(snapshot){
-								// Get the data.
-								let approvedTweets = snapshot.val();
-								
-								// If there's no data there, then create
-								// an empty array.
-								if (!approvedTweets) approvedTweets = [];
-								
-								// Otherwise, return an array of the approved tweets.
-								// (We have to do this weird mapping thing because
-								// Firebase occasionally turns arrays into objects.)
-								else approvedTweets = Object.keys(approvedTweets).map(function(key){
-									return approvedTweets[key];
-								});
-								
-								// If the tweet url is not already in the list of
-								// approved tweets, then...
-								if (approvedTweets.indexOf(tweet.url) < 0){
-									// Push it into the list.
-									approvedTweets.push(tweet.url);
-									
-									// Push the list up to the database.
-									ref.set(approvedTweets);
-								}
-								
-								// Remove the tweet from the list of tweetsToApprove.
-								self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
-								
-								// And then push the tweetsToApprove list up to
-								// the database as well.
-								db.ref("/tweetsToApprove").set(self.tweetsToApprove);
-							});
-						},
-						
-						// This is where we deny a tweet.
-						deny: function(tweet){
-							let self = this;
-							let db = firebase.database();
-							
-							// Remove the tweet from the list of tweets to approve.
-							self.tweetsToApprove.splice(self.tweetsToApprove.indexOf(tweet), 1);
-							
-							// Push the tweetsToApprove list up to the database.
-							db.ref("/tweetsToApprove").set(self.tweetsToApprove);
-							
-							// Check to see if the user should be blocked.
-							let shouldBlockUser = confirm("Would you like to block " + tweet.submitter + ", the user who submitted this tweet?");
-							
-							// If the user should be blocked, the call the blockUser method.
-							if (shouldBlockUser){
-								self.blockUser(tweet.submitter);
-							}
 						},
 						
 						// This is where we add admin users.
@@ -304,6 +249,13 @@ permalink: /manage
 							// database and set their username's value to null.
 							let db = firebase.database();
 							db.ref("/adminUsers/" + username).set(null);
+						},
+						
+						// This is where we ignore a flagged user.
+						ignoreUser: function(user){
+							let self = this;
+							let db = firebase.database();
+							db.ref("/flaggedUsers/" + user.uid).set(null);
 						},
 						
 						// This is where we block a user.
@@ -338,6 +290,12 @@ permalink: /manage
 					mounted: function(){
 						let self = this;
 						
+						// We listen to a bunch of database references. I'm not sure
+						// whether this is optimal or not, but it is what it is. :) 
+						// Anyway, I'm making references to them here so that I can 
+						// turn them off when the user logs out.
+						let ref1, ref2, ref3, ref4;
+						
 						// Listen for users logging in and out, and then...
 						firebase.auth().onAuthStateChanged(function(user){
 							// Unhide the #app element, which was hidden so as
@@ -349,10 +307,10 @@ permalink: /manage
 							
 							// If the references are still listening, then 
 							// turn them off.
+							if (ref1) ref1.off();
+							if (ref2) ref2.off();
 							if (ref3) ref3.off();
 							if (ref4) ref4.off();
-							if (ref5) ref5.off();
-							if (ref6) ref6.off();
 							
 							// If the user is logged in, then...
 							if (user){
@@ -360,10 +318,10 @@ permalink: /manage
 								
 								// Get a reference to the logged-in user's data
 								// in the database.
-								ref6 = db.ref("/allUsers/" + user.uid);
+								ref3 = db.ref("/allUsers/" + user.uid);
 								
 								// Listen to this reference in case their data changes.
-								ref6.on("value", function(snapshot){
+								ref3.on("value", function(snapshot){
 									// Get their data.
 									let user = snapshot.val();
 									
@@ -371,10 +329,10 @@ permalink: /manage
 									if (!user) return;
 									
 									// Get a reference to the list of /adminUsers.
-									ref3 = db.ref("/adminUsers");
+									ref1 = db.ref("/adminUsers");
 									
 									// Listen to this reference.
-									ref3.on("value", function(snapshot2){
+									ref1.on("value", function(snapshot2){
 										// Get the data.
 										let adminUsers = snapshot2.val();
 										
@@ -394,21 +352,11 @@ permalink: /manage
 									});
 								});
 								
-								// Get a reference to /tweetsToApprove.
-								ref4 = db.ref("/tweetsToApprove");
-								
-								// Listen to this reference.
-								ref4.on("value", function(snapshot){
-									let tweetsToApprove = snapshot.val();
-									if (!tweetsToApprove) return;
-									self.tweetsToApprove = tweetsToApprove;
-								});
-								
 								// Get a reference to /blockedUsers.
-								ref5 = db.ref("/blockedUsers");
+								ref2 = db.ref("/blockedUsers");
 								
 								// Listen to this reference.
-								ref5.on("value", function(snapshot){
+								ref2.on("value", function(snapshot){
 									// Get the data.
 									let blockedUsers = snapshot.val();
 									
@@ -423,6 +371,24 @@ permalink: /manage
 									// Set blockedUsers to the list of usernames,
 									// which are the keys to the data object.
 									self.blockedUsers = Object.keys(blockedUsers);
+								});
+								
+								ref4 = db.ref("/flaggedUsers");
+								
+								ref4.on("value", function(snapshot){
+									self.flaggedUsers = [];
+									let flaggedUsers = snapshot.val();
+									if (!flaggedUsers) return;
+									
+									Object.keys(flaggedUsers).forEach(function(uid){
+										let ref5 = db.ref("/allUsers/" + uid);
+										
+										ref5.once("value").then(function(snapshot2){
+											let userData = snapshot2.val();
+											if (!userData) return;
+											self.flaggedUsers.push(userData);
+										});
+									});
 								});
 							}
 						});

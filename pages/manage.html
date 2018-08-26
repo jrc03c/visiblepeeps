@@ -121,6 +121,10 @@ permalink: /manage
 						</ul>
 					</div>
 				</div>
+				
+				<div v-else>
+					You are not logged in. Please log in to manage stuff.
+				</div>
 			</div>
 			
 		</div>
@@ -172,7 +176,9 @@ permalink: /manage
 					
 					methods: {
 						logInOrOut: function(){
-							
+							let self = this;
+							if (self.isLoggedIn) self.logout();
+							else self.login();
 						},
 						
 						// This is the typical Firebase / Twitter auth flow.

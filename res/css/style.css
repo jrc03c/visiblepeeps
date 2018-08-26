@@ -366,6 +366,14 @@ input[type="submit"]:hover, button:hover {
 
 /* --- Manage page --- */
 
+#manage-content {
+	position:relative;
+	display:block;
+	width:calc(100% - 250px);
+	height:auto;
+	margin:0 0 0 250px;
+}
+
 #manage-menu {
 	display:block;
 	margin:0;

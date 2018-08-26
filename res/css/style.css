@@ -390,6 +390,13 @@ input[type="submit"]:hover, button:hover {
 #manage-content #app ul.tweetiesToApprove li {
 	padding:0.5em 0;
 	border-bottom:1px solid rgb(220,220,220);
+	font-size:13px;
+	font-family: 'Roboto', sans-serif;
+}
+
+#manage-content #app ul.tweetiesToApprove li button {
+	font-size:10px;
+	padding:0.75em 1em;	
 }
 
 #manage-menu {

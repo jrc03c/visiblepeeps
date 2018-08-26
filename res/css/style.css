@@ -366,6 +366,14 @@ input[type="submit"]:hover, button:hover {
 
 /* --- Manage page --- */
 
+#app {
+	display: none;
+}
+			
+.fake-a {
+	cursor: pointer;
+}
+
 #app #manage-content {
 	position:relative;
 	display:block;

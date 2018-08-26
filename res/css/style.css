@@ -143,10 +143,6 @@ img.peeps-lettering {
 	line-height:28px;
 }
 
-.tracking-scary {
-	display:none;
-}
-
 #side-menu {
 	display:block;
 	margin:0;
@@ -284,10 +280,10 @@ input[type="submit"]:hover, button:hover {
 	text-align:center;
 	width:100%;
 	border-bottom:1px solid black;
-	position:fixed;
+	position:relative;
 	top:-2px;
 	z-index:10001;
-	color: black;
+	color:rgb(0,0,0);
 }
 
 .mobile-nav:hover {

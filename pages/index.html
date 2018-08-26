@@ -71,6 +71,8 @@ layout: default
 
 <script>
 	window.onload = function(){
+		// Add shuffle functionality to arrays.
+		// This allows us to randomize the tweets on the page.
 		Array.prototype.shuffle = function(){
 			let out = [];
 			let clone = this.slice();
@@ -84,6 +86,7 @@ layout: default
 			return out;
 		};
 		
+		// Initialize the Firebase app settings.
 		firebase.initializeApp({
 			apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 			authDomain: "visiblewomen-net.firebaseapp.com",
@@ -93,11 +96,23 @@ layout: default
 			messagingSenderId: "532732660193"
 		});
 		
+		// Create the Vue app.
 		let app = new Vue({
+			// Use the #app element.
 			el: "#app",
 			
+			// These are necessary to avoid compilation problems
+			// with Jekyll, which uses "{{" and "}}" delimiters.
 			delimiters: ["<%", "%>"],
 			
+			// We download ALL of the tweet urls (which is maybe not going
+			// to be a good thing once we have millions of tweets, but we'll
+			// cross that bridge when we get there, I guess), but only load
+			// them lazily (10 at a time). So, the index tells us where we are
+			// in the array. The canLoadMoreTweets ensures that we don't 
+			// accidentally keep loading too many at a time; there's a timeout
+			// of a few seconds after some of the tweets are loaded to prevent
+			// overloading.
 			data: {
 				tweets: [],
 				index: 0,
@@ -106,50 +121,85 @@ layout: default
 			},
 			
 			methods: {
+				// This is the method that loads more tweets as the user approaches
+				// the bottom of the page.
 				loadMoreTweets: function(){
 					let self = this;
+					
+					// If the download timeout hasn't finished, then we can't 
+					// download any more yet.
 					if (!self.canLoadMoreTweets) return;
 					
-					self.tweets.slice(self.index, self.index + 10).forEach(async function(url){
+					// Get the next 10 tweets and...
+					self.tweets.slice(self.index, self.index + 10).forEach(function(url){
+						// Create a blockquote element of class "twitter-tweet".
 						let blockquote = document.createElement("blockquote");
 						blockquote.className += "twitter-tweet";
 						
+						// Create an anchor element with the tweet's url as its href.
 						let a = document.createElement("a");
 						a.href = url;
 						
+						// Create a script element with the Twitter widgets JS file
+						// as its source.
 						let script = document.createElement("script");
 						script.src = "https://platform.twitter.com/widgets.js";
 						
+						// Put the anchor element inside the blockquote element.
 						blockquote.appendChild(a);
+						
+						// Put the blockquote and the script inside the tweetContainer
+						// element, which is referenced up in the HTML.
 						self.$refs.tweetContainer.appendChild(blockquote);
 						self.$refs.tweetContainer.appendChild(script);
 					});
 					
+					// Move the index forward by 10.
 					self.index += 10;
 				},
 			},
 			
 			mounted: function(){
 				let self = this;
+				
+				// Get a reference to the /approvedTweets location
+				// in the database.
 				let db = firebase.database();
 				let ref = db.ref("/approvedTweets");
 				
+				// Grab the data one time, then...
 				ref.once("value").then(function(snapshot){
+					// Indicate that we've finished loading the data.
 					self.finishedLoading = true;
+					
+					// Get the tweet data.
 					let tweets = snapshot.val();
+					
+					// If there are no approved tweets, then return.
 					if (!tweets) return;
 					
+					// Firebase sometimes does weird things if an item
+					// gets removed from an array; sometimes, it turns the array
+					// into an object. When that happens, it's necessary to
+					// convert the object back into an array. That's what
+					// this bit is for. It works just fine even if the 
+					// returned data actually IS an array.
 					self.tweets = Object.keys(tweets).map(function(key){
 						return tweets[key];
 					});
 					
+					// Shuffle the tweets.
 					self.tweets = self.tweets.shuffle();
 					
-					setTimeout(self.loadMoreTweets, 0);
+					// Load the first 10 tweets.
+					self.loadMoreTweets();
 				}).catch(function(error){
 					console.log(error);
 				});
 				
+				// Here, we listen for user scrolling. If the user has scrolled
+				// at least 75% of the page height, and if we still have tweets
+				// to lazily load, then we load the next 10 tweets.
 				window.addEventListener("scroll", function(event){
 					let percent = window.scrollY / document.body.scrollHeight;
 					
@@ -158,6 +208,7 @@ layout: default
 						self.canLoadMoreTweets = false;
 						self.finishedLoading = false;
 						
+						// Wait for three seconds before being able to load more.
 						setTimeout(function(){
 							self.canLoadMoreTweets = true;
 							self.finishedLoading = true;
@@ -167,6 +218,8 @@ layout: default
 			},
 		});
 		
+		// The Vue app element is originally hidden so as not to display the
+		// strange markup. We unhide it once Vue has mounted the app.
 		document.getElementById("app").style.display = "block";
 	};
 </script>

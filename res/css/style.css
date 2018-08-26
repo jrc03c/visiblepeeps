@@ -410,7 +410,7 @@ input[type="submit"]:hover, button:hover {
 	border:0;
 	background:rgb(247,247,247);
 	resize:none;
-	padding:"0 1em 1em 0";
+	padding:0 1em 1em 0;
 }
 
 #manage-menu {

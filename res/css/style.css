@@ -343,7 +343,6 @@ input[type="submit"]:hover, button:hover {
     display: grid;
 	grid-column-gap:1em;
 	grid-row-gap:0;
-    -ms-grid-columns:auto auto auto;
 	grid-template-columns:auto auto auto;
 	-ms-grid-column:3;
 	justify-content:center;
@@ -352,7 +351,6 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1850px) {
 
 	.module-grid {
-    	-ms-grid-columns:auto auto;
 		grid-template-columns:auto auto;
 	}
 }
@@ -360,7 +358,6 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1350px) {
 
 	.module-grid {
-		-ms-grid-columns:auto;
 		grid-template-columns:auto;
 	}
 

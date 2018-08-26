@@ -2,7 +2,11 @@
 permalink: /submit
 layout: default
 ---
-
+<style>
+	p, form {
+		margin-bottom: 1rem;
+	}
+</style>
 
 <button class="mobile-nav">&#x2630;</button>
 
@@ -52,7 +56,7 @@ layout: default
 
 <div id="main-content">
 	
-	<div class="submit-page"
+	<div class="submit-page">
 
 		<a href="{{ site.baseurl }}/"><img class="peeps-lettering" src="{{ site.baseurl }}/res/img/visiblepeeps.png"></a>
 
@@ -62,29 +66,34 @@ layout: default
 
 		<div id="app">
 			<div v-if="isLoggedIn">
-
-				<p style="font-weight:500;">Tweet URL</p>
-				<p>Copy / paste the URL to your tweet here</p>			
-
-				<p>
-					<form @submit.prevent="submit">
-						<input type="text" v-model="url">
-						<input type="submit" value="Submit">
-					</form>
-				</p>
-
-				<br>
-				<p v-if="message.length > 0">
-					<% message %>
-				</p>
-
-				<br><br>
+				<form @submit.prevent="save">
+					<p v-if="message.length > 0">
+						<% message %>
+					</p>
+					
+					<input type="text" v-model="user.profileTweet" id="tweet-url" @keydown="message = ''">
+					
+					<label for="tweet-url">
+						Profile Tweet URL
+					</label>
+					
+					<div v-for="category in Object.keys(user.categories)">
+						<input type="checkbox" v-model="user.categories[category]" :id="category">
+						
+						<label :for="category">
+							<% category %>
+						</label>
+					</div>
+					
+					<input type="submit" value="Save">
+				</form>
+				
 				<button @click="logout">Log out</button>
 			</div>
 
 			<div v-else>
 				<p>
-					You're not logged in. Please log in with your Twitter account to submit tweets for approval.
+					Please log in with your Twitter account to create a profile page.
 				</p>
 
 				<button @click="login">Log in</button>
@@ -139,13 +148,19 @@ layout: default
 			// submit, which makes it easy for us to block them later
 			// if we don't like the submissions they're making.
 			data: {
-				url: "",
 				isLoggedIn: false,
 				canSubmit: true,
 				message: "",
 				tweetsToApprove: [],
 				approvedTweets: [],
-				user: null,
+				user: {
+					profileTweet: "",
+					categories: {
+						"3D Artist": false,
+						"Comic Artist": false,
+						"Fine Artist": false,
+					},
+				},
 			},
 			
 			methods: {
@@ -163,8 +178,8 @@ layout: default
 						
 						// We store the username in the database under their 
 						// Firebase auth UID.
-						let ref = db.ref("/allUsers/" + result.user.uid);
-						ref.set({username});
+						let ref = db.ref("/allUsers/" + result.user.uid + "/username");
+						ref.set(username);
 					}).catch(function(error){
 						console.error(error);
 					});
@@ -183,21 +198,14 @@ layout: default
 				},
 				
 				// This is where we do all the submission magic.
-				submit: function(){
+				save: function(){
 					let self = this;
-					
-					// If the 5-second submission timer hasn't timed out yet,
-					// then tell the user about it and then return.
-					if (!self.canSubmit){
-						self.message = "Please wait a moment and then try again.";
-						return;
-					}
 					
 					// Try to make a URL object out of the user's submission.
 					let urlObj;
 					
 					try {
-						urlObj = new URL(self.url);
+						urlObj = new URL(self.user.profileTweet);
 					} catch (error){
 						// If it fails, then it's probably because they didn't enter
 						// a valid URL. Let them know about it and then return.
@@ -205,68 +213,22 @@ layout: default
 						return;
 					}
 					
-					// If the user's submission doesn't come from twitter.come or doesn't
+					// If the user's submission doesn't come from twitter.com or doesn't
 					// include "status", then let them know about it and then return.
 					if (urlObj.hostname !== "twitter.com" || !urlObj.pathname.includes("status")){
 						self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
 						return;
 					}
 					
-					// Check to make sure that the URL isn't already in the list
-					// of tweetsToApprove or in the list of approvedTweets.
-					let wasAlreadySubmitted = false;
-					
-					self.tweetsToApprove.forEach(function(tweet){
-						if (tweet.url === "https://twitter.com" + urlObj.pathname){
-							wasAlreadySubmitted = true;
-						}
-					});
-					
-					self.approvedTweets.forEach(function(tweet){
-						if (tweet === "https://twitter.com" + urlObj.pathname){
-							wasAlreadySubmitted = true;
-						}
-					});
-					
-					// If the tweet was already submitted, or if the user is blocked,
-					// then DON'T tell them about it. However, if they're not blocked
-					// and if the tweet is new, then...
-					if (!self.user.isBlocked && !wasAlreadySubmitted){
-						// Push the tweet URL as well as the submitter's username
-						// into the list of tweetsToApprove.
-						self.tweetsToApprove.push({
-							url: "https://twitter.com" + urlObj.pathname,
-							submitter: self.user.username,
-						});
+					ref1.set(self.user).then(function(){
+						self.message = "Saved!";
 						
-						// Get a reference to the /tweetsToApprove location
-						// in the database and set the tweetsToApprove list
-						// as its value. Again, this assumes that there are 
-						// not very many tweets to approve; if this list ever
-						// grows very large (e.g., millions of tweets to approve),
-						// then we might have to revisit this structure.
-						let db = firebase.database();
-						let ref = db.ref("/tweetsToApprove");
-						ref.set(self.tweetsToApprove);
-					}
-					
-					// Let the user know that we'll check it out.
-					self.message = "Thanks! We'll check it out!";
-					
-					// Clear out the url variable, which will reset
-					// the text input field.
-					self.url = "";
-					
-					// Start the timer that prevents the user from
-					// submitting for five seconds.
-					self.canSubmit = false;
-					
-					setTimeout(function(){
-						// At the end of the time, clear the message and
-						// allow the user to make new submissions.
-						self.message = "";
-						self.canSubmit = true;
-					}, 5000);
+						setTimeout(function(){
+							self.message = "";
+						}, 3000);
+					}).catch(function(error){
+						self.message = "There was an error saving your profile information. :(";
+					});
 				},
 			},
 			
@@ -293,14 +255,15 @@ layout: default
 						// gets blocked or their data changes in some other way.
 						ref1.on("value", function(snapshot){
 							// Get their data.
-							let user = snapshot.val();
+							let userData = snapshot.val();
 							
 							// If for some reason the data doesn't exist,
 							// then return.
-							if (!user) return;
+							if (!userData) return;
 							
 							// Set their info into the user variable.
-							self.user = user;
+							self.user = userData;
+							self.user.uid = user.uid;
 							
 							// If we've already been listening to the blockedUsers
 							// reference, then stop listening, since we're about to
@@ -308,7 +271,7 @@ layout: default
 							if (ref5) ref5.off();
 							
 							// Get a reference to /blockedUsers/username.
-							ref5 = db.ref("/blockedUsers/" + user.username);
+							ref5 = db.ref("/blockedUsers/" + userData.username);
 							
 							// Listen to that reference.
 							ref5.on("value", function(snapshot2){

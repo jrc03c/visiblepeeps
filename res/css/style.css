@@ -193,7 +193,7 @@ ul.category li a:hover {
 .submit-page p, .about-page p {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
-	font-size:15px;
+	font-size:14px;
 	font-weight:400;
 	line-height:28px;
 }
@@ -224,7 +224,7 @@ ul.category li a:hover {
 	color:rgb(240,0,0);
 	padding:1em 0 0;
 	font-family: 'Roboto', sans-serif;
-	font-size:15px;
+	font-size:14px;
 	font-weight:400;
 	line-height:28px;
 }
@@ -267,7 +267,7 @@ select[name="level"] {
 input[type=text], .profession label {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
-	font-size:15px;
+	font-size:14px;
 	font-weight:400;
 	line-height:28px;
 	border:0;
@@ -307,7 +307,7 @@ input[type="submit"], button {
 	color:rgb(254,254,254);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;
-	font-size:13.5px;
+	font-size:14px;
 	letter-spacing:1px;
 	padding:1em 1.25em;
 	border:1px solid rgb(29,161,242);

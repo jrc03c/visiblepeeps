@@ -148,7 +148,7 @@ ul.category {
 	padding:6em 0 2.5em;
 }
 
-ul.category li, ul.category li button {
+ul.category li {
 	display:block;
 	padding:1.1em 0 0 3.5em;
 	color:rgb(0,0,0);
@@ -158,14 +158,9 @@ ul.category li, ul.category li button {
 	text-align:left;
 	letter-spacing:0.5px;
 	border:0;
-	background:0;
 }
 
-ul.category li button {
-	padding:0;
-}
-
-ul.category li a:hover, ul.category li button:hover {
+ul.category li a:hover {
 	color:rgb(29,161,242);
 }
 
@@ -214,7 +209,6 @@ ul.category li a:hover, ul.category li button:hover {
 	font-weight:500;
 	line-height:30px;
 	letter-spacing:-0.5px;
-/*	color:rgb(29,161,242);*/
 	text-transform:uppercase;
 	text-align:left;
 }

@@ -182,7 +182,7 @@ ul.category li a:hover {
 	color:rgb(29,161,242);	
 }
 
-.submit-page {
+.submit-page, .about-page {
 	width:90%;
 	max-width:900px;
 	padding:1em 0 15em;	
@@ -190,12 +190,24 @@ ul.category li a:hover {
 	text-align:justify;
 }
 
-.submit-page p {
+.submit-page p, .about-page p {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;
 	font-weight:400;
 	line-height:28px;
+}
+
+.about-page h2 {
+	font-family: 'Roboto', sans-serif;
+	padding:5em 0 0;
+	font-size:14px;
+	max-width:900px;
+	font-weight:500;
+	line-height:30px;
+	letter-spacing:1px;
+	color:rgb(29,161,242);
+	text-transform:uppercase;
 }
 
 .submit-page button {
@@ -235,10 +247,6 @@ select[name="level"] {
 
 select[name="level"] {
 	height:40px;
-}
-
-.profession {
-	display:block;
 }
 
 input[type=text], .profession label {

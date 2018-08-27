@@ -62,81 +62,23 @@ layout: default
 
 			<h2>Women, non-binary and trans creators on Twitter<br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a></h2>
 
-	<div class="submit-page">
+	<div class="about-page">
 
-		<div id="app">
-			<div v-if="isLoggedIn">
+		<p>
+			
+			Visible Peeps is a site where women, non-binary and trans creators can share their tweets from the popular hashtags #VisibleWomen & #VisibleNB for everyone to gaze upon. These hashtags are a great way to discover new and talented creators that are vastly underrepresented within the creative indsutry. This is why we thought it would be a great idea to create a site where you can easily explore and navigative these tweets.
 
-				<p>Hi! If you'd like to update your tweet, just change the URL in the input field, or change any of the categories you have previously selected, and hit submit! Totes! :D<br><br>
+			Visible is created by Josh Castle and Andreas Werchmeister, and with the gracious support and help from Toby Brommerich, Kyle Adkins and Tara Han-Tran Johnson, who created the beautiful title logo. A special thanks to everyone else who in some way helped out, as well as those who offered to help!
 
-				Please only submit tweets include the following hashtags: <span style="color:rgb(29,161,242);">#VisibleWomen · #VisibleWoman · #VisibleNB · #VisibileNBs</span>. Fanks!</p>
+		</p>
 
-				<br><br><br><br>
+		<h2>How to use Visible Peeps</h2>
 
+		<p>
+			
+			Blah blah
 
-				<form @submit.prevent="save">
-
-					<label style="font-weight:500;" for="tweet-url">
-						Tweet URL
-					</label>
-					<p>Copy / paste the URL to your tweet here.</p>	
-					
-					<input type="text" v-model="url" id="tweet-url" @keydown="message = ''">
-
-					<br><br><br><br>
-
-					<p style="font-weight:500;">Choose what level represents you</p>
-
-					<br>
-
-					<select name="level">
-
-						<option value="Professional Creatives">Professional Creative</option>
-						<option value="Students">Student</option>
-						<option value="Hobbyists">Hobbyist</option>
-
-					</select>
-
-					<br><br><br><br>
-
-					<p style="font-weight:500;">Choose the profession that best describes you  (Select up to 3)</p>
-
-					<br>
-	
-					<div v-for="category in categories" class="profession">
-						<input type="checkbox" v-model="category.value" :id="category.name">
-						
-						<label :for="category.name">
-							<% category.name %>
-						</label>
-					</div>
-
-					<br><br><br><br>
-
-					<input type="submit" value="Save">
-
-					<p v-if="message.length > 0" class="error-msg">
-						<% message %>
-					</p>
-
-				</form>
-				
-				<button @click="logout">Log out</button>
-			</div>
-
-			<div v-else>
-				<p>
-					This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to log in, update your submitted tweet, and any categories you have picked.
-				</p>	
-					<br><br>			
-
-				<p>
-					Please log in with your Twitter account to create a profile page.
-				</p>
-
-				<button @click="login" style="margin:0.5em 0 0">Log in</button>
-			</div>
-		</div>
+		</p>
 
 	</div>
 

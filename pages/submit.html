@@ -71,17 +71,17 @@ layout: default
 						<% message %>
 					</p>
 					
-					<input type="text" v-model="user.profileTweet" id="tweet-url" @keydown="message = ''">
+					<input type="text" v-model="url" id="tweet-url" @keydown="message = ''">
 					
 					<label for="tweet-url">
 						Profile Tweet URL
 					</label>
 					
-					<div v-for="category in Object.keys(user.categories)">
-						<input type="checkbox" v-model="user.categories[category]" :id="category">
+					<div v-for="category in categories">
+						<input type="checkbox" v-model="category.value" :id="category.name">
 						
-						<label :for="category">
-							<% category %>
+						<label :for="category.name">
+							<% category.name %>
 						</label>
 					</div>
 					
@@ -106,12 +106,6 @@ layout: default
 
 <script>
 	window.onload = function(){
-		// We listen to a bunch of database references. I'm not sure
-		// whether this is optimal or not, but it is what it is. :) 
-		// Anyway, I'm making references to them here so that I can 
-		// turn them off when the user logs out.
-		let ref1;
-		
 		// Initialize the Firebase app settings.
 		firebase.initializeApp({
 			apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
@@ -151,16 +145,9 @@ layout: default
 				isLoggedIn: false,
 				canSubmit: true,
 				message: "",
-				tweetsToApprove: [],
-				approvedTweets: [],
-				user: {
-					profileTweet: "",
-					categories: {
-						"3D Artist": false,
-						"Comic Artist": false,
-						"Fine Artist": false,
-					},
-				},
+				user: null,
+				categories: [],
+				url: "",
 			},
 			
 			methods: {
@@ -190,7 +177,6 @@ layout: default
 				// references.
 				logout: function(){
 					firebase.auth().signOut();
-					if (ref1) ref1.off();
 				},
 				
 				// This is where we do all the submission magic.
@@ -201,7 +187,7 @@ layout: default
 					let urlObj;
 					
 					try {
-						urlObj = new URL(self.user.profileTweet);
+						urlObj = new URL(self.url);
 					} catch (error){
 						// If it fails, then it's probably because they didn't enter
 						// a valid URL. Let them know about it and then return.
@@ -216,7 +202,22 @@ layout: default
 						return;
 					}
 					
-					ref1.set(self.user).then(function(){
+					let categories = {};
+					
+					self.categories.forEach(function(category){
+						if (category.value === true){
+							categories[category.name] = true;
+						}
+					});
+					
+					let db = firebase.database();
+					let ref = db.ref("/allUsers/" + self.user.uid);
+					
+					ref.set({
+						username: self.user.username,
+						profileTweet: "https://twitter.com" + urlObj.pathname,
+						categories,
+					}).then(function(){
 						self.message = "Saved!";
 						
 						setTimeout(function(){
@@ -231,6 +232,12 @@ layout: default
 			mounted: function(){
 				let self = this;
 				
+				// We listen to a bunch of database references. I'm not sure
+				// whether this is optimal or not, but it is what it is. :) 
+				// Anyway, I'm making references to them here so that I can 
+				// turn them off when the user logs out.
+				let ref1, ref2;
+				
 				// Listen for users logging in and out, and then...
 				firebase.auth().onAuthStateChanged(function(user){
 					// Unhide the #app element, which was hidden so as not
@@ -239,6 +246,10 @@ layout: default
 					
 					// Set the isLoggedIn variable.
 					self.isLoggedIn = !!user;
+					
+					// turn off listeners
+					if (ref1) ref1.off();
+					if (ref2) ref2.off();
 					
 					// If the user is logged in, then...
 					if (user){
@@ -260,6 +271,26 @@ layout: default
 							// Set their info into the user variable.
 							self.user = userData;
 							self.user.uid = user.uid;
+							
+							self.url = self.user.profileTweet || "";
+							
+							if (ref2) ref2.off();
+							
+							ref2 = db.ref("/categoryList");
+							
+							ref2.on("value", function(snapshot){
+								self.categories = [];
+								
+								let categories = snapshot.val();
+								if (!categories) return;
+								
+								Object.keys(categories).forEach(function(category){
+									self.categories.push({
+										name: category,
+										value: self.user.categories && self.user.categories[category],
+									});
+								});
+							});
 						});
 					}
 				});

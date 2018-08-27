@@ -68,6 +68,12 @@ permalink: /manage
 					</li>
 					
 					<li>
+						<a @click="currentView = 'categories'" class="fake-a">
+							Categories
+						</a>
+					</li>
+					
+					<li>
 						<a @click="logInOrOut" class="fake-a">
 							Log in / Out
 						</a>
@@ -138,6 +144,27 @@ permalink: /manage
 							There are currently no blocked users.
 						</div>
 					</div>
+					
+					<div v-if="currentView === 'categories'">
+						<h2>Categories</h2>
+						
+						<form @submit.prevent="addNewCategory(categoryToAdd)">
+							<input type="text" v-model="categoryToAdd">
+							<input type="submit" value="Add">
+						</form>
+						
+						<ul v-if="Object.keys(categories).length > 0">
+							<li v-for="category in Object.keys(categories)">
+								<% category %>
+								
+								<button @click="removeCategory(category)">Delete</button>
+							</li>
+						</ul>
+						
+						<div v-else>
+							There are currently no categories.
+						</div>
+					</div>
 				</div>
 				
 				<div v-else>
@@ -183,6 +210,8 @@ permalink: /manage
 						userToBlock: "",
 						blockedUsers: [],
 						flaggedUsers: [],
+						categoryToAdd: "",
+						categories: {},
 						currentView: "flaggedUsers",
 					},
 					
@@ -285,6 +314,21 @@ permalink: /manage
 							let db = firebase.database();
 							db.ref("/blockedUsers/" + username).set(null);
 						},
+						
+						addNewCategory: function(category){
+							let self = this;
+							self.categories[category] = true;
+							let db = firebase.database();
+							db.ref("/categoryList").set(self.categories);
+							self.categoryToAdd = "";
+						},
+						
+						removeCategory: function(category){
+							let self = this;
+							self.categories[category] = null;
+							let db = firebase.database();
+							db.ref("/categoryList").set(self.categories);
+						},
 					},
 					
 					mounted: function(){
@@ -294,7 +338,7 @@ permalink: /manage
 						// whether this is optimal or not, but it is what it is. :) 
 						// Anyway, I'm making references to them here so that I can 
 						// turn them off when the user logs out.
-						let ref1, ref2, ref3, ref4;
+						let ref1, ref2, ref3, ref4, ref6;
 						
 						// Listen for users logging in and out, and then...
 						firebase.auth().onAuthStateChanged(function(user){
@@ -311,6 +355,7 @@ permalink: /manage
 							if (ref2) ref2.off();
 							if (ref3) ref3.off();
 							if (ref4) ref4.off();
+							if (ref6) ref6.off();
 							
 							// If the user is logged in, then...
 							if (user){
@@ -389,6 +434,15 @@ permalink: /manage
 											self.flaggedUsers.push(userData);
 										});
 									});
+								});
+								
+								ref6 = db.ref("/categoryList");
+								
+								ref6.on("value", function(snapshot){
+									self.categories = {};
+									let categories = snapshot.val();
+									if (!categories) return;
+									self.categories = categories;
 								});
 							}
 						});

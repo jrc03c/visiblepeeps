@@ -247,6 +247,7 @@ input[type=text], .profession label {
 	border-radius:3px;
 	display:inline-block;
 	position:relative;
+	line-height:28px;
 }
 
 /*.profession input[type="checkbox"]:hover {

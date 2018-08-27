@@ -7,6 +7,10 @@ layout: default
 	.fake-a {
 		cursor: pointer;
 	}
+	
+	#submit-button-container {
+		margin-bottom: 3rem;
+	}
 </style>
 
 <div id="app">
@@ -24,13 +28,36 @@ layout: default
 			<br><br>
 			
 			<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY LEVEL</li>	
-			<li style="	font-weight:500;"><a href="">Professional Creatives</a></li>	
-			<li style="	font-weight:500;"><a href="">Students</a></li>	
-			<li style="	font-weight:500;"><a href="">Hobbyists</a></li>
+			
+			<li style="	font-weight:500;">
+				<a @click="selectTweetsByProfessionalLevel('ALL')" class="fake-a">
+					All Levels
+				</a>
+			</li>
+			<li style="	font-weight:500;">
+				<a @click="selectTweetsByProfessionalLevel('Professional Creative')" class="fake-a">
+					Professional Creatives
+				</a>
+			</li>	
+			<li style="	font-weight:500;">
+				<a @click="selectTweetsByProfessionalLevel('Student')" class="fake-a">
+					Students
+				</a>
+			</li>	
+			<li style="	font-weight:500;">
+				<a @click="selectTweetsByProfessionalLevel('Hobbyist')" class="fake-a">
+					Hobbyists
+				</a>
+			</li>
 			
 			<br><br>
 			
-			<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY PROFESSION</li>	
+			<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY PROFESSION</li>
+			<li>
+				<a @click="loadTweetsFromCategory('ALL')" class="fake-a">
+					All Artists
+				</a>
+			</li>
 			<li v-for="category in categories">
 				<a @click="loadTweetsFromCategory(category)" class="fake-a">
 					<% category %>
@@ -50,8 +77,12 @@ layout: default
 
 		 	<h2>Women, non-binary and trans creators on Twitter<br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a></h2>
 		
-		<div>
+		<p id="submit-button-container">
 			<a href="{{site.baseurl}}/profile" class="submit-button">SUBMIT TWEET</a>
+		</p>
+		
+		<div>
+			Viewing tweets from <% levelFilter === "ALL" ? "all" : levelFilter.toLowerCase() %> <% currentCategory === "ALL" ? "artists" : currentCategory.toLowerCase() %>.
 		</div>
 
 		<div class="module-grid" ref="tweetContainer"></div>
@@ -105,9 +136,16 @@ layout: default
 				categories: [],
 				currentCategory: "ALL",
 				lastUserUID: "-1",
+				levelFilter: "ALL",
 			},
 			
 			methods: {
+				selectTweetsByProfessionalLevel: function(level){
+					let self = this;
+					self.levelFilter = level;
+					self.loadTweetsFromCategory(self.currentCategory, false);
+				},
+				
 				loadTweetsFromCategory: function(category, shouldKeepCurrentTweets){
 					let self = this;
 					self.currentCategory = category;
@@ -132,7 +170,7 @@ layout: default
 							
 							ref2.once("value").then(function(snapshot2){
 								let userData = snapshot2.val();
-								if (!userData || !userData.profileTweet) return;
+								if (!userData || !userData.profileTweet || !userData.professionalLevel || (self.levelFilter !== "ALL" && self.levelFilter !== userData.professionalLevel)) return;
 								
 								// Create a blockquote element of class "twitter-tweet".
 								let blockquote = document.createElement("blockquote");

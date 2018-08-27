@@ -393,7 +393,7 @@ input[type="submit"]:hover, button:hover {
 	display: grid;
 	grid-column-gap:1em;
 	grid-row-gap:0;
-	-ms-grid-columns: minmax(min-content, 1fr) minmax(min-content, 1fr) minmax(min-content, 1fr);
+/*	-ms-grid-columns: minmax(min-content, 1fr) minmax(min-content, 1fr) minmax(min-content, 1fr);*/
 	grid-template-columns:auto auto auto;
 	justify-content:center;
 }

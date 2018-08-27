@@ -251,7 +251,6 @@ input[type=text], .profession label {
 .profession label {
 	font-size:13.5px;
 	padding:0 0 0 0.5em;
-	margin-top:-5px;	
 }
 
 .profession input[type="checkbox"] {
@@ -263,6 +262,8 @@ input[type=text], .profession label {
 	display:inline-block;
 	position:relative;
 	outline:0;
+	margin:5px 0 0;
+
 }
 
 .profession input[type="checkbox"]:active, .profession input[type="checkbox"]:checked:active, .profession input[type="checkbox"]:checked, .profession input[type="checkbox"]:checked:after {

@@ -51,7 +51,7 @@ layout: default
 		<div>
 			<a href="{{site.baseurl}}/submit" class="submit-button">SUBMIT TWEET</a>
 		</div>
-	
+
 		<div class="module-grid" ref="tweetContainer"></div>
 		
 		<div v-if="!finishedLoading">
@@ -110,7 +110,10 @@ layout: default
 					let self = this;
 					self.currentCategory = category;
 					
-					if (!shouldKeepCurrentTweets) self.$refs.tweetContainer.innerHTML = "";
+					if (!shouldKeepCurrentTweets){
+						self.$refs.tweetContainer.innerHTML = "";
+						self.lastUserUID = "-1";
+					}
 					
 					let db = firebase.database();
 					let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(10);

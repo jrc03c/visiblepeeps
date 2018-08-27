@@ -171,15 +171,15 @@ ul.category li a:hover {
 	font-size:13.5px;
 	letter-spacing:1px;
 	padding:1em 1.25em;
-	border:1px solid rgb(240,0,0);
+	border:1px solid rgb(29 161 242);
 	border-radius:4px;
-	background:rgb(240,0,0);
+	background:rgb(29 161 242);
 }
 
 .submit-button:hover {
 	cursor:pointer;
 	background:rgb(254,254,254);
-	color:rgb(240,0,0);	
+	color:rgb(29 161 242);	
 }
 
 .submit-page {
@@ -277,15 +277,15 @@ input[type="submit"], button {
 	font-size:13.5px;
 	letter-spacing:1px;
 	padding:1em 1.25em;
-	border:1px solid rgb(240,0,0);
+	border:1px solid rgb(29 161 242);
 	border-radius:4px;
-	background:rgb(240,0,0);	
+	background:rgb(29 161 242);	
 }
 
 input[type="submit"]:hover, button:hover {
 	cursor:pointer;
 	background:rgb(254,254,254);
-	color:rgb(240,0,0);	
+	color:rgb(29 161 242);	
 }
 
 .mobile-nav {

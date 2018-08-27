@@ -200,7 +200,7 @@ ul.category li a:hover {
 
 #main-content .about-page h2 {
 	font-family: 'Roboto', sans-serif;
-	padding:3em 0 1em;
+	padding:3em 0 0.5em;
 	font-size:15px;
 	max-width:900px;
 	font-weight:500;

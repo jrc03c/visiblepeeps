@@ -86,9 +86,20 @@ layout: default
 					<p>Copy / paste the URL to your tweet here.</p>	
 					
 					<input type="text" v-model="url" id="tweet-url" @keydown="message = ''">
+
+					<br><br><br><br>
+
+					<p>The following two options determine which categories you'll appear in</p>
+
+					<br><br>
+
+					<p style="font-weight:500;">Choose the profession that best describes you  (Select up to 3)</p>
+					<p style="font-style:italic; color:rgb(150,150,150);">Hold ctrl / cmd to select multiple</p>
+
+					<br>
 					
 					<div v-for="category in categories">
-						<input name="profession" type="checkbox" v-model="category.value" :id="category.name">
+						<input type="checkbox" v-model="category.value" :id="category.name">
 						
 						<label :for="category.name">
 							<% category.name %>

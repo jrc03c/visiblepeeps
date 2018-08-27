@@ -284,6 +284,7 @@ input[type="submit"], button {
 	border:1px solid rgb(29,161,242);
 	border-radius:4px;
 	background:rgb(29,161,242);	
+	outline:0;
 }
 
 input[type="submit"]:hover, button:hover {

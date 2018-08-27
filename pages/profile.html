@@ -237,35 +237,39 @@ layout: default
 						return;
 					}
 
-					let db = firebase.database();					
-					let categories = {};
+					// Update all of the category entries both in the user's profile part
+					// of the database and in the category list itself.
+					let db = firebase.database();
 					let hasAtLeastOneCategory = false;
+					let updates = {};
 					
 					self.categories.forEach(function(category){
-						let ref = db.ref("/tweets/" + category.name + "/" + self.user.uid);
+						let path1 = "/tweets/" + category.name + "/" + self.user.uid;
+						let path2 = "/allUsers/" + self.user.uid + "/categories/" + category.name;
 						
 						if (category.value === true){
-							categories[category.name] = true;
-							ref.set(true);
+							updates[path1] = true;
+							updates[path2] = true;
 							hasAtLeastOneCategory = true;
 						} else {
-							ref.set(null);
+							updates[path1] = null;
+							updates[path2] = null;
 						}
 					});
 					
+					// If the user has at least one category checked, then the user
+					// should also be added to the "ALL" category.
 					if (hasAtLeastOneCategory){
-						db.ref("/tweets/ALL/" + self.user.uid).set(true);
+						updates["/tweets/ALL/" + self.user.uid] = true;
 					} else {
-						db.ref("/tweets/ALL/" + self.user.uid).set(null);
+						updates["/tweets/ALL/" + self.user.uid] = true;
 					}
 					
-					let ref = db.ref("/allUsers/" + self.user.uid);
+					// Also update the user's profile tweet URL.
+					updates["/allUsers/" + self.user.uid + "/profileTweet"] = "https://twitter.com" + urlObj.pathname;
 					
-					ref.set({
-						username: self.user.username,
-						profileTweet: "https://twitter.com" + urlObj.pathname,
-						categories,
-					}).then(function(){
+					// Push the updates to the database.
+					db.ref().update(updates).then(function(){
 						self.message = "Saved!";
 						
 						setTimeout(function(){

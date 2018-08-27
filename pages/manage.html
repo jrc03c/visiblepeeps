@@ -328,6 +328,7 @@ permalink: /manage
 							self.categories[category] = null;
 							let db = firebase.database();
 							db.ref("/categoryList").set(self.categories);
+							db.ref("/tweets/" + category).set(null);
 						},
 					},
 					

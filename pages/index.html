@@ -3,62 +3,55 @@ permalink: /
 layout: default
 ---
 
-<button class="mobile-nav">&#x2630;</button>
+<style>
+	.fake-a {
+		cursor: pointer;
+	}
+</style>
 
-<div id="side-menu">
-	<ul class="category">
-		<li><a style="font-weight:500;" href="">SHOW ALL</a></li>
-		
-		<br><br>
-		
-		<li><a style="font-weight:500;" href="">RANDOM</a></li>
-		
-		<br><br>
-		
-		<li style="color:hsl(192, 96%, 45%); font-weight:500;  padding-bottom:0.25em;">FILTER BY LEVEL</li>	
-		<li style="	font-weight:500;"><a href="">Professional Creatives</a></li>	
-		<li style="	font-weight:500;"><a href="">Students</a></li>	
-		<li style="	font-weight:500;"><a href="">Hobbyists</a></li>
-		
-		<br><br>
-		
-		<li style="color:hsl(192, 96%, 45%); font-weight:500; padding-bottom:0.25em;">FILTER BY PROFESSION</li>	
-		<li><a href="">Fine Artists</a></li>			
-		<li><a href="">Illustrators</a></li>			
-		<li><a href="">Concept Artists</a></li>			
-		<li><a href="">3D Artists</a></li>			
-		<li><a href="">Photographers</a></li>			
-		<li><a href="">Designers</a></li>			
-		<li><a href="">Comics Artists</a></li>			
-		<li><a href="">Cartoonists</a></li>			
-		<li><a href="">Animators</a></li>			
-		<li><a href="">Storyboard Artists</a></li>
-		<li><a href="">Vis Dev Artists</a></li>
-		<li><a href="">Background Artists</a></li>
-		<li><a href="">Film Makers</a></li>
-		<li><a href="">Character Designers</a></li>
-		<li><a href="">3D Environment Artists</a></li>
-		<li><a href="">3D Character Artists</a></li>
-		<li><a href="">Game Artists</a></li>
-		<li><a href="">Crafts Artists</a></li>
-		
-		<br><br><br>
-		
-		<li style="	font-weight:500;"><a href="{{ site.baseurl }}/about">ABOUT</a></li>
-	</ul>
-	
-</div>
-		
-<div id="main-content">
-	<a href="{{ site.baseurl }}/"><img class="peeps-lettering" src="{{ site.baseurl }}/res/img/visiblepeeps.png"></a>
+<div id="app">
+	<button class="mobile-nav">&#x2630;</button>
 
-	 	<h2>Women, non-binary and trans creators on Twitter<br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a></h2>
-	
-	<div>
-		<a href="{{site.baseurl}}/submit" class="submit-button">SUBMIT TWEET</a>
+	<div id="side-menu">
+		<ul class="category">
+			<li><a style="font-weight:500;" href="">SHOW ALL</a></li>
+			
+			<br><br>
+			
+			<li><a style="font-weight:500;" href="">RANDOM</a></li>
+			
+			<br><br>
+			
+			<li style="color:hsl(192, 96%, 45%); font-weight:500;  padding-bottom:0.25em;">FILTER BY LEVEL</li>	
+			<li style="	font-weight:500;"><a href="">Professional Creatives</a></li>	
+			<li style="	font-weight:500;"><a href="">Students</a></li>	
+			<li style="	font-weight:500;"><a href="">Hobbyists</a></li>
+			
+			<br><br>
+			
+			<li style="color:hsl(192, 96%, 45%); font-weight:500; padding-bottom:0.25em;">FILTER BY PROFESSION</li>	
+			<li v-for="category in categories">
+				<a @click="loadTweetsFromCategory(category)" class="fake-a">
+					<% category %>
+				</a>
+			</li>
+			
+			<br><br><br>
+			
+			<li style="	font-weight:500;"><a href="{{ site.baseurl }}/about">ABOUT</a></li>
+		</ul>
+		
 	</div>
+			
+	<div id="main-content">
+		<a href="{{ site.baseurl }}/"><img class="peeps-lettering" src="{{ site.baseurl }}/res/img/visiblepeeps.png"></a>
+
+		 	<h2>Women, non-binary and trans creators on Twitter<br> <a href="https://twitter.com/hashtag/VisibleWomen?src=hash">#VisibleWomen</a> · <a href="https://twitter.com/hashtag/VisibleNB?src=hash">#VisibleNB</a></h2>
+		
+		<div>
+			<a href="{{site.baseurl}}/submit" class="submit-button">SUBMIT TWEET</a>
+		</div>
 	
-	<div id="app">
 		<div class="module-grid" ref="tweetContainer"></div>
 		
 		<div v-if="!finishedLoading">
@@ -105,114 +98,89 @@ layout: default
 			// with Jekyll, which uses "{{" and "}}" delimiters.
 			delimiters: ["<%", "%>"],
 			
-			// We download ALL of the tweet urls (which is maybe not going
-			// to be a good thing once we have millions of tweets, but we'll
-			// cross that bridge when we get there, I guess), but only load
-			// them lazily (10 at a time). So, the index tells us where we are
-			// in the array. The canLoadMoreTweets ensures that we don't 
-			// accidentally keep loading too many at a time; there's a timeout
-			// of a few seconds after some of the tweets are loaded to prevent
-			// overloading.
 			data: {
-				tweets: [],
-				index: 0,
-				finishedLoading: false,
-				canLoadMoreTweets: true,
+				finishedLoading: true,
+				categories: [],
+				currentCategory: "ALL",
+				lastUserUID: "-1",
 			},
 			
 			methods: {
-				// This is the method that loads more tweets as the user approaches
-				// the bottom of the page.
-				loadMoreTweets: function(){
+				loadTweetsFromCategory: function(category, shouldKeepCurrentTweets){
 					let self = this;
+					self.currentCategory = category;
 					
-					// If the download timeout hasn't finished, then we can't 
-					// download any more yet.
-					if (!self.canLoadMoreTweets) return;
+					if (!shouldKeepCurrentTweets) self.$refs.tweetContainer.innerHTML = "";
 					
-					// Get the next 10 tweets and...
-					self.tweets.slice(self.index, self.index + 10).forEach(function(url){
-						// Create a blockquote element of class "twitter-tweet".
-						let blockquote = document.createElement("blockquote");
-						blockquote.className += "twitter-tweet";
+					let db = firebase.database();
+					let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(10);
+					
+					ref.once("value").then(function(snapshot){
+						let userUIDs = snapshot.val();
+						if (!userUIDs) return;
 						
-						// Create an anchor element with the tweet's url as its href.
-						let a = document.createElement("a");
-						a.href = url;
+						let uids = Object.keys(userUIDs);
+						self.lastUserUID = uids[uids.length-1];
 						
-						// Create a script element with the Twitter widgets JS file
-						// as its source.
-						let script = document.createElement("script");
-						script.src = "https://platform.twitter.com/widgets.js";
-						
-						// Put the anchor element inside the blockquote element.
-						blockquote.appendChild(a);
-						
-						// Put the blockquote and the script inside the tweetContainer
-						// element, which is referenced up in the HTML.
-						self.$refs.tweetContainer.appendChild(blockquote);
-						self.$refs.tweetContainer.appendChild(script);
+						uids.forEach(function(uid){
+							let ref2 = db.ref("/allUsers/" + uid);
+							
+							ref2.once("value").then(function(snapshot2){
+								let userData = snapshot2.val();
+								if (!userData || !userData.profileTweet) return;
+								
+								// Create a blockquote element of class "twitter-tweet".
+								let blockquote = document.createElement("blockquote");
+								blockquote.className += "twitter-tweet";
+								
+								// Create an anchor element with the tweet's url as its href.
+								let a = document.createElement("a");
+								a.href = userData.profileTweet;
+								
+								// Create a script element with the Twitter widgets JS file
+								// as its source.
+								let script = document.createElement("script");
+								script.src = "https://platform.twitter.com/widgets.js";
+								
+								// Put the anchor element inside the blockquote element.
+								blockquote.appendChild(a);
+								
+								// Put the blockquote and the script inside the tweetContainer
+								// element, which is referenced up in the HTML.
+								self.$refs.tweetContainer.appendChild(blockquote);
+								self.$refs.tweetContainer.appendChild(script);
+							});
+						});
 					});
-					
-					// Move the index forward by 10.
-					self.index += 10;
 				},
 			},
 			
 			mounted: function(){
 				let self = this;
-				
-				// Get a reference to the /approvedTweets location
-				// in the database.
 				let db = firebase.database();
-				let ref = db.ref("/approvedTweets");
 				
-				// Grab the data one time, then...
-				ref.once("value").then(function(snapshot){
-					// Indicate that we've finished loading the data.
-					self.finishedLoading = true;
+				let ref1 = db.ref("/categoryList");
+				
+				ref1.once("value").then(function(snapshot){
+					self.categories = [];
+					let categories = snapshot.val();
+					if (!categories) return;
+					self.categories = Object.keys(categories);
 					
-					// Get the tweet data.
-					let tweets = snapshot.val();
-					
-					// If there are no approved tweets, then return.
-					if (!tweets) return;
-					
-					// Firebase sometimes does weird things if an item
-					// gets removed from an array; sometimes, it turns the array
-					// into an object. When that happens, it's necessary to
-					// convert the object back into an array. That's what
-					// this bit is for. It works just fine even if the 
-					// returned data actually IS an array.
-					self.tweets = Object.keys(tweets).map(function(key){
-						return tweets[key];
-					});
-					
-					// Shuffle the tweets.
-					self.tweets = self.tweets.shuffle();
-					
-					// Load the first 10 tweets.
-					self.loadMoreTweets();
-				}).catch(function(error){
-					console.log(error);
+					self.loadTweetsFromCategory("ALL");
 				});
 				
-				// Here, we listen for user scrolling. If the user has scrolled
-				// at least 75% of the page height, and if we still have tweets
-				// to lazily load, then we load the next 10 tweets.
 				window.addEventListener("scroll", function(event){
-					let percent = window.scrollY / document.body.scrollHeight;
-					
-					if (percent > 0.75 && self.index < self.tweets.length){
-						self.loadMoreTweets();
-						self.canLoadMoreTweets = false;
-						self.finishedLoading = false;
-						
-						// Wait for three seconds before being able to load more.
-						setTimeout(function(){
-							self.canLoadMoreTweets = true;
-							self.finishedLoading = true;
-						}, 3000);
+					var h = document.documentElement, 
+					b = document.body,
+					st = 'scrollTop',
+					sh = 'scrollHeight';
+
+					var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight);
+				
+					if (percent > 0.8){
+						console.log("loading more...");
+						self.loadTweetsFromCategory(self.currentCategory, true);
 					}
 				});
 			},

@@ -49,7 +49,7 @@ layout: default
 		<br><br>
 		
 		<li style="	font-weight:500;"><a href="">PROFILE</a></li>
-		<li style="color:rgb(29,161,242); font-weight:500;"><a href="">LOGIN/OUT</a></li>
+		<li style=" color:rgb(29,161,242); font-weight:500;"><a href="">LOGIN/OUT</a></li>
 	</ul>
 	
 </div>
@@ -106,11 +106,36 @@ layout: default
 					<br>
 					
 					<div v-for="category in categories" class="profession">
-						<input type="checkbox" v-model="category.value" :id="category.name">
+<!-- 						<input type="checkbox" v-model="category.value" :id="category.name">
 						
 						<label :for="category.name">
 							<% category.name %>
-						</label>
+						</label> -->
+
+
+						<select name="profession" id="profession" multiple="multiple" size="18">
+
+							<option value="Artists">Artist</option>
+							<option value="Illustrators">Illustrator</option>
+							<option value="Concept Artists">Concept Artist</option>
+							<option value="3D Artists">3D Artist</option>
+							<option value="Photographers">Photographer</option>
+							<option value="Designers">Designer</option>
+							<option value="Comic Artists">Comic Artist</option>
+							<option value="Cartoonists">Cartoonist</option>
+							<option value="Animators">Animator</option>
+							<option value="Storyboard Artists">Storyboard Artist</option>
+							<option value="Vis Dev Artists">Vis Dev Artist</option>
+							<option value="Background Artists">Background Artist</option>
+							<option value="Film Makers">Film Maker</option>
+							<option value="Character Designers">Character Designer</option>
+							<option value="3D Environment Artists">3D Environment Artist</option>
+							<option value="3D Character Artists">3D Character Artist</option>
+							<option value="Game Artists">Game Artist</option>
+							<option value="Craft Artists">Craft Artist</option>
+
+						</select>
+
 					</div>
 
 					<br><br><br><br>

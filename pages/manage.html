@@ -153,11 +153,11 @@ permalink: /manage
 							<input type="submit" value="Add">
 						</form>
 						
-						<ul v-if="Object.keys(categories).length > 0">
+						<ul v-if="Object.keys(categories).length > 0" class="manage-text">
 							<li v-for="category in Object.keys(categories)">
+								<button  style="margin:0 2em 0 0" @click="removeCategory(category)">Delete</button>
+
 								<% category %>
-								
-								<button @click="removeCategory(category)">Delete</button>
 							</li>
 						</ul>
 						

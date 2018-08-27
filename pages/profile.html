@@ -86,11 +86,12 @@ layout: default
 
 					<br>
 
-					<select name="level">
-
-						<option value="Professional Creatives">Professional Creative</option>
-						<option value="Students">Student</option>
-						<option value="Hobbyists">Hobbyist</option>
+					<select name="level" v-model="selectedLevel">
+						<option disabled value="">Please select one...</option>
+						
+						<option v-for="level in levels" :value="level">
+							<% level %>
+						</option>
 
 					</select>
 
@@ -182,6 +183,8 @@ layout: default
 				message: "",
 				user: null,
 				categories: [],
+				selectedLevel: "",
+				levels: ["Professional Creative", "Hobbyist", "Student"],
 				url: "",
 			},
 			
@@ -275,6 +278,9 @@ layout: default
 					
 					// Also update the user's profile tweet URL.
 					updates["/allUsers/" + self.user.uid + "/profileTweet"] = "https://twitter.com/" + self.user.username + "/status/" + pathParts[3];
+					
+					// Also update the user's professional level.
+					updates["/allUsers/" + self.user.uid + "/professionalLevel"] = self.selectedLevel;
 					
 					// Push the updates to the database.
 					db.ref().update(updates).then(function(){

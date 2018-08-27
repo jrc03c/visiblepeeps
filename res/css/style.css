@@ -255,7 +255,8 @@ input[type=text], .profession label {
 }*/
 
 .profession input[type="checkbox"]:active, .profession input[type="checkbox"]:checked:active {
-	-webkit-appearance:none;
+	box-shadow: 0, inset none;
+	background-color:rgb(29,161,242);
 }
 
 .profession input[type="checkbox"]:checked {

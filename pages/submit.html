@@ -105,7 +105,7 @@ layout: default
 
 					<br>
 	
-					<select name="cats" multiple="multiple" size="18">
+					<select name="cats" id="profession" multiple="multiple" size="18">
 
 						<option value="Artists">Artist</option>
 						<option value="Illustrators">Illustrator</option>
@@ -128,7 +128,7 @@ layout: default
 
 					</select>
 
-<!-- 					<div v-for="category in categories" class="profession">
+<!-- 					<div v-for="category in categories">
 						<input type="checkbox" v-model="category.value" :id="category.name">
 						
 						<label :for="category.name">
@@ -162,6 +162,28 @@ layout: default
 	</div>
 
 </div>
+
+<script type="text/javascript">
+
+	// Limited the number of categories a user can select.
+
+	$(document).ready(function() {
+
+		var last_valid_selection = null;
+
+		$('#profession').change(function(event) {
+
+		    if ($(this).val().length > 3) {
+
+		    $(this).val(last_valid_selection);
+		            
+		    } else {
+		    last_valid_selection = $(this).val();
+		    }
+		});
+	});
+
+</script>
 
 <script>
 	window.onload = function(){

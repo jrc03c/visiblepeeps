@@ -290,6 +290,7 @@ input[type=text], .profession label {
 	position:relative;
 	outline:0;
 	top:8px;
+	margin:0;
 }
 
 .profession input[type="checkbox"]:active, .profession input[type="checkbox"]:checked:active, .profession input[type="checkbox"]:checked, .profession input[type="checkbox"]:checked:after {

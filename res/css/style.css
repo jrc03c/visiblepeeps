@@ -161,12 +161,12 @@ ul.category li, ul.category li button {
 	background:0;
 }
 
-ul.category li a:hover {
-	color:rgb(29,161,242);
+ul.category li button {
+	padding:0.6em 0 0;
 }
 
-ul.category li button {
-	padding:1.1em 0 0;
+ul.category li a:hover, ul.category li button:hover {
+	color:rgb(29,161,242);
 }
 
 .submit-button {

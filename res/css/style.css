@@ -208,24 +208,11 @@ input[type=text] {
 	margin:1em 0;
 }
 
-input[name="profession"], select[name="level"] {
-	width:300px;
-	border:0;
-	background:rgb(247,247,247);
-	overflow:hidden;
-	color:rgb(0,0,0);	
-	font-family: 'Roboto', sans-serif;
-	font-size:15px;
-	font-weight:500;
-	line-height:28px;
-	padding:0.25em;
-}
-
 select[name="level"] {
 	height:40px;
 }
 
-option, input[type=text] {
+input[type=text]. .profession label {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;
@@ -235,11 +222,11 @@ option, input[type=text] {
 	padding:0.25em 0 0.25em 0.5em;
 }
 
-input[type=text]:focus, select[name="profession"]:focus, select[name="level"]:focus {
+input[type=text]:focus, select[name="level"]:focus {
 	outline-color:hsl(192, 96%, 45%);
 }
 
-input[type="submit"], input[type="checkbox"], button {
+input[type="submit"], button {
 	color:rgb(254,254,254);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;

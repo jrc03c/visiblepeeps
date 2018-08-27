@@ -73,7 +73,6 @@ layout: default
 
 
 				<form @submit.prevent="save">
-					
 
 					<label style="font-weight:500;" for="tweet-url">
 						Tweet URL
@@ -114,7 +113,7 @@ layout: default
 
 					<input type="submit" value="Save">
 
-					<p v-if="message.length > 0">
+					<p v-if="message.length > 0" style="color:rgb(240,0,0); padding:0.5em 0 0">
 						<% message %>
 					</p>
 

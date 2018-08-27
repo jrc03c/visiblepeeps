@@ -121,7 +121,7 @@ img.peeps-lettering {
 }
 
 #main-content h2 a {
-	color:hsl(192, 96%, 45%);
+	color:rgb(29,161,242);
 }
 
 #main-content h2 a:hover {
@@ -161,7 +161,7 @@ ul.category li {
 }
 
 ul.category li a:hover {
-	color:hsl(192, 96%, 45%);
+	color:rgb(29,161,242);
 }
 
 .submit-button {
@@ -171,15 +171,15 @@ ul.category li a:hover {
 	font-size:13.5px;
 	letter-spacing:1px;
 	padding:1em 1.25em;
-	border:1px solid rgb(29 161 242);
+	border:1px solid rgb(29,161,242);
 	border-radius:4px;
-	background:rgb(29 161 242);
+	background:rgb(29,161,242);
 }
 
 .submit-button:hover {
 	cursor:pointer;
 	background:rgb(254,254,254);
-	color:rgb(29 161 242);	
+	color:rgb(29,161,242);	
 }
 
 .submit-page {
@@ -267,7 +267,7 @@ input[type=text], .profession label {
 }
 */
 input[type=text]:focus, select[name="level"]:focus {
-	outline-color:hsl(192, 96%, 45%);
+	outline-color:rgb(29,161,242);
 }
 
 input[type="submit"], button {
@@ -277,15 +277,15 @@ input[type="submit"], button {
 	font-size:13.5px;
 	letter-spacing:1px;
 	padding:1em 1.25em;
-	border:1px solid rgb(29 161 242);
+	border:1px solid rgb(29,161,242);
 	border-radius:4px;
-	background:rgb(29 161 242);	
+	background:rgb(29,161,242);	
 }
 
 input[type="submit"]:hover, button:hover {
 	cursor:pointer;
 	background:rgb(254,254,254);
-	color:rgb(29 161 242);	
+	color:rgb(29,161,242);	
 }
 
 .mobile-nav {
@@ -405,7 +405,7 @@ input[type="submit"]:hover, button:hover {
 	font-weight:500;
 	line-height:30px;
 	letter-spacing:1px;
-	color:hsl(192, 96%, 45%);
+	color:rgb(29,161,242);
 	text-transform:uppercase;
 }
 
@@ -441,7 +441,7 @@ input[type="submit"]:hover, button:hover {
 }
 
 #app #manage-content input[type="text"]:focus {
-	outline-color:hsl(192, 96%, 45%);
+	outline-color:rgb(29,161,242);
 }
 
 #app #manage-menu {
@@ -480,5 +480,5 @@ input[type="submit"]:hover, button:hover {
 
 #app #manage-menu ul li a:hover {
 	color:rgb(246,246,246);
-	background:hsl(192, 96%, 45%);
+	background:rgb(29,161,242);
 }

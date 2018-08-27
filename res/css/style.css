@@ -216,13 +216,18 @@ ul.category li a:hover {
 	outline:0;
 }
 
-.submit-page p.error-msg {
+.submit-page p.error-msg, .delete-profile {
 	color:rgb(240,0,0);
 	padding:0.5em 0 0;
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;
 	font-weight:400;
 	line-height:28px;
+}
+
+.delete-profile {
+	font-weight:500;
+	padding:0 0 0 2em;	
 }
 
 input[type=text] {

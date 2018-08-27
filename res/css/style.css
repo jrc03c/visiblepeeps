@@ -249,6 +249,10 @@ input[type=text], .profession label {
 	position:relative;
 }
 
+.profession input[type="checkbox"]:hover {
+	background-color:rgb(235,235,235);	
+}
+
 .profession input[type="checkbox"]:active, .profession input[type="checkbox"]:checked:active {
 	background-color:rgb(29,161,242);
 }

@@ -201,16 +201,29 @@ layout: default
 						self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
 						return;
 					}
-					
+
+					let db = firebase.database();					
 					let categories = {};
+					let hasAtLeastOneCategory = false;
 					
 					self.categories.forEach(function(category){
+						let ref = db.ref("/tweets/" + category.name + "/" + self.user.uid);
+						
 						if (category.value === true){
 							categories[category.name] = true;
+							ref.set(true);
+							hasAtLeastOneCategory = true;
+						} else {
+							ref.set(null);
 						}
 					});
 					
-					let db = firebase.database();
+					if (hasAtLeastOneCategory){
+						db.ref("/tweets/ALL/" + self.user.uid).set(true);
+					} else {
+						db.ref("/tweets/ALL/" + self.user.uid).set(null);
+					}
+					
 					let ref = db.ref("/allUsers/" + self.user.uid);
 					
 					ref.set({

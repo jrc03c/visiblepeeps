@@ -218,7 +218,7 @@ ul.category li a:hover {
 
 .submit-page p.error-msg, .delete-profile {
 	color:rgb(240,0,0);
-	padding:2em 0 0;
+	padding:1em 0 0;
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;
 	font-weight:400;

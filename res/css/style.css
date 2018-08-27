@@ -198,6 +198,11 @@ ul.category li a:hover {
 	line-height:28px;
 }
 
+.about-page a {
+	font-weight:500;
+	color:rgb(29,161,242);	
+}
+
 #main-content .about-page h2 {
 	font-family: 'Roboto', sans-serif;
 	padding:3em 0 0.5em;

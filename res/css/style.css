@@ -225,7 +225,7 @@ select[name="level"] {
 	height:40px;
 }
 
-/*input[type=text], .profession label {
+input[type=text], .profession label {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;
@@ -239,7 +239,7 @@ select[name="level"] {
 	font-size:13.5px;
 	padding:0 0 0 0.5em;
 	margin-top:-5px;	
-}*/
+}
 
 .profession input[type="checkbox"] {
 	-webkit-appearance:none;

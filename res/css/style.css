@@ -225,7 +225,7 @@ select[name="level"] {
 	height:40px;
 }
 
-option, input[type=text]/*, .profession label*/ {
+option, input[type=text], .profession label {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;
@@ -235,7 +235,7 @@ option, input[type=text]/*, .profession label*/ {
 	padding:0.25em 0 0.25em 0.5em;
 }
 
-/*.profession label {
+.profession label {
 	font-size:13.5px;
 	padding:0 0 0 0.5em;	
 }
@@ -253,7 +253,7 @@ option, input[type=text]/*, .profession label*/ {
 
 .profession input[type="checkbox"]:active, .profession input[type="checkbox"]:checked:active, .profession input[type="checkbox"]:checked, .profession input[type="checkbox"]:checked:after {
 	background-color:rgb(29,161,242);
-*/
+
 }
 
 input[type=text]:focus, select[name="cats"]:focus, select[name="level"]:focus {

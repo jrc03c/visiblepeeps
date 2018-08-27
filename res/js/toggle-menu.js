@@ -10,7 +10,7 @@ function setCSSRules(){
 }
 
 $(window).ready(setCSSRules);
-$(window).resize(setCSSRules);
+// $(window).resize(setCSSRules);
 
 $(".mobile-nav").click(function(e){
 	e.preventDefault();

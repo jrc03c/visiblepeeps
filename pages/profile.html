@@ -232,8 +232,16 @@ layout: default
 					
 					// If the user's submission doesn't come from twitter.com or doesn't
 					// include "status", then let them know about it and then return.
-					if (urlObj.hostname !== "twitter.com" || !urlObj.pathname.includes("status")){
+					let pathParts = urlObj.pathname.split("/");
+					
+					if (urlObj.hostname !== "twitter.com" || pathParts[2] !== "status"){
 						self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
+						return;
+					}
+					
+					// Only allow users to submit tweets from their own profile.
+					if (pathParts[1] !== self.user.username){
+						self.message = "It looks like the tweet you provided isn't one of yours. Please only submit your own tweets. Thanks!";
 						return;
 					}
 
@@ -266,7 +274,7 @@ layout: default
 					}
 					
 					// Also update the user's profile tweet URL.
-					updates["/allUsers/" + self.user.uid + "/profileTweet"] = "https://twitter.com" + urlObj.pathname;
+					updates["/allUsers/" + self.user.uid + "/profileTweet"] = "https://twitter.com/" + self.user.username + "/status/" + pathParts[3];
 					
 					// Push the updates to the database.
 					db.ref().update(updates).then(function(){

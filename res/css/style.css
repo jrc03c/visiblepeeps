@@ -201,7 +201,7 @@ ul.category li a:hover {
 #main-content .about-page h2 {
 	font-family: 'Roboto', sans-serif;
 	padding:5em 0 0;
-	font-size:14px;
+	font-size:15px;
 	max-width:900px;
 	font-weight:500;
 	line-height:30px;
@@ -209,6 +209,7 @@ ul.category li a:hover {
 	color:rgb(29,161,242);
 	text-transform:uppercase;
 	text-align:left;
+	width:auto;
 }
 
 .submit-page button {

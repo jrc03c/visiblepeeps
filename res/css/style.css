@@ -199,6 +199,10 @@ ul.category li a:hover {
 	text-align:left;
 }
 
+.submit-page button {
+	outline:0;
+}
+
 input[type=text] {
 	width:100%;
 	height:60px;

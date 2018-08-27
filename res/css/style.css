@@ -162,7 +162,7 @@ ul.category li, ul.category li button {
 }
 
 ul.category li button {
-	padding:0.6em 0 0;
+	padding:0;
 }
 
 ul.category li a:hover, ul.category li button:hover {

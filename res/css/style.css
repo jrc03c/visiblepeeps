@@ -202,18 +202,16 @@ ul.category li a:hover {
 	color:rgb(29,161,242);	
 }
 
-#main-content .about-page h3 {
+.about-page h3 {
 	font-family: 'Roboto', sans-serif;
 	padding:3em 0 0.25em;
 	font-size:15px;
-	max-width:900px;
 	font-weight:500;
 	line-height:30px;
 	letter-spacing:-0.5px;
-	color:rgb(29,161,242);
+/*	color:rgb(29,161,242);*/
 	text-transform:uppercase;
 	text-align:left;
-	width:auto;
 }
 
 .submit-page button {

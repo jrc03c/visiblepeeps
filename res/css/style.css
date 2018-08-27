@@ -212,7 +212,20 @@ select[name="level"] {
 	height:40px;
 }
 
-input[type=text], select[name="level"], .profession label {
+select[name="level"] {
+	width:300px;
+	border:0;
+	background:rgb(247,247,247);
+	overflow:hidden;
+	color:rgb(0,0,0);	
+	font-family: 'Roboto', sans-serif;
+	font-size:15px;
+	font-weight:500;
+	line-height:28px;
+	padding:0.25em;
+}
+
+input[type=text], .profession label {
 	color:rgb(0,0,0);	
 	font-family: 'Roboto', sans-serif;
 	font-size:15px;

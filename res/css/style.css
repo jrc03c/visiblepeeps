@@ -260,6 +260,7 @@ input[type=text], .profession label {
 }
 
 .profession input[type="checkbox"]:checked {
+	box-shadow: 0, inset none;
 	background-color:rgb(29,161,242);
 }
 

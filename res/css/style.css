@@ -198,7 +198,7 @@ ul.category li a:hover {
 	line-height:28px;
 }
 
-.about-page h2 {
+#main-content .about-page h2 {
 	font-family: 'Roboto', sans-serif;
 	padding:5em 0 0;
 	font-size:14px;
@@ -208,6 +208,7 @@ ul.category li a:hover {
 	letter-spacing:1px;
 	color:rgb(29,161,242);
 	text-transform:uppercase;
+	text-align:left;
 }
 
 .submit-page button {

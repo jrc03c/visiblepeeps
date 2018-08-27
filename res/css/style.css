@@ -271,10 +271,6 @@ input[type=text], .profession label {
 	padding:0.25em 0 0.25em 0.5em;
 }
 
-.profession {
-	top:-80px;
-}
-
 .profession label {
 	font-size:13px;
 	padding:0 0 0 0.5em;
@@ -289,7 +285,7 @@ input[type=text], .profession label {
 	display:inline-block;
 	position:relative;
 	outline:0;
-	top:8px;
+	top:6px;
 	margin:0;
 }
 

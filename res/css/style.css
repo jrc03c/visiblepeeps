@@ -128,6 +128,47 @@ img.peeps-lettering {
 	color:rgb(0,0,0);
 }
 
+#side-menu {
+	display:block;
+	margin:0;
+	position:fixed;
+	width:250px;
+	overflow-y:scroll;
+	height:100%;
+	-ms-overflow-style: none;
+}
+
+#side-menu::-webkit-scrollbar { 
+    display:none; 
+}
+
+ul.category {
+	position:absolute;
+	top:0;
+	padding:6em 0 2.5em;
+}
+
+ul.category li, ul.category li button {
+	display:block;
+	padding:1.1em 0 0 3.5em;
+	color:rgb(0,0,0);
+	font-family: 'Roboto', sans-serif;
+	font-size:12.5px;
+	font-weight:400;
+	text-align:left;
+	letter-spacing:0.5px;
+	border:0;
+	background:0;
+}
+
+ul.category li a:hover {
+	color:rgb(29,161,242);
+}
+
+ul.category li button {
+	padding:1.1em 0 0;
+}
+
 .submit-button {
 	color:rgb(254,254,254);	
 	font-weight:500;
@@ -305,43 +346,6 @@ input[type="submit"]:hover, button:hover {
 
 .mobile-nav:focus {
 	outline:0;
-}
-
-#side-menu {
-	display:block;
-	margin:0;
-	position:fixed;
-	width:250px;
-	overflow-y:scroll;
-	height:100%;
-	-ms-overflow-style: none;
-}
-
-#side-menu::-webkit-scrollbar { 
-    display:none; 
-}
-
-ul.category {
-	position:absolute;
-	top:0;
-	padding:6em 0 2.5em;
-}
-
-ul.category li, ul.category li button {
-	display:block;
-	padding:1.1em 0 0 3.5em;
-	color:rgb(0,0,0);
-	font-family: 'Roboto', sans-serif;
-	font-size:12.5px;
-	font-weight:400;
-	text-align:left;
-	letter-spacing:0.5px;
-	border:0;
-	background:0;
-}
-
-ul.category li a:hover {
-	color:rgb(29,161,242);
 }
 
 @media (max-width:1050px) {

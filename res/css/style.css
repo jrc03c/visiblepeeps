@@ -380,7 +380,7 @@ input[type="submit"]:hover, button:hover {
 
 #app #manage-content ul.manage-text li, #app #manage-content p {
 	padding:0.5em 0;
-	border-bottom:1px solid rgb(220,220,220);
+/*	border-bottom:1px solid rgb(220,220,220);*/
 	font-size:13px;
 	font-family: 'Roboto', sans-serif;
 }

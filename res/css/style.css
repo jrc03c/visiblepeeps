@@ -203,7 +203,7 @@ ul.category li a:hover {
 	outline:0;
 }
 
-.error-msg {
+.submit-page p.error-msg {
 	color:rgb(240,0,0);
 	padding:0.5em 0 0;
 	font-family: 'Roboto', sans-serif;

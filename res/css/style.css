@@ -208,7 +208,7 @@ input[type=text] {
 	margin:1em 0 0;
 }
 
-select[id="profession"], select[name="level"] {
+select[name="cats"], select[name="level"] {
 	width:300px;
 	border:0;
 	background:rgb(247,247,247);
@@ -256,7 +256,7 @@ input[type=text]/*, .profession label*/ {
 */
 }
 
-input[type=text]:focus, select[name="profession"]:focus, select[name="level"]:focus {
+input[type=text]:focus, select[name="cats"]:focus, select[name="level"]:focus {
 	outline-color:rgb(29,161,242);
 }
 

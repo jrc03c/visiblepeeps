@@ -53805,18 +53805,326 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   }
 })()}
 },{"vue":15,"vue-hot-reload-api":12}],23:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("p[data-v-d5fd22ee] {\n\tmargin-bottom: 1rem;\n}")
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+let firebase = require("firebase/app");
+
+module.exports = Vue.component("profile", {
+	// The url variable keeps track of what the user types
+	// into the text input field. The isLoggedIn makes it
+	// so that only logged-in users can see the submission form.
+	// The canSubmit variable helps to prevent spamming of 
+	// the form; we use a 5-second timeout between submissions,
+	// during which the canSubmit variable is set to false.
+	// The message variable shows a message to the user if
+	// something is wrong with the submission (like if their
+	// url doesn't come from twitter.com, or if it doesn't contain
+	// "status", or if they don't wait long enough between 
+	// submissions). We also download the tweetsToApprove and 
+	// the approvedTweets to make sure that we don't let the user
+	// add duplicates. And finally, we download the user's data
+	// so that we can attach their username to the tweet they
+	// submit, which makes it easy for us to block them later
+	// if we don't like the submissions they're making.
+	data: function(){
+		return {
+			isLoggedIn: false,
+			canSubmit: true,
+			message: "",
+			user: null,
+			categories: [],
+			selectedLevel: "",
+			levels: ["Professional Creative", "Hobbyist", "Student"],
+			url: "",
+		};
+	},
+	
+	methods: {
+		// This is the typical Firebase / Twitter auth flow.
+		login: function(){
+			let provider = new firebase.auth.TwitterAuthProvider();
+			
+			firebase.auth().signInWithPopup(provider).then(function(result){
+				let db = firebase.database();
+				
+				// We make sure that we grab the user's Twitter username.
+				// For some stupid reason, this is the only time that
+				// this information is available to us.
+				let username = result.additionalUserInfo.username;
+				
+				// We store the username in the database under their 
+				// Firebase auth UID.
+				let ref = db.ref("/allUsers/" + result.user.uid + "/username");
+				ref.set(username);
+			}).catch(function(error){
+				console.error(error);
+			});
+		},
+		
+		// This the typical Firebase sign-out method, though
+		// this is where we also stop listening to the database
+		// references.
+		logout: function(){
+			firebase.auth().signOut();
+		},
+		
+		// This is where we do all the submission magic.
+		save: function(){
+			let self = this;
+			
+			// Try to make a URL object out of the user's submission.
+			let urlObj;
+			
+			try {
+				urlObj = new URL(self.url);
+			} catch (error){
+				// If it fails, then it's probably because they didn't enter
+				// a valid URL. Let them know about it and then return.
+				self.message = "It looks like you entered an invalid URL. Please enter a URL that points directly to a tweet.";
+				return;
+			}
+			
+			// If the user's submission doesn't come from twitter.com or doesn't
+			// include "status", then let them know about it and then return.
+			let pathParts = urlObj.pathname.split("/");
+			
+			if (urlObj.hostname !== "twitter.com" || pathParts[2] !== "status"){
+				self.message = "There was a problem with the URL you provided. Please enter a URL that points directly to a tweet.";
+				return;
+			}
+			
+			// Only allow users to submit tweets from their own profile.
+			if (pathParts[1] !== self.user.username){
+				self.message = "It looks like the tweet you provided isn't one of yours. Please only submit your own tweets. Thanks!";
+				return;
+			}
+			
+			// Update all of the category entries both in the user's profile part
+			// of the database and in the category list itself.
+			let db = firebase.database();
+			let hasAtLeastOneCategory = false;
+			let updates = {};
+			
+			self.categories.forEach(function(category){
+				let path1 = "/tweets/" + category.name + "/" + self.user.uid;
+				let path2 = "/allUsers/" + self.user.uid + "/categories/" + category.name;
+				
+				if (category.value === true){
+					updates[path1] = true;
+					updates[path2] = true;
+					hasAtLeastOneCategory = true;
+				} else {
+					updates[path1] = null;
+					updates[path2] = null;
+				}
+			});
+			
+			// If the user has at least one category checked, then the user
+			// should also be added to the "ALL" category.
+			if (hasAtLeastOneCategory){
+				updates["/tweets/ALL/" + self.user.uid] = true;
+			} else {
+				updates["/tweets/ALL/" + self.user.uid] = true;
+			}
+			
+			// Also update the user's profile tweet URL.
+			updates["/allUsers/" + self.user.uid + "/profileTweet"] = "https://twitter.com/" + self.user.username + "/status/" + pathParts[3];
+			
+			// Also update the user's professional level.
+			updates["/allUsers/" + self.user.uid + "/professionalLevel"] = self.selectedLevel;
+			
+			// Push the updates to the database.
+			db.ref().update(updates).then(function(){
+				self.message = "Saved!";
+				
+				setTimeout(function(){
+					self.message = "";
+				}, 3000);
+			}).catch(function(error){
+				self.message = "There was an error saving your profile information. :(";
+			});
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		
+		// We listen to a bunch of database references. I'm not sure
+		// whether this is optimal or not, but it is what it is. :) 
+		// Anyway, I'm making references to them here so that I can 
+		// turn them off when the user logs out.
+		let ref1, ref2;
+		
+		// Listen for users logging in and out, and then...
+		firebase.auth().onAuthStateChanged(function(user){
+			// Unhide the #app element, which was hidden so as not
+			// to show off its weird markup.
+			document.getElementById("app").style.display = "block";
+			
+			// Set the isLoggedIn variable.
+			self.isLoggedIn = !!user;
+			
+			// turn off listeners
+			if (ref1) ref1.off();
+			if (ref2) ref2.off();
+			
+			// If the user is logged in, then...
+			if (user){
+				let db = firebase.database();
+				
+				// Get a reference to the user's data in the database.
+				ref1 = db.ref("/allUsers/" + user.uid);
+				
+				// Listen to that reference, in case the user suddenly
+				// gets blocked or their data changes in some other way.
+				ref1.on("value", function(snapshot){
+					// Get their data.
+					let userData = snapshot.val();
+					
+					// If for some reason the data doesn't exist,
+					// then return.
+					if (!userData) return;
+					
+					// Set their info into the user variable.
+					self.user = userData;
+					self.user.uid = user.uid;
+					
+					self.url = self.user.profileTweet || "";
+					self.selectedLevel = self.user.professionalLevel || "";
+					
+					if (ref2) ref2.off();
+					
+					ref2 = db.ref("/categoryList");
+					
+					ref2.on("value", function(snapshot){
+						self.categories = [];
+						
+						let categories = snapshot.val();
+						if (!categories) return;
+						
+						Object.keys(categories).forEach(function(category){
+							self.categories.push({
+								name: category,
+								value: self.user.categories && self.user.categories[category],
+							});
+						});
+					});
+				});
+			}
+		});
+	},
+});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('div',{staticClass:"submit-page"},[(_vm.isLoggedIn)?_c('div',[_c('p',[_vm._v("Hi! We are so happy you want to join! Once you have submitted your tweet, you can at any point return to this page and update your information. Totes! :D")]),_vm._v(" "),_vm._m(0),_vm._v(" "),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.save($event)}}},[_vm._m(1),_vm._v(" "),_c('p',{staticStyle:{"font-style":"italic","color":"rgb(135,135,135)"}},[_vm._v("This can be found by pressing the downward arrow in the top right corner on your tweet, and then clicking 'Copy link to tweet'.")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text","id":"tweet-url"},domProps:{"value":(_vm.url)},on:{"keydown":function($event){_vm.message = ''},"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}}),_vm._v(" "),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Choose what level represents you")]),_vm._v(" "),_c('br'),_vm._v(" "),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.selectedLevel),expression:"selectedLevel"}],attrs:{"name":"level"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.selectedLevel=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"disabled":"","value":""}},[_vm._v("Please select one...")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('option',{domProps:{"value":level}},[_vm._v("\n\t\t\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t\t\t")])})],2),_vm._v(" "),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Choose the profession that best describes you (Select up to 3)")]),_vm._v(" "),_c('p',{staticStyle:{"font-style":"italic","color":"rgb(135,135,135)"}},[_vm._v("If you feel like a category that represents you is missing, please feel free to contact us, and we will sort it out. You can find contact info on the about page under Site Issues.")]),_vm._v(" "),_c('br'),_vm._v(" "),_vm._l((_vm.categories),function(category){return _c('div',{staticClass:"profession"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(category.value),expression:"category.value"}],attrs:{"type":"checkbox","id":category.name},domProps:{"checked":Array.isArray(category.value)?_vm._i(category.value,null)>-1:(category.value)},on:{"change":function($event){var $$a=category.value,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(category, "value", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(category, "value", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(category, "value", $$c)}}}}),_vm._v(" "),_c('label',{attrs:{"for":category.name}},[_vm._v("\n\t\t\t\t\t\t\t"+_vm._s(category.name)+"\n\t\t\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Save"}}),_c('a',{staticClass:"delete-profile",attrs:{"href":""}},[_vm._v("Delete profile")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',{staticClass:"profile-msg"},[_vm._v("\n\t\t\t\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t\t\t")]):_vm._e()],2),_vm._v(" "),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('button',{on:{"click":_vm.logout}},[_vm._v("Log out")])]):_c('div',[_c('p',[_vm._v("This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to update your submitted tweet, and any categories you have picked.")]),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('p',[_vm._v("Please log in with your Twitter account to create a profile page.")]),_vm._v(" "),_c('button',{staticStyle:{"margin":"1em 0 0"},on:{"click":_vm.login}},[_vm._v("Log in")])])])],1)],1)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',[_vm._v("Please only submit tweets including the following hashtags: "),_c('span',{staticStyle:{"color":"rgb(29,161,242)"}},[_vm._v("#VisibleWomen · #VisibleWoman · #VisibleNB · #VisibileNBs")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('label',{attrs:{"for":"tweet-url"}},[_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Tweet URL")])])}]
+__vue__options__._scopeId = "data-v-d5fd22ee"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-d5fd22ee", __vue__options__)
   } else {
     hotAPI.reload("data-v-d5fd22ee", __vue__options__)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":12}],24:[function(require,module,exports){
+},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14,"vueify/lib/insert-css":16}],24:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -53932,8 +54240,8 @@ module.exports = Vue.component("side-menu", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_vm._m(0),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel('ALL')}}},[_vm._v("\n\t\t\t\t\tAll Levels\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = 'ALL'}}},[_vm._v("\n\t\t\t\t\tAll Artists\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = category}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("OTHER")]),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('a',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"},attrs:{"href":""}},[_vm._v("LOGIN/OUT")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("ACCOUNT")]),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel('ALL')}}},[_vm._v("\n\t\t\t\t\tAll Levels\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = 'ALL'}}},[_vm._v("\n\t\t\t\t\tAll Artists\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = category}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("OTHER")]),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return

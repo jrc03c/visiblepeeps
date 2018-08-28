@@ -1,13 +1,3 @@
-<style scoped>
-	h3 {
-		padding: 1rem 0;
-	}
-		
-	p {
-		margin-bottom: 1rem;
-	}
-</style>
-
 <template>
 	<div>
 		<side-menu></side-menu>
@@ -17,7 +7,7 @@
 			
 			<div class="about-page">
 				
-				<p>wwwwwwwwwwwVisible Peeps is a site where women, non-binary and trans creators of all skill levels can share their tweets from the popular hashtags #VisibleWomen and #VisibleNB on Twitter. These hashtags offer a great way to discover new and talented creators that are vastly under-represented within the creative industry. The goal of the site is to create a place where people can explore tweets, creators and art with ease.</p>
+				<p>Visible Peeps is a site where women, non-binary and trans creators of all skill levels can share their tweets from the popular hashtags #VisibleWomen and #VisibleNB on Twitter. These hashtags offer a great way to discover new and talented creators that are vastly under-represented within the creative industry. The goal of the site is to create a place where people can explore tweets, creators and art with ease.</p>
 
 				<p>Visible Peeps was created by <a href="https://twitter.com/jrc03c">Josh Castle</a> and <a href="https://twitter.com/A_Werchmeister">Andreas Werchmeister</a>, and with the gracious support and help of <a href="https://twitter.com/LetsWoolgather">Toby Brommerich</a>, <a href="https://twitter.com/kylemadkins">Kyle Adkins</a>, as well as <a href="https://twitter.com/tarakeet">Tara Han-Tran Johnson</a>, who created the beautiful title logo.</p>
 

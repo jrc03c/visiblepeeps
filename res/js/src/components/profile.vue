@@ -1,9 +1,3 @@
-<style scoped>
-	p {
-		margin-bottom: 1rem;
-	}
-</style>
-
 <template>
 	<div>
 		<side-menu></side-menu>

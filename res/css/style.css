@@ -528,3 +528,12 @@ input[type="submit"]:hover, button:hover {
 	color:rgb(246,246,246);
 	background:rgb(29,161,242);
 }
+
+@media (max-width:1050px) {
+
+	#app #manage-content {
+		width:100%;
+		margin:0 auto;
+	}
+
+}

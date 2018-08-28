@@ -59,7 +59,7 @@
 				<li class="li-heading">FILTER BY PROFESSION</li>
 				
 				<li v-for="category in $store.state.categories">
-					<a @click="$store.state.currentCategory = category" class="fake-a">
+					<a @click="setCurrentCategory(category)" class="fake-a">
 						{{ category }}
 					</a>
 				</li>

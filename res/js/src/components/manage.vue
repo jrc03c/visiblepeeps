@@ -2,7 +2,6 @@
 	<div>
 		<side-menu @manage="setCurrentView"></side-menu>
 		
-		<div id="main-content">
 			<div id="manage-content">
 		
 				<div v-if="isLoggedIn && isAdmin">
@@ -91,7 +90,7 @@
 					You are not logged in. Please log in to manage stuff.
 				</div>
 			</div>
-		</div>
+		
 	</div>
 </template>
 

@@ -105,7 +105,7 @@ layout: default
 						<br>
 						
 						<div v-for="category in categories" class="profession">
-							<input type="checkbox" v-model="" :id="category.name">
+							<input type="checkbox" v-model="category.value" :id="category.name">
 							
 							<label :for="category.name">
 								<% category.name %>

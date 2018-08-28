@@ -100,10 +100,10 @@ p {
 	margin:0 0 0 250px;
 }
 
-img.peeps-lettering {
+#app #main-content a img.peeps-lettering {
 	padding:4em 0 0.25em;
 	width:90%;
-	max-width:400px;
+	max-width:100px;
 	margin:0 auto;
 }
 

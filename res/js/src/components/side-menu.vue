@@ -37,6 +37,7 @@
 				
 				<li class="li-heading">ACCOUNT</li>
 				<li><router-link to="/profile" class="fake-a">Profile</router-link></li>
+				<li class="li-fat">LOGIN/OUT</li>
 				
 				<br><br>
 

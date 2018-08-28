@@ -11,7 +11,7 @@
 				<li style="font-weight:500;" v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				<span v-if="isAdmin">
 
-					<li><router-link to="/" class="fake-a">Home</router-link></li>
+					<li><a href="" class="fake-a">Home</a></li>
 		
 					<li>
 						<a @click="manage('adminUsers')" class="fake-a">

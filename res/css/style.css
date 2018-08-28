@@ -440,7 +440,7 @@ input[type="submit"]:hover, button:hover {
 
 #app #manage-content h2 {
 	font-family: 'Roboto', sans-serif;
-	padding:6.5em 0 1.5em;
+	padding:6.4em 0 1.5em;
 	font-size:16px;
 	max-width:900px;
 	font-weight:500;
@@ -478,7 +478,7 @@ input[type="submit"]:hover, button:hover {
 	border:0;
 	background:rgb(247,247,247);
 	resize:none;
-	margin:0 1em 1em 0;
+	margin:0 1em 1em 1em;
 }
 
 #app #manage-content input[type="text"]:focus {

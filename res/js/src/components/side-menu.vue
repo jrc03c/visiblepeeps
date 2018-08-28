@@ -4,37 +4,37 @@
 		
 		<div id="side-menu">
 			<ul class="category">
-				<span v-if="$router.currentRoute.path === '/manage'">
+				<span v-if="isAdmin">
 					<li class="li-heading">MANAGE</li>
 					
 					<li>
-						<a @click="$emit('manage', 'adminUsers')" class="fake-a">
+						<a @click="manage('adminUsers')" class="fake-a">
 							Admin Users
 						</a>
 					</li>
 					
 					<li>
-						<a @click="$emit('manage', 'flaggedUsers')" class="fake-a">
+						<a @click="manage('flaggedUsers')" class="fake-a">
 							Flagged Users
 						</a>
 					</li>
 					
 					<li>
-						<a @click="$emit('manage', 'blockedUsers')" class="fake-a">
+						<a @click="manage('blockedUsers')" class="fake-a">
 							Blocked Users
 						</a>
 					</li>
 					
 					<li>
-						<a @click="$emit('manage', 'categories')" class="fake-a">
+						<a @click="manage('categories')" class="fake-a">
 							Categories
 						</a>
 					</li>
 					
+					<br><br>
+					
 				</span>
-				
-				<br><br>
-				
+								
 				<li class="li-heading">ACCOUNT</li>
 				<li><a class="fake-a" @click="logInOrOut">Login/out</a></li>
 				<li v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
@@ -80,6 +80,7 @@
 		data: function(){
 			return {
 				levels: ["Professional Creative", "Student", "Hobbyist"],
+				isAdmin: false,
 			};
 		},
 		
@@ -129,6 +130,12 @@
 				self.$store.state.currentCategory = category;
 				self.$router.push("/");
 			},
+			
+			manage: function(page){
+				let self = this;
+				self.$router.push("/manage");
+				self.$store.state.currentManagementView = page;
+			}
 		},
 		
 		mounted: function(){
@@ -163,9 +170,28 @@
 			$(window).ready(setCSSRules);
 			$(window).resize(setCSSRules);
 			$(".mobile-nav").click(toggleMenu);
-			
+						
 			firebase.auth().onAuthStateChanged(function(user){
 				self.$store.state.currentUser = user;
+				
+				if (user){
+					let db = firebase.database();
+					let ref1 = db.ref("/allUsers/" + user.uid);
+					
+					ref1.on("value", function(snapshot1){
+						let userData = snapshot1.val();
+						if (!userData) return;
+						
+						let ref2 = db.ref("/adminUsers/" + userData.username);
+						
+						ref2.on("value", function(snapshot2){
+							let isAdmin = snapshot2.val();
+							self.isAdmin = !!isAdmin;
+						});
+					});
+				} else {
+					self.isAdmin = false;
+				}
 			});
 		},
 	});

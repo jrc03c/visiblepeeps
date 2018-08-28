@@ -110,8 +110,14 @@
 				flaggedUsers: [],
 				categoryToAdd: "",
 				categories: {},
-				currentView: "flaggedUsers",
 			};
+		},
+		
+		computed: {
+			currentView: function(){
+				let self = this;
+				return self.$store.state.currentManagementView;
+			},
 		},
 		
 		methods: {

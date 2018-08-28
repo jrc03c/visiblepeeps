@@ -53868,8 +53868,14 @@ module.exports = Vue.component("manage", {
 			flaggedUsers: [],
 			categoryToAdd: "",
 			categories: {},
-			currentView: "flaggedUsers",
 		};
+	},
+	
+	computed: {
+		currentView: function(){
+			let self = this;
+			return self.$store.state.currentManagementView;
+		},
 	},
 	
 	methods: {
@@ -54459,6 +54465,7 @@ module.exports = Vue.component("side-menu", {
 	data: function(){
 		return {
 			levels: ["Professional Creative", "Student", "Hobbyist"],
+			isAdmin: false,
 		};
 	},
 	
@@ -54508,6 +54515,12 @@ module.exports = Vue.component("side-menu", {
 			self.$store.state.currentCategory = category;
 			self.$router.push("/");
 		},
+		
+		manage: function(page){
+			let self = this;
+			self.$router.push("/manage");
+			self.$store.state.currentManagementView = page;
+		}
 	},
 	
 	mounted: function(){
@@ -54542,9 +54555,28 @@ module.exports = Vue.component("side-menu", {
 		$(window).ready(setCSSRules);
 		$(window).resize(setCSSRules);
 		$(".mobile-nav").click(toggleMenu);
-		
+					
 		firebase.auth().onAuthStateChanged(function(user){
 			self.$store.state.currentUser = user;
+			
+			if (user){
+				let db = firebase.database();
+				let ref1 = db.ref("/allUsers/" + user.uid);
+				
+				ref1.on("value", function(snapshot1){
+					let userData = snapshot1.val();
+					if (!userData) return;
+					
+					let ref2 = db.ref("/adminUsers/" + userData.username);
+					
+					ref2.on("value", function(snapshot2){
+						let isAdmin = snapshot2.val();
+						self.isAdmin = !!isAdmin;
+					});
+				});
+			} else {
+				self.isAdmin = false;
+			}
 		});
 	},
 });
@@ -54553,7 +54585,7 @@ module.exports = Vue.component("side-menu", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[(_vm.$router.currentRoute.path === '/manage')?_c('span',[_c('li',{staticClass:"li-heading"},[_vm._v("MANAGE")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'adminUsers')}}},[_vm._v("\n\t\t\t\t\t\tAdmin Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'flaggedUsers')}}},[_vm._v("\n\t\t\t\t\t\tFlagged Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'blockedUsers')}}},[_vm._v("\n\t\t\t\t\t\tBlocked Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'categories')}}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])])]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("ACCOUNT")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":_vm.logInOrOut}},[_vm._v("Login/out")])]),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_vm._v("SHOW ALL")]),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = category}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[(_vm.isAdmin)?_c('span',[_c('li',{staticClass:"li-heading"},[_vm._v("MANAGE")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.manage('adminUsers')}}},[_vm._v("\n\t\t\t\t\t\tAdmin Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.manage('flaggedUsers')}}},[_vm._v("\n\t\t\t\t\t\tFlagged Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.manage('blockedUsers')}}},[_vm._v("\n\t\t\t\t\t\tBlocked Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.manage('categories')}}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])]),_vm._v(" "),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("ACCOUNT")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":_vm.logInOrOut}},[_vm._v("Login/out")])]),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_vm._v("SHOW ALL")]),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = category}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54605,6 +54637,7 @@ window.onload = function(){
 			currentLevel: "ALL",
 			currentCategory: "ALL",
 			currentUser: null,
+			currentManagementView: "adminUsers",
 		},
 		getters: {},
 		mutations: {},

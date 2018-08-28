@@ -37,6 +37,7 @@ window.onload = function(){
 			currentLevel: "ALL",
 			currentCategory: "ALL",
 			currentUser: null,
+			currentManagementView: "adminUsers",
 		},
 		getters: {},
 		mutations: {},

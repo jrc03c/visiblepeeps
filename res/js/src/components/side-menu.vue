@@ -80,7 +80,7 @@
 	module.exports = Vue.component("side-menu", {
 		data: function(){
 			return {
-				levels: ["Professional Creative", "Student", "Hobbyist"],
+				levels: ["Professional Creatives", "Students", "Hobbyists"],
 				isAdmin: false,
 			};
 		},

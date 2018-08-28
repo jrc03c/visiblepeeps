@@ -53643,7 +53643,7 @@ module.exports = Vue.component("index", {
 			}
 			
 			let db = firebase.database();
-			let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(10);
+			let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(12);
 			
 			ref.once("value").then(function(snapshot){
 				let userUIDs = snapshot.val();
@@ -53721,7 +53721,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b556332", __vue__options__)
   } else {
-    hotAPI.reload("data-v-1b556332", __vue__options__)
+    hotAPI.rerender("data-v-1b556332", __vue__options__)
   }
 })()}
 },{"./main-header.vue":20,"./side-menu.vue":23,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){

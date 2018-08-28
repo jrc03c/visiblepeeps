@@ -7,7 +7,7 @@
 
 								
 				<li class="li-heading">ACCOUNT</li>
-				<li><a style="font-weight:500;" class="fake-a" @click="logInOrOut">Login/out</a></li>
+				<li><a style="font-weight:500;" class="fake-a" @click="logInOrOut">{{ $store.state.currentUser ? "Log out" : "Log in" }}</a></li>
 				<li style="font-weight:500;" v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				<span v-if="isAdmin">
 

@@ -10,8 +10,7 @@
 				<li><a class="fake-a" @click="logInOrOut">Login/out</a></li>
 				<li v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				<span v-if="isAdmin">
-					<li class="li-heading">MANAGE</li>
-					
+		
 					<li>
 						<a @click="manage('adminUsers')" class="fake-a">
 							Admin Users
@@ -38,7 +37,7 @@
 					
 				</span>	
 
-			
+
 				<br><br>
 
 				<li class="li-fat">SHOW ALL</li>
@@ -47,7 +46,7 @@
 
 				<li class="li-heading">FILTER BY LEVEL</li>
 				
-				<li v-for="level in levels">
+				<li style="font-weight:500;" v-for="level in levels">
 					<a @click="setCurrentLevel(level)" class="fake-a">
 						{{ level }}
 					</a>

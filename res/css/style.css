@@ -171,6 +171,7 @@ ul.category li a:hover {
 
 .li-fat {
 	font-weight:500;
+	text-transform:uppercase;
 }
 
 .submit-button {

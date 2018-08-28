@@ -28,7 +28,11 @@ window.onload = function(){
 	let router = new VueRouter({routes});
 	
 	let store = new Vuex.Store({
-		state: {},
+		state: {
+			categories: [],
+			currentLevel: "ALL",
+			currentCategory: "ALL",
+		},
 		getters: {},
 		mutations: {},
 		actions: {},
@@ -38,5 +42,20 @@ window.onload = function(){
 		el: "#app",
 		router,
 		store,
+		
+		mounted: function(){
+			let self = this;
+			let db = firebase.database();
+			
+			let categoryListRef = db.ref("/categoryList");
+			
+			categoryListRef.on("value", function(snapshot){
+				let categories = snapshot.val();
+				if (!categories) return;
+				store.state.categories = Object.keys(categories);
+			});
+		},
 	});
+	
+	document.getElementById("app").style.display = "block";
 };

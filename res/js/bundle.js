@@ -54007,8 +54007,8 @@ module.exports = Vue.component("main-header", {});
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('router-link',{attrs:{"to":""}},[_c('img',{staticClass:"peeps-lettering",attrs:{"src":"/res/img/visiblepeeps.png"}})]),_vm._v(" "),_vm._m(0)],1)}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('h2',[_vm._v("Women, non-binary and trans creators on Twitter"),_c('br'),_vm._v(" "),_c('a',{attrs:{"href":"https://twitter.com/hashtag/VisibleWomen?src=hash"}},[_vm._v("#VisibleWomen")]),_vm._v(" · "),_c('a',{attrs:{"href":"https://twitter.com/hashtag/VisibleNB?src=hash"}},[_vm._v("#VisibleNB")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('a',{attrs:{"href":""}},[_c('img',{staticClass:"peeps-lettering",attrs:{"src":"/res/img/visiblepeeps.png"}})]),_vm._v(" "),_c('h2',[_vm._v("Women, non-binary and trans creators on Twitter"),_c('br'),_vm._v(" "),_c('a',{attrs:{"href":"https://twitter.com/hashtag/VisibleWomen?src=hash"}},[_vm._v("#VisibleWomen")]),_vm._v(" · "),_c('a',{attrs:{"href":"https://twitter.com/hashtag/VisibleNB?src=hash"}},[_vm._v("#VisibleNB")])])])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return

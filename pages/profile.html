@@ -105,7 +105,7 @@ layout: default
 						<br>
 						
 						<div v-for="category in categories" class="profession">
-							<input type="checkbox" v-model="category.value" :id="category.name">
+							<input class=".single-checkbox" type="checkbox" v-model="category.value" :id="category.name">
 							
 							<label :for="category.name">
 								<% category.name %>
@@ -143,6 +143,15 @@ layout: default
 		
 	</div>
 </div>
+
+<script type="text/javascript">
+	
+	$('.single-checkbox').on('change', function() {
+	   if($('.single-checkbox:checked').length > 2) {
+	       this.checked = false;
+	   }
+	});
+</script>
 
 <script>
 	window.onload = function(){

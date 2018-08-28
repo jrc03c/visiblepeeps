@@ -1,63 +1,110 @@
 <template>
-	<div id="side-menu">
-		<ul class="category">
-			<li><a style="color:rgb(29,161,242);  font-weight:500;" href="">LOGIN/OUT</a></li>
-			<li style="	font-weight:500;"><a href="/profile">PROFILE</a></li>
-			
-			<br><br>	
-			
-			<li><a style="font-weight:500;" href="">SHOW ALL</a></li>
-			
-			<br><br>
-			
-			<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY LEVEL</li>	
-			
-			<li style="	font-weight:500;">
-				<a @click="$store.state.currentLevel = 'ALL'" class="fake-a">
-					All Levels
-				</a>
-			</li>
-			<li style="	font-weight:500;">
-				<a @click="$store.state.currentLevel = 'Professional Creative'" class="fake-a">
-					Professional Creatives
-				</a>
-			</li>	
-			<li style="	font-weight:500;">
-				<a @click="$store.state.currentLevel = 'Student'" class="fake-a">
-					Students
-				</a>
-			</li>	
-			<li style="	font-weight:500;">
-				<a @click="$store.state.currentLevel = 'Hobbyist'" class="fake-a">
-					Hobbyists
-				</a>
-			</li>
-			
-			<br><br>
-			
-			<li style="font-weight:500;">FILTER BY PROFESSION</li>
-			<li>
-				<a @click="$store.state.currentCategory = 'ALL'" class="fake-a">
-					All Artists
-				</a>
-			</li>
-			<li v-for="category in $store.state.categories">
-				<a @click="$store.state.currentCategory = category" class="fake-a">
-					{{ category }}
-				</a>
-			</li>
-			
-			<br><br>
-			
-			<li style="	font-weight:500;"><a href="/about">ABOUT</a></li>
-			
-		</ul>
+	<div>
+		<button class="mobile-nav">&#x2630;</button>
 		
+		<div id="side-menu">
+			<ul class="category">
+				<li><a style="color:rgb(29,161,242);  font-weight:500;" href="">LOGIN/OUT</a></li>
+				<li><a href="/profile">Profile</a></li>
+				
+				<br><br>
+				
+				<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY LEVEL</li>
+				
+				<li>
+					<a @click="setCurrentLevel('ALL')" class="fake-a">
+						All Levels
+					</a>
+				</li>
+				
+				<li v-for="level in levels">
+					<a @click="setCurrentLevel(level)" class="fake-a">
+						{{ level }}
+					</a>
+				</li>
+				
+				<br><br>
+				
+				<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY PROFESSION</li>
+				
+				<li>
+					<a @click="$store.state.currentCategory = 'ALL'" class="fake-a">
+						All Artists
+					</a>
+				</li>
+				
+				<li v-for="category in $store.state.categories">
+					<a @click="$store.state.currentCategory = category" class="fake-a">
+						{{ category }}
+					</a>
+				</li>
+				
+				<br><br>
+				
+				<li style="color:rgb(29,161,242); font-weight:500;">OTHER</li>
+				
+				<li><router-link to="/about">About</router-link></li>
+			</ul>
+		</div>
 	</div>
 </template>
 
 <script>
 	let Vue = require("vue/dist/vue");
+	let $ = require("jquery");
 	
-	module.exports = Vue.component("side-menu", {});
+	module.exports = Vue.component("side-menu", {
+		data: function(){
+			return {
+				levels: ["Professional Creative", "Student", "Hobbyist"],
+			};
+		},
+		
+		methods: {
+			setCurrentLevel: function(level){
+				let self = this;
+				self.$store.state.currentLevel = level;
+				self.$router.push("/");
+			},
+			
+			setCurrentCategory: function(category){
+				let self = this;
+				self.$store.state.currentCategory = category;
+				self.$router.push("/");
+			},
+		},
+		
+		mounted: function(){
+			let oldWidth = 0;
+
+			function toggleMenu(e){
+				e.preventDefault();
+				$("#side-menu").slideToggle("fast");
+				return false;
+			}
+			
+			function setCSSRules(event){
+				let newWidth = $(window).width();
+				
+				if (newWidth === oldWidth) return;
+				
+				if (newWidth > 1050) {
+					$('.mobile-nav').css('display','none');
+					$('#side-menu').show();
+				}
+				
+				else {
+					$('.mobile-nav').css('display','block');
+					$('#side-menu').hide();
+					$("#side-menu").click(toggleMenu);
+				}
+				
+				oldWidth = newWidth;
+			}
+			
+			$(window).ready(setCSSRules);
+			$(window).resize(setCSSRules);
+			$(".mobile-nav").click(toggleMenu);
+		},
+	});
 </script>

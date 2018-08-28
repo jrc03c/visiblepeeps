@@ -37,12 +37,12 @@
 							</option>
 						</select>
 						
-						<br><br>
+						<br><br><br>
 						
 						<p style="font-weight:500;">Choose the profession that best describes you (Select up to 3)</p>
 						<p style="font-style:italic; color:rgb(135,135,135);">If you feel like a category that represents you is missing, please feel free to contact us, and we will sort it out. You can find contact info on the about page under Site Issues.</p>
 						
-						<br><br><br>
+						<br>
 						
 						<div v-for="category in categories" class="profession">
 							<input type="checkbox" v-model="category.value" :id="category.name">

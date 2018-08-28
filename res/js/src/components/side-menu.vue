@@ -6,8 +6,8 @@
 			<ul class="category">
 
 								
-				<li class="li-heading">ACCOUNT</li>
-				<li><a class="fake-a" @click="logInOrOut">Login/out</a></li>
+				<li style="font-weight:500;" class="li-heading">ACCOUNT</li>
+				<li><a style="font-weight:500;" class="fake-a" @click="logInOrOut">Login/out</a></li>
 				<li v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				<span v-if="isAdmin">
 		

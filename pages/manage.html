@@ -5,7 +5,7 @@ permalink: /manage
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-		<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/res/css/style.css"/>	
+		<link rel="stylesheet" type="text/css" href="/res/css/style.css"/>	
  		<link href="https://fonts.googleapis.com/css?family=Halant:400|Raleway:500|Roboto:400,500,700" rel="stylesheet">
 		<style>
 			#app {
@@ -31,20 +31,20 @@ permalink: /manage
 
 			<div id="manage-menu">
 
-				<a href="{{ site.baseurl }}/">
-					<img src="{{ site.baseurl }}/res/img/visiblepeeps.png">
+				<a href="/">
+					<img src="/res/img/visiblepeeps.png">
 				</a>
 
 				<ul class="menu-menu">
 
 					<li>
-						<a href="{{ site.baseurl }}/" style="border-top:1px solid rgb(235,235,235);">
+						<a href="/" style="border-top:1px solid rgb(235,235,235);">
 							Home
 						</a>
 					</li>
 					
 					<li>
-						<a href="{{ site.baseurl }}/profile">
+						<a href="/profile">
 							Submit
 						</a>
 					</li>
@@ -97,7 +97,7 @@ permalink: /manage
 						<ul class="manage-text">
 							<li v-for="username in adminUsers">
 								<button style="margin:0 2em 0 0" @click="removeAdminUser(username)">Remove</button>
-								<a :href="'https://twitter.com/' + username"><% username %></a>
+								<a :href="'https://twitter.com/' + username">{{ username }}</a>
 							</li>
 						</ul>
 					</div>
@@ -108,11 +108,11 @@ permalink: /manage
 						<ul v-if="flaggedUsers.length > 0" class="manage-text">
 							<li v-for="user in flaggedUsers">
 								<a :href="'https://twitter.com/' + user.username">
-									<% user.username %>
+									{{ user.username }}
 								</a> / 
 								
 								<a :href="user.profileTweet">
-									<% user.profileTweet %>
+									{{ user.profileTweet }}
 								</a>
 								
 								<button @click="ignoreUser(user)">Ignore</button>
@@ -136,7 +136,7 @@ permalink: /manage
 						<ul v-if="blockedUsers.length > 0" class="manage-text">
 							<li v-for="username in blockedUsers">
 								<button style="margin:0 2em 0 0" @click="unblockUser(username)">Unblock</button>
-								<a :href="'https://twitter.com/' + username"><% username %></a>
+								<a :href="'https://twitter.com/' + username">{{ username }}</a>
 							</li>
 						</ul>
 						
@@ -157,7 +157,7 @@ permalink: /manage
 							<li v-for="category in Object.keys(categories)">
 								<button  style="margin:0 2em 0 0" @click="removeCategory(category)">Delete</button>
 
-								<% category %>
+								{{ category }}
 							</li>
 						</ul>
 						
@@ -174,8 +174,8 @@ permalink: /manage
 			
 		</div>
 		
-		<script src="{{ site.baseurl }}/res/js/firebase.js"></script>
-		<script src="{{ site.baseurl }}/res/js/vue.min.js"></script>
+		<script src="/res/js/firebase.js"></script>
+		<script src="/res/js/vue.min.js"></script>
 		<script>
 			window.onload = function(){
 				// Initialize the Firebase app settings.
@@ -195,7 +195,7 @@ permalink: /manage
 					
 					// These are necessary to avoid compilation problems
 					// with Jekyll, which uses "{{" and "}}" delimiters.
-					delimiters: ["<%", "%>"],
+					delimiters: ["{{", "}}"],
 					
 					// We use the isLoggedIn and isAdmin variables to hide 
 					// the management page from non-logged-in, non-admin users.
@@ -386,7 +386,7 @@ permalink: /manage
 										// username is not in the list of adminUsers, then
 										// redirect the user back to the home page.
 										if (!adminUsers || !adminUsers[user.username]){
-											window.location.href = "{{ site.baseurl }}/";
+											window.location.href = "/";
 										}
 										
 										// Otherwise, store the list of adminUsers for later,

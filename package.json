@@ -1,0 +1,19 @@
+{
+  "name": "visiblepeeps.net",
+  "scripts": {
+    "build": "watchify -e ./res/js/src/index.js -t vueify -o ./res/js/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrc03c/visiblepeeps.git"
+  },
+  "author": "jrc03c",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^5.4.1",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vueify": "^9.4.1",
+    "vuex": "^3.0.1"
+  }
+}

@@ -12,19 +12,16 @@
 		<link rel="icon" type="image/png" href="/res/img/favicon.png">
 			
 		<title>#VisiblePeeps</title>
-		
-		<style>
-			#app {
-				display: none;
-			}
-		</style>
 	</head>
 
 	<body>
-		{{ content }}
+		<button class="mobile-nav">&#x2630;</button>
+
+		<div id="app">
+			<router-view></router-view>
+		</div>
 		
-		<script src="/res/js/firebase.js"></script>
-		<script src="/res/js/vue.min.js"></script>
+		<script src="/res/js/bundle.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="/res/js/toggle-menu.js"></script>
 	</body>

@@ -36,9 +36,9 @@
 				<br><br>
 				
 				<li class="li-heading">ACCOUNT</li>
+				<li>Login/out</li>
 				<li><router-link to="/profile" class="fake-a">Profile</router-link></li>
-				<li class="li-fat">LOGIN/OUT</li>
-				
+			
 				<br><br>
 
 				<li class="li-fat">SHOW ALL</li>
@@ -53,7 +53,7 @@
 					</a>
 				</li> -->
 				
-				<li class="li-fat" v-for="level in levels">
+				<li v-for="level in levels">
 					<a @click="setCurrentLevel(level)" class="fake-a">
 						{{ level }}
 					</a>

@@ -164,12 +164,12 @@ ul.category li a:hover {
 	color:rgb(29,161,242);
 }
 
-.li-heading {
+ul.category li.li-heading {
 	color:rgb(29,161,242); 
 	font-weight:500;
 }
 
-.li-fat {
+ul.category li.li-fat {
 	font-weight:500;
 	text-transform:uppercase;
 }

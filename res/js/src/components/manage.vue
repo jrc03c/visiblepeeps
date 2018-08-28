@@ -87,7 +87,9 @@
 				</div>
 				
 				<div v-else>
-					You are not logged in. Please log in to manage stuff.
+					<h2>Log in</h2>
+					
+					<p>You are not logged in. Please log in to manage stuff.</p>
 				</div>
 			</div>
 		

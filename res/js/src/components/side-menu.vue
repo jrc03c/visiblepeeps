@@ -1,10 +1,3 @@
-<style scoped>
-	.li-heading {
-		color: rgb(29,161,242); 
-		font-weight: 500;
-	}
-</style>
-
 <template>
 	<div>
 		<button class="mobile-nav">&#x2630;</button>
@@ -46,16 +39,20 @@
 				<li><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				
 				<br><br>
+
+				<li class="li-fat">SHOW ALL</li>
 				
+				<br><br>
+
 				<li class="li-heading">FILTER BY LEVEL</li>
 				
-				<li>
+<!-- 				<li>
 					<a @click="setCurrentLevel('ALL')" class="fake-a">
 						All Levels
 					</a>
-				</li>
+				</li> -->
 				
-				<li v-for="level in levels">
+				<li class="li-fat" v-for="level in levels">
 					<a @click="setCurrentLevel(level)" class="fake-a">
 						{{ level }}
 					</a>
@@ -65,11 +62,11 @@
 				
 				<li class="li-heading">FILTER BY PROFESSION</li>
 				
-				<li>
+<!-- 				<li>
 					<a @click="$store.state.currentCategory = 'ALL'" class="fake-a">
 						All Artists
 					</a>
-				</li>
+				</li> -->
 				
 				<li v-for="category in $store.state.categories">
 					<a @click="$store.state.currentCategory = category" class="fake-a">
@@ -79,9 +76,9 @@
 				
 				<br><br>
 				
-				<li class="li-heading">OTHER</li>
+<!-- 				<li class="li-heading">OTHER</li> -->
 				
-				<li><router-link to="/about" class="fake-a">About</router-link></li>
+				<li class="li-fat"><router-link to="/about" class="fake-a">About</router-link></li>
 			</ul>
 		</div>
 	</div>

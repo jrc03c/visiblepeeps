@@ -164,6 +164,15 @@ ul.category li a:hover {
 	color:rgb(29,161,242);
 }
 
+.li-heading {
+	color:rgb(29,161,242); 
+	font-weight:500;
+}
+
+.li-fat {
+	font-weight:500;
+}
+
 .submit-button {
 	color:rgb(254,254,254);	
 	font-weight:500;

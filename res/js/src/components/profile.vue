@@ -61,10 +61,6 @@
 						</p>
 						
 					</form>
-					
-					<br><br><br>
-					
-					<button @click="logout">Log out</button>
 				</div>
 					
 				<div v-else>
@@ -73,8 +69,6 @@
 					<br><br>
 					
 					<p>Please log in with your Twitter account to create a profile page.</p>
-					
-					<button @click="login" style="margin:1em 0 0">Log in</button>
 				</div>
 			</div>
 		</div>
@@ -116,34 +110,6 @@
 		},
 		
 		methods: {
-			// This is the typical Firebase / Twitter auth flow.
-			login: function(){
-				let provider = new firebase.auth.TwitterAuthProvider();
-				
-				firebase.auth().signInWithPopup(provider).then(function(result){
-					let db = firebase.database();
-					
-					// We make sure that we grab the user's Twitter username.
-					// For some stupid reason, this is the only time that
-					// this information is available to us.
-					let username = result.additionalUserInfo.username;
-					
-					// We store the username in the database under their 
-					// Firebase auth UID.
-					let ref = db.ref("/allUsers/" + result.user.uid + "/username");
-					ref.set(username);
-				}).catch(function(error){
-					console.error(error);
-				});
-			},
-			
-			// This the typical Firebase sign-out method, though
-			// this is where we also stop listening to the database
-			// references.
-			logout: function(){
-				firebase.auth().signOut();
-			},
-			
 			// This is where we do all the submission magic.
 			save: function(){
 				let self = this;

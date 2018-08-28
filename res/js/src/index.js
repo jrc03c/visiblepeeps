@@ -36,6 +36,7 @@ window.onload = function(){
 			categories: [],
 			currentLevel: "ALL",
 			currentCategory: "ALL",
+			currentUser: null,
 		},
 		getters: {},
 		mutations: {},

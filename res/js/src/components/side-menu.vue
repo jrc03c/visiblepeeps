@@ -36,8 +36,8 @@
 				<br><br>
 				
 				<li class="li-heading">ACCOUNT</li>
-				<li>Login/out</li>
-				<li><router-link to="/profile" class="fake-a">Profile</router-link></li>
+				<li><a class="fake-a" @click="logInOrOut">Login/out</a></li>
+				<li v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
 			
 				<br><br>
 
@@ -46,12 +46,6 @@
 				<br><br>
 
 				<li class="li-heading">FILTER BY LEVEL</li>
-				
-<!-- 				<li>
-					<a @click="setCurrentLevel('ALL')" class="fake-a">
-						All Levels
-					</a>
-				</li> -->
 				
 				<li v-for="level in levels">
 					<a @click="setCurrentLevel(level)" class="fake-a">
@@ -63,12 +57,6 @@
 				
 				<li class="li-heading">FILTER BY PROFESSION</li>
 				
-<!-- 				<li>
-					<a @click="$store.state.currentCategory = 'ALL'" class="fake-a">
-						All Artists
-					</a>
-				</li> -->
-				
 				<li v-for="category in $store.state.categories">
 					<a @click="$store.state.currentCategory = category" class="fake-a">
 						{{ category }}
@@ -76,9 +64,7 @@
 				</li>
 				
 				<br><br>
-				
-<!-- 				<li class="li-heading">OTHER</li> -->
-				
+								
 				<li class="li-fat"><router-link to="/about" class="fake-a">About</router-link></li>
 			</ul>
 		</div>
@@ -87,6 +73,7 @@
 
 <script>
 	let Vue = require("vue/dist/vue");
+	let firebase = require("firebase/app");
 	let $ = require("jquery");
 	
 	module.exports = Vue.component("side-menu", {
@@ -97,6 +84,40 @@
 		},
 		
 		methods: {
+			logInOrOut: function(){
+				let self = this;
+				if (self.$store.state.currentUser) self.logout();
+				else self.login();
+			},
+			
+			// This is the typical Firebase / Twitter auth flow.
+			login: function(){
+				let provider = new firebase.auth.TwitterAuthProvider();
+				
+				firebase.auth().signInWithPopup(provider).then(function(result){
+					let db = firebase.database();
+					
+					// We make sure that we grab the user's Twitter username.
+					// For some stupid reason, this is the only time that
+					// this information is available to us.
+					let username = result.additionalUserInfo.username;
+					
+					// We store the username in the database under their 
+					// Firebase auth UID.
+					let ref = db.ref("/allUsers/" + result.user.uid + "/username");
+					ref.set(username);
+				}).catch(function(error){
+					console.error(error);
+				});
+			},
+			
+			// This the typical Firebase sign-out method, though
+			// this is where we also stop listening to the database
+			// references.
+			logout: function(){
+				firebase.auth().signOut();
+			},
+			
 			setCurrentLevel: function(level){
 				let self = this;
 				self.$store.state.currentLevel = level;
@@ -111,6 +132,7 @@
 		},
 		
 		mounted: function(){
+			let self = this;
 			let oldWidth = 0;
 
 			function toggleMenu(e){
@@ -141,6 +163,10 @@
 			$(window).ready(setCSSRules);
 			$(window).resize(setCSSRules);
 			$(".mobile-nav").click(toggleMenu);
+			
+			firebase.auth().onAuthStateChanged(function(user){
+				self.$store.state.currentUser = user;
+			});
 		},
 	});
 </script>

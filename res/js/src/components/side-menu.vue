@@ -53,7 +53,7 @@
 					</a>
 				</li> -->
 				
-				<li v-for="level in levels">
+				<li style="font-weight:500;" v-for="level in levels">
 					<a @click="setCurrentLevel(level)" class="fake-a">
 						{{ level }}
 					</a>

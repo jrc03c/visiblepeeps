@@ -144,14 +144,6 @@ layout: default
 	</div>
 </div>
 
-<script type="text/javascript">
-	
-	$('.single-checkbox').on('change', function() {
-	   if($('.single-checkbox:checked').length > 3) {
-	       this.checked = false;
-	   }
-	});
-</script>
 
 <script>
 	window.onload = function(){
@@ -377,4 +369,13 @@ layout: default
 			},
 		});
 	};
+</script>
+
+<script type="text/javascript">
+	
+	$('.single-checkbox').on('change', function() {
+	   if($('.single-checkbox:checked').length > 3) {
+	       this.checked = false;
+	   }
+	});
 </script>

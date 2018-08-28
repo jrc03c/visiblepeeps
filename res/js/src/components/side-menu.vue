@@ -5,7 +5,7 @@
 		<div id="side-menu">
 			<ul class="category">
 				<li><a style="color:rgb(29,161,242);  font-weight:500;" href="">LOGIN/OUT</a></li>
-				<li><a href="/profile">Profile</a></li>
+				<li><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				
 				<br><br>
 				

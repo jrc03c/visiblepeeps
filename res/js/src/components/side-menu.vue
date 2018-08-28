@@ -7,27 +7,15 @@
 
 								
 				<li class="li-heading">ACCOUNT</li>
-				<li><a style="font-weight:500;" class="fake-a" @click="logInOrOut">Login/out</a></li>
+				<li><a style="font-weight:500;" class="fake-a" @click="logInOrOut">{{ $store.state.currentUser ? "Log out" : "Log in" }}</a></li>
 				<li style="font-weight:500;" v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				<span v-if="isAdmin">
 
 					<li><a href="" class="fake-a">Home</a></li>
 		
 					<li>
-						<a @click="manage('adminUsers')" class="fake-a">
-							Admin Users
-						</a>
-					</li>
-					
-					<li>
-						<a @click="manage('flaggedUsers')" class="fake-a">
-							Flagged Users
-						</a>
-					</li>
-					
-					<li>
-						<a @click="manage('blockedUsers')" class="fake-a">
-							Blocked Users
+						<a @click="manage('users')" class="fake-a">
+							Users
 						</a>
 					</li>
 					
@@ -59,7 +47,7 @@
 				<li class="li-heading">FILTER BY PROFESSION</li>
 				
 				<li v-for="category in $store.state.categories">
-					<a @click="$store.state.currentCategory = category" class="fake-a">
+					<a @click="setCurrentCategory(category)" class="fake-a">
 						{{ category }}
 					</a>
 				</li>

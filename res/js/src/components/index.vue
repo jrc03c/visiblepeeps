@@ -57,7 +57,7 @@
 				}
 				
 				let db = firebase.database();
-				let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(10);
+				let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(12);
 				
 				ref.once("value").then(function(snapshot){
 					let userUIDs = snapshot.val();

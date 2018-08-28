@@ -42,7 +42,7 @@
 
 				<br><br>
 
-				<li class="li-fat">SHOW ALL</li>
+				<li class="li-fat"><a href="">SHOW ALL</a></li> <!-- Needs wiring -->
 				
 				<br><br>
 

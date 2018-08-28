@@ -14,20 +14,8 @@
 					<li><a href="" class="fake-a">Home</a></li>
 		
 					<li>
-						<a @click="manage('adminUsers')" class="fake-a">
-							Admin Users
-						</a>
-					</li>
-					
-					<li>
-						<a @click="manage('flaggedUsers')" class="fake-a">
-							Flagged Users
-						</a>
-					</li>
-					
-					<li>
-						<a @click="manage('blockedUsers')" class="fake-a">
-							Blocked Users
+						<a @click="manage('users')" class="fake-a">
+							Users
 						</a>
 					</li>
 					

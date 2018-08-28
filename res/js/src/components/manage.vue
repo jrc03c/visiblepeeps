@@ -5,7 +5,7 @@
 			<div id="manage-content">
 		
 				<div v-if="isLoggedIn && isAdmin">
-					<div v-if="currentView === 'adminUsers'">
+					<div v-if="currentView === 'users'">
 						<h2>Admin Users</h2>
 						
 						<form @submit.prevent="addAdminUser(userToAdmin)">
@@ -19,9 +19,7 @@
 								<a :href="'https://twitter.com/' + username">{{ username }}</a>
 							</li>
 						</ul>
-					</div>
-					
-					<div v-if="currentView === 'flaggedUsers'">
+						
 						<h2>Flagged Users</h2>
 						
 						<ul v-if="flaggedUsers.length > 0" class="manage-text">
@@ -42,9 +40,7 @@
 						<div v-else style="padding:1em 0 0; font-size:13px;">
 							There are currently no flagged users.
 						</div>
-					</div>
-					
-					<div v-if="currentView === 'blockedUsers'">
+						
 						<h2>Blocked Users</h2>
 						
 						<form @submit.prevent="blockUser(userToBlock)">

@@ -43,7 +43,7 @@
 				
 				<li style="color:rgb(29,161,242); font-weight:500;">OTHER</li>
 				
-				<li><router-link to="/about">About</router-link></li>
+				<li><router-link to="/about" class="fake-a">About</router-link></li>
 			</ul>
 		</div>
 	</div>

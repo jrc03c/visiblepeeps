@@ -27,6 +27,10 @@ window.onload = function(){
 	
 	let router = new VueRouter({routes});
 	
+	router.afterEach(function(to, from){
+		window.scrollTo(0, 0);
+	});
+	
 	let store = new Vuex.Store({
 		state: {
 			categories: [],

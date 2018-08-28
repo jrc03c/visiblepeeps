@@ -16072,7 +16072,7 @@ exports.DataSnapshot = DataSnapshot;
 exports.OnDisconnect = OnDisconnect;
 
 }).call(this,require('_process'))
-},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":25,"tslib":11}],4:[function(require,module,exports){
+},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":26,"tslib":11}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -17795,7 +17795,7 @@ var iterator = _wksExt.f('iterator');
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":26,"whatwg-fetch":17}],6:[function(require,module,exports){
+},{"timers":27,"whatwg-fetch":18}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -33127,7 +33127,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":25}],14:[function(require,module,exports){
+},{"_process":26}],14:[function(require,module,exports){
 (function (global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -44078,7 +44078,7 @@ return Vue;
 })));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":26}],15:[function(require,module,exports){
+},{"timers":27}],15:[function(require,module,exports){
 (function (process,global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -52116,7 +52116,32 @@ if (inBrowser) {
 module.exports = Vue;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"_process":25,"timers":26}],16:[function(require,module,exports){
+},{"_process":26,"timers":27}],16:[function(require,module,exports){
+var inserted = exports.cache = {}
+
+function noop () {}
+
+exports.insert = function (css) {
+  if (inserted[css]) return noop
+  inserted[css] = true
+
+  var elem = document.createElement('style')
+  elem.setAttribute('type', 'text/css')
+
+  if ('textContent' in elem) {
+    elem.textContent = css
+  } else {
+    elem.styleSheet.cssText = css
+  }
+
+  document.getElementsByTagName('head')[0].appendChild(elem)
+  return function () {
+    document.getElementsByTagName('head')[0].removeChild(elem)
+    inserted[css] = false
+  }
+}
+
+},{}],17:[function(require,module,exports){
 (function (process){
 /**
  * vuex v3.0.1
@@ -53052,7 +53077,7 @@ var index = {
 module.exports = index;
 
 }).call(this,require('_process'))
-},{"_process":25}],17:[function(require,module,exports){
+},{"_process":26}],18:[function(require,module,exports){
 (function(self) {
   'use strict';
 
@@ -53520,19 +53545,82 @@ module.exports = index;
   self.fetch.polyfill = true
 })(typeof self !== 'undefined' ? self : this);
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("h3[data-v-08c4ef26] {\n\tpadding: 1rem 0;\n}\n\t\np[data-v-08c4ef26] {\n\tmargin-bottom: 1rem;\n}")
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+module.exports = Vue.component("about", {});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_vm._m(0)],1)],1)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"about-page"},[_c('p',[_vm._v("Visible Peeps is a site where women, non-binary and trans creators of all skill levels can share their tweets from the popular hashtags #VisibleWomen and #VisibleNB on Twitter. These hashtags offer a great way to discover new and talented creators that are vastly under-represented within the creative industry. The goal of the site is to create a place where people can explore tweets, creators and art with ease.")]),_vm._v(" "),_c('p',[_vm._v("Visible Peeps was created by "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("Josh Castle")]),_vm._v(" and "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("Andreas Werchmeister")]),_vm._v(", and with the gracious support and help of "),_c('a',{attrs:{"href":"https://twitter.com/LetsWoolgather"}},[_vm._v("Toby Brommerich")]),_vm._v(", "),_c('a',{attrs:{"href":"https://twitter.com/kylemadkins"}},[_vm._v("Kyle Adkins")]),_vm._v(", as well as "),_c('a',{attrs:{"href":"https://twitter.com/tarakeet"}},[_vm._v("Tara Han-Tran Johnson")]),_vm._v(", who created the beautiful title logo.")]),_vm._v(" "),_c('h3',[_vm._v("How to use")]),_vm._v(" "),_c('p',[_vm._v("To submit a tweet, all you have to do is click the 'Submit Tweet' button on the home page, or 'Login' in the menu. Once you have logged in using your Twitter account, you'll be able to submit your tweet by simply copy / pasting the direct URL to your tweet, selecting any categories you want your tweet to appear in, and hit 'Save'. That's it! :D")]),_vm._v(" "),_c('p',[_vm._v("Once you have logged in the first time and been approved, the submission page will act as your profile. You can update your tweet or any of the categories you have selected at any time, or if you wish, delete your profile and stored information (sadface).")]),_vm._v(" "),_c('p',[_vm._v("Note: The reason we have opted for an approval process is solely to prevert malicious misuse of the site.")]),_vm._v(" "),_c('h3',[_vm._v("Site issues")]),_vm._v(" "),_c('p',[_vm._v("In case you experience any issues with the site, please contact "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter.")]),_vm._v(" "),_c('h3',[_vm._v("Report mean people")]),_vm._v(" "),_c('p',[_vm._v("If you see a tweet that is either offensive or doesn't belong, you'll be able to flag the tweet for review by clicking the report button on the tweet in question.")]),_vm._v(" "),_c('h3',[_vm._v("Legal")]),_vm._v(" "),_c('p',[_vm._v("Copyright: We don't own any artwork contained within the tweets featured on the site. All tweets have been submitted by their respective owners.")]),_vm._v(" "),_c('p',[_vm._v("Personal Data: We don't store any personal data. The only information we store are the URL's and the category choices you have provided us. You can delete this at any point.")])])}]
+__vue__options__._scopeId = "data-v-08c4ef26"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-08c4ef26", __vue__options__)
   } else {
-    hotAPI.reload("data-v-08c4ef26", __vue__options__)
+    hotAPI.rerender("data-v-08c4ef26", __vue__options__)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":12}],19:[function(require,module,exports){
+},{"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14,"vueify/lib/insert-css":16}],20:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -53674,7 +53762,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-1b556332", __vue__options__)
   }
 })()}
-},{"./main-header.vue":20,"./side-menu.vue":23,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){
+},{"./main-header.vue":21,"./side-menu.vue":24,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],21:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -53704,7 +53792,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-03bfda01", __vue__options__)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],21:[function(require,module,exports){
+},{"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],22:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53716,7 +53804,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-8bcc2496", __vue__options__)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":12}],22:[function(require,module,exports){
+},{"vue":15,"vue-hot-reload-api":12}],23:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53728,7 +53816,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-d5fd22ee", __vue__options__)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":12}],23:[function(require,module,exports){
+},{"vue":15,"vue-hot-reload-api":12}],24:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -53853,10 +53941,10 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-c9275616", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-c9275616", __vue__options__)
+    hotAPI.reload("data-v-c9275616", __vue__options__)
   }
 })()}
-},{"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],24:[function(require,module,exports){
+},{"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],25:[function(require,module,exports){
 let Vue = require("vue/dist/vue");
 let VueRouter = require("vue-router");
 let Vuex = require("vuex");
@@ -53885,6 +53973,10 @@ window.onload = function(){
 	];
 	
 	let router = new VueRouter({routes});
+	
+	router.afterEach(function(to, from){
+		window.scrollTo(0, 0);
+	});
 	
 	let store = new Vuex.Store({
 		state: {
@@ -53918,7 +54010,7 @@ window.onload = function(){
 	
 	document.getElementById("app").style.display = "block";
 };
-},{"./components/about.vue":18,"./components/index.vue":19,"./components/manage.vue":21,"./components/profile.vue":22,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":13,"vue/dist/vue":14,"vuex":16}],25:[function(require,module,exports){
+},{"./components/about.vue":19,"./components/index.vue":20,"./components/manage.vue":22,"./components/profile.vue":23,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":13,"vue/dist/vue":14,"vuex":17}],26:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -54104,7 +54196,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -54183,4 +54275,4 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":25,"timers":26}]},{},[24]);
+},{"process/browser.js":26,"timers":27}]},{},[25]);

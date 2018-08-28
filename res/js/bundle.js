@@ -53793,7 +53793,342 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   }
 })()}
 },{"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],22:[function(require,module,exports){
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+let firebase = require("firebase/app");
+
+module.exports = Vue.component("manage", {
+	data: function(){
+		return {
+			isLoggedIn: false,
+			isAdmin: false,
+			userToAdmin: "",
+			adminUsers: [],
+			userToBlock: "",
+			blockedUsers: [],
+			flaggedUsers: [],
+			categoryToAdd: "",
+			categories: {},
+			currentView: "flaggedUsers",
+		};
+	},
+	
+	methods: {
+		setCurrentView: function(view){
+			let self = this;
+			self.currentView = view;
+		},
+		
+		logInOrOut: function(){
+			let self = this;
+			if (self.isLoggedIn) self.logout();
+			else self.login();
+		},
+		
+		// This is where we add admin users.
+		addAdminUser: function(username){
+			let self = this;
+			let db = firebase.database();
+			
+			// Get a reference to the /adminUsers list
+			// in the database and set their username's
+			// value to true.
+			db.ref("/adminUsers/" + username).set(true);
+			
+			// Reset the userToAdmin variable, which will
+			// reset the text input field.
+			self.userToAdmin = "";
+		},
+		
+		// This is where we remove an admin user.
+		removeAdminUser: function(username){
+			// Prompt for confirmation that this is really 
+			// what we want to do.
+			let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + username + " as an administrator?");
+			
+			// If we decide not to remove them, then return.
+			if (!shouldRemoveAdminUser) return;
+			
+			// Otherwise, get a reference to /adminUsers in the 
+			// database and set their username's value to null.
+			let db = firebase.database();
+			db.ref("/adminUsers/" + username).set(null);
+		},
+		
+		// This is where we ignore a flagged user.
+		ignoreUser: function(user){
+			let self = this;
+			let db = firebase.database();
+			db.ref("/flaggedUsers/" + user.uid).set(null);
+		},
+		
+		// This is where we block a user.
+		blockUser: function(username){
+			let self = this;
+			let db = firebase.database();
+			
+			// Get a reference to /blockedUsers	in the database
+			// and set their username's value to true.
+			db.ref("/blockedUsers/" + username).set(true);
+			
+			// Reset the userToBlock variable, which will reset
+			// the text input field.
+			self.userToBlock = "";
+		},
+		
+		// This is where we unblock a user.
+		unblockUser: function(username){
+			// Confirm that we really want to unblock them.
+			let shouldUnblockUser = confirm("Are you sure that you want to unblock " + username + "?");
+			
+			// If we change our minds, then return.
+			if (!shouldUnblockUser) return;
+			
+			// Get a reference to /blockedUsers in the database
+			// and set their username's value to null.
+			let db = firebase.database();
+			db.ref("/blockedUsers/" + username).set(null);
+		},
+		
+		addNewCategory: function(category){
+			let self = this;
+			self.categories[category] = true;
+			let db = firebase.database();
+			db.ref("/categoryList").set(self.categories);
+			self.categoryToAdd = "";
+		},
+		
+		removeCategory: function(category){
+			let self = this;
+			self.categories[category] = null;
+			let db = firebase.database();
+			db.ref("/categoryList").set(self.categories);
+			db.ref("/tweets/" + category).set(null);
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		
+		// We listen to a bunch of database references. I'm not sure
+		// whether this is optimal or not, but it is what it is. :) 
+		// Anyway, I'm making references to them here so that I can 
+		// turn them off when the user logs out.
+		let ref1, ref2, ref3, ref4, ref6;
+		
+		// Listen for users logging in and out, and then...
+		firebase.auth().onAuthStateChanged(function(user){
+			// Unhide the #app element, which was hidden so as
+			// not to show the weird markup.
+			document.getElementById("app").style.display = "block";
+			
+			// Set the isLoggedIn variable.
+			self.isLoggedIn = !!user;
+			
+			// If the references are still listening, then 
+			// turn them off.
+			if (ref1) ref1.off();
+			if (ref2) ref2.off();
+			if (ref3) ref3.off();
+			if (ref4) ref4.off();
+			if (ref6) ref6.off();
+			
+			// If the user is logged in, then...
+			if (user){
+				let db = firebase.database();
+				
+				// Get a reference to the logged-in user's data
+				// in the database.
+				ref3 = db.ref("/allUsers/" + user.uid);
+				
+				// Listen to this reference in case their data changes.
+				ref3.on("value", function(snapshot){
+					// Get their data.
+					let user = snapshot.val();
+					
+					// If the data doesn't exist, then return.
+					if (!user) return;
+					
+					// Get a reference to the list of /adminUsers.
+					ref1 = db.ref("/adminUsers");
+					
+					// Listen to this reference.
+					ref1.on("value", function(snapshot2){
+						// Get the data.
+						let adminUsers = snapshot2.val();
+						
+						// If there are no admin users, or if this user's
+						// username is not in the list of adminUsers, then
+						// redirect the user back to the home page.
+						if (!adminUsers || !adminUsers[user.username]){
+							window.location.href = "/";
+						}
+						
+						// Otherwise, store the list of adminUsers for later,
+						// since we'll be adding and removing people from it.
+						self.adminUsers = Object.keys(adminUsers);
+						
+						// Indicate that this user is an administrator.
+						self.isAdmin = true;
+					});
+				});
+				
+				// Get a reference to /blockedUsers.
+				ref2 = db.ref("/blockedUsers");
+				
+				// Listen to this reference.
+				ref2.on("value", function(snapshot){
+					// Get the data.
+					let blockedUsers = snapshot.val();
+					
+					// If there are no blocked users, then
+					// set blockedUsers to be an empty array,
+					// then return.
+					if (!blockedUsers){
+						self.blockedUsers = [];
+						return;
+					}
+					
+					// Set blockedUsers to the list of usernames,
+					// which are the keys to the data object.
+					self.blockedUsers = Object.keys(blockedUsers);
+				});
+				
+				ref4 = db.ref("/flaggedUsers");
+				
+				ref4.on("value", function(snapshot){
+					self.flaggedUsers = [];
+					let flaggedUsers = snapshot.val();
+					if (!flaggedUsers) return;
+					
+					Object.keys(flaggedUsers).forEach(function(uid){
+						let ref5 = db.ref("/allUsers/" + uid);
+						
+						ref5.once("value").then(function(snapshot2){
+							let userData = snapshot2.val();
+							if (!userData) return;
+							self.flaggedUsers.push(userData);
+						});
+					});
+				});
+				
+				ref6 = db.ref("/categoryList");
+				
+				ref6.on("value", function(snapshot){
+					self.categories = {};
+					let categories = snapshot.val();
+					if (!categories) return;
+					self.categories = categories;
+				});
+			}
+		});
+	},
+});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu',{on:{"manage":_vm.setCurrentView}}),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('div',{attrs:{"id":"manage-content"}},[(_vm.isLoggedIn && _vm.isAdmin)?_c('div',[(_vm.currentView === 'adminUsers')?_c('div',[_c('h2',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),_c('ul',{staticClass:"manage-text"},_vm._l((_vm.adminUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeAdminUser(username)}}},[_vm._v("Remove")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])}))]):_vm._e(),_vm._v(" "),(_vm.currentView === 'flaggedUsers')?_c('div',[_c('h2',[_vm._v("Flagged Users")]),_vm._v(" "),(_vm.flaggedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.flaggedUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t\t\t\t\t")]),_vm._v(" / \n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t\t\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user)}}},[_vm._v("Ignore")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user.username)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\t\t\t\t\tThere are currently no flagged users.\n\t\t\t\t\t")])]):_vm._e(),_vm._v(" "),(_vm.currentView === 'blockedUsers')?_c('div',[_c('h2',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.blockUser(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),(_vm.blockedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.blockedUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.unblockUser(username)}}},[_vm._v("Unblock")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\t\t\t\t\tThere are currently no blocked users.\n\t\t\t\t\t")])]):_vm._e(),_vm._v(" "),(_vm.currentView === 'categories')?_c('div',[_c('h2',[_vm._v("Categories")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addNewCategory(_vm.categoryToAdd)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.categoryToAdd),expression:"categoryToAdd"}],attrs:{"type":"text"},domProps:{"value":(_vm.categoryToAdd)},on:{"input":function($event){if($event.target.composing){ return; }_vm.categoryToAdd=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),(Object.keys(_vm.categories).length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((Object.keys(_vm.categories)),function(category){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeCategory(category)}}},[_vm._v("Delete")]),_vm._v("\n\n\t\t\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t\t\t")])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\t\t\t\t\tThere are currently no categories.\n\t\t\t\t\t")])]):_vm._e()]):_c('div',[_vm._v("\n\t\t\t\tYou are not logged in. Please log in to manage stuff.\n\t\t\t")])])])],1)}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -53804,7 +54139,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-8bcc2496", __vue__options__)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":12}],23:[function(require,module,exports){
+},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],23:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert("p[data-v-d5fd22ee] {\n\tmargin-bottom: 1rem;\n}")
 ;(function(){
 //
@@ -54121,11 +54456,50 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-d5fd22ee", __vue__options__)
   } else {
-    hotAPI.reload("data-v-d5fd22ee", __vue__options__)
+    hotAPI.rerender("data-v-d5fd22ee", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14,"vueify/lib/insert-css":16}],24:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".li-heading[data-v-c9275616] {\n\tcolor: rgb(29,161,242); \n\tfont-weight: 500;\n}")
 ;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -54240,19 +54614,21 @@ module.exports = Vue.component("side-menu", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("ACCOUNT")]),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel('ALL')}}},[_vm._v("\n\t\t\t\t\tAll Levels\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = 'ALL'}}},[_vm._v("\n\t\t\t\t\tAll Artists\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = category}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticStyle:{"color":"rgb(29,161,242)","font-weight":"500"}},[_vm._v("OTHER")]),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[(_vm.$router.currentRoute.path === '/manage')?_c('span',[_c('li',{staticClass:"li-heading"},[_vm._v("MANAGE")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'adminUsers')}}},[_vm._v("\n\t\t\t\t\t\tAdmin Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'flaggedUsers')}}},[_vm._v("\n\t\t\t\t\t\tFlagged Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'blockedUsers')}}},[_vm._v("\n\t\t\t\t\t\tBlocked Users\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$emit('manage', 'categories')}}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])])]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("ACCOUNT")]),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel('ALL')}}},[_vm._v("\n\t\t\t\t\tAll Levels\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = 'ALL'}}},[_vm._v("\n\t\t\t\t\tAll Artists\n\t\t\t\t")])]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.$store.state.currentCategory = category}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("OTHER")]),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
 __vue__options__.staticRenderFns = []
+__vue__options__._scopeId = "data-v-c9275616"
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-c9275616", __vue__options__)
   } else {
     hotAPI.rerender("data-v-c9275616", __vue__options__)
   }
 })()}
-},{"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],25:[function(require,module,exports){
+},{"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14,"vueify/lib/insert-css":16}],25:[function(require,module,exports){
 let Vue = require("vue/dist/vue");
 let VueRouter = require("vue-router");
 let Vuex = require("vuex");

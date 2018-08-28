@@ -1,15 +1,53 @@
+<style scoped>
+	.li-heading {
+		color: rgb(29,161,242); 
+		font-weight: 500;
+	}
+</style>
+
 <template>
 	<div>
 		<button class="mobile-nav">&#x2630;</button>
 		
 		<div id="side-menu">
 			<ul class="category">
-				<li style="color:rgb(29,161,242); font-weight:500;">ACCOUNT</li>
+				<span v-if="$router.currentRoute.path === '/manage'">
+					<li class="li-heading">MANAGE</li>
+					
+					<li>
+						<a @click="$emit('manage', 'adminUsers')" class="fake-a">
+							Admin Users
+						</a>
+					</li>
+					
+					<li>
+						<a @click="$emit('manage', 'flaggedUsers')" class="fake-a">
+							Flagged Users
+						</a>
+					</li>
+					
+					<li>
+						<a @click="$emit('manage', 'blockedUsers')" class="fake-a">
+							Blocked Users
+						</a>
+					</li>
+					
+					<li>
+						<a @click="$emit('manage', 'categories')" class="fake-a">
+							Categories
+						</a>
+					</li>
+					
+				</span>
+				
+				<br><br>
+				
+				<li class="li-heading">ACCOUNT</li>
 				<li><router-link to="/profile" class="fake-a">Profile</router-link></li>
 				
 				<br><br>
 				
-				<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY LEVEL</li>
+				<li class="li-heading">FILTER BY LEVEL</li>
 				
 				<li>
 					<a @click="setCurrentLevel('ALL')" class="fake-a">
@@ -25,7 +63,7 @@
 				
 				<br><br>
 				
-				<li style="color:rgb(29,161,242); font-weight:500;">FILTER BY PROFESSION</li>
+				<li class="li-heading">FILTER BY PROFESSION</li>
 				
 				<li>
 					<a @click="$store.state.currentCategory = 'ALL'" class="fake-a">
@@ -41,7 +79,7 @@
 				
 				<br><br>
 				
-				<li style="color:rgb(29,161,242); font-weight:500;">OTHER</li>
+				<li class="li-heading">OTHER</li>
 				
 				<li><router-link to="/about" class="fake-a">About</router-link></li>
 			</ul>

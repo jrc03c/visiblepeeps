@@ -12,7 +12,7 @@
 						
 					<p>Please only submit tweets including the following hashtags: <span style="color:rgb(29,161,242);">#VisibleWomen · #VisibleWoman · #VisibleNB · #VisibileNBs</span></p>
 						
-					<br><br><br>
+					<br>
 					
 					<form @submit.prevent="save">
 						<label for="tweet-url">
@@ -23,7 +23,7 @@
 						
 						<input type="text" v-model="url" id="tweet-url" @keydown="message = ''">
 						
-						<br><br><br>
+						<br>
 						
 						<p style="font-weight:500;">Choose what level represents you</p>
 						
@@ -37,7 +37,7 @@
 							</option>
 						</select>
 						
-						<br><br><br>
+						<br>
 						
 						<p style="font-weight:500;">Choose the profession that best describes you (Select up to 3)</p>
 						<p style="font-style:italic; color:rgb(135,135,135);">If you feel like a category that represents you is missing, please feel free to contact us, and we will sort it out. You can find contact info on the about page under Site Issues.</p>
@@ -52,7 +52,7 @@
 							</label>
 						</div>
 						
-						<br><br><br>
+						<br>
 						
 						<input type="submit" value="Save"><a class="delete-profile" href="">Delete profile</a>
 						
@@ -65,8 +65,6 @@
 					
 				<div v-else>
 					<p>This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to update your submitted tweet, and any categories you have picked.</p>
-					
-					<br><br>
 					
 					<p>Please log in with your Twitter account to create a profile page.</p>
 				</div>

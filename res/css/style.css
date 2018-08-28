@@ -145,7 +145,7 @@ img.peeps-lettering {
 ul.category {
 	position:absolute;
 	top:0;
-	padding:6em 0 2.5em;
+	padding:5em 0 2.5em;
 }
 
 ul.category li {
@@ -445,7 +445,7 @@ input[type="submit"]:hover, button:hover {
 
 #app #manage-content h2 {
 	font-family: 'Roboto', sans-serif;
-	padding:6.45em 0 2em;
+	padding:5.45em 0 2em;
 	font-size:16px;
 	max-width:900px;
 	font-weight:500;

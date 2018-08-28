@@ -64,9 +64,9 @@
 				</div>
 					
 				<div v-else>
-					<p>This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to update your submitted tweet, and any categories you have picked.</p>
+					<p>This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to update your submitted tweet, and any categories you have picked.</p><br>
 					
-					<p>Please log in with your Twitter account to create a profile page.</p>
+					<p>Please log in with your Twitter account to create a profile page.</p><br><br>
 
 					<button @click="logIn">Login</button>
 				</div>

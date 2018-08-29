@@ -199,6 +199,9 @@ ul.category li span {
 }
 
 .flaggy {
+	position:absolute;
+	top:100px;
+	right:10px;
 	color:rgb(240,0,0);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;

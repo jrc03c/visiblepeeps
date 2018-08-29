@@ -53721,7 +53721,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b556332", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-1b556332", __vue__options__)
+    hotAPI.reload("data-v-1b556332", __vue__options__)
   }
 })()}
 },{"./main-header.vue":20,"./side-menu.vue":23,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){
@@ -53853,6 +53853,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
+let refs = [];
 
 module.exports = Vue.component("manage", {
 	data: function(){
@@ -53973,12 +53974,6 @@ module.exports = Vue.component("manage", {
 	mounted: function(){
 		let self = this;
 		
-		// We listen to a bunch of database references. I'm not sure
-		// whether this is optimal or not, but it is what it is. :) 
-		// Anyway, I'm making references to them here so that I can 
-		// turn them off when the user logs out.
-		let ref1, ref2, ref3, ref4, ref6;
-		
 		// Listen for users logging in and out, and then...
 		firebase.auth().onAuthStateChanged(function(user){
 			// Unhide the #app element, which was hidden so as
@@ -53990,11 +53985,11 @@ module.exports = Vue.component("manage", {
 			
 			// If the references are still listening, then 
 			// turn them off.
-			if (ref1) ref1.off();
-			if (ref2) ref2.off();
-			if (ref3) ref3.off();
-			if (ref4) ref4.off();
-			if (ref6) ref6.off();
+			refs.forEach(function(ref){
+				ref.off();
+			});
+			
+			refs = [];
 			
 			// If the user is logged in, then...
 			if (user){
@@ -54002,7 +53997,8 @@ module.exports = Vue.component("manage", {
 				
 				// Get a reference to the logged-in user's data
 				// in the database.
-				ref3 = db.ref("/allUsers/" + user.uid);
+				let ref3 = db.ref("/allUsers/" + user.uid);
+				refs.push(ref3);
 				
 				// Listen to this reference in case their data changes.
 				ref3.on("value", function(snapshot){
@@ -54013,7 +54009,8 @@ module.exports = Vue.component("manage", {
 					if (!user) return;
 					
 					// Get a reference to the list of /adminUsers.
-					ref1 = db.ref("/adminUsers");
+					let ref1 = db.ref("/adminUsers");
+					refs.push(ref1);
 					
 					// Listen to this reference.
 					ref1.on("value", function(snapshot2){
@@ -54037,7 +54034,8 @@ module.exports = Vue.component("manage", {
 				});
 				
 				// Get a reference to /blockedUsers.
-				ref2 = db.ref("/blockedUsers");
+				let ref2 = db.ref("/blockedUsers");
+				refs.push(ref2);
 				
 				// Listen to this reference.
 				ref2.on("value", function(snapshot){
@@ -54057,7 +54055,8 @@ module.exports = Vue.component("manage", {
 					self.blockedUsers = Object.keys(blockedUsers);
 				});
 				
-				ref4 = db.ref("/flaggedUsers");
+				let ref4 = db.ref("/flaggedUsers");
+				refs.push(ref4);
 				
 				ref4.on("value", function(snapshot){
 					self.flaggedUsers = [];
@@ -54075,7 +54074,8 @@ module.exports = Vue.component("manage", {
 					});
 				});
 				
-				ref6 = db.ref("/categoryList");
+				let ref6 = db.ref("/categoryList");
+				refs.push(ref6);
 				
 				ref6.on("value", function(snapshot){
 					self.categories = {};
@@ -54085,6 +54085,14 @@ module.exports = Vue.component("manage", {
 				});
 			}
 		});
+	},
+	
+	beforeDestroy: function(){
+		refs.forEach(function(ref){
+			ref.off();
+		});
+		
+		refs = [];
 	},
 });
 
@@ -54101,7 +54109,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-8bcc2496", __vue__options__)
   } else {
-    hotAPI.reload("data-v-8bcc2496", __vue__options__)
+    hotAPI.rerender("data-v-8bcc2496", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],22:[function(require,module,exports){

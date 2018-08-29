@@ -53680,6 +53680,11 @@ module.exports = Vue.component("index", {
 							let flagButton = document.createElement("button");
 							flagButton.innerText = "Flag";
 							flagButton.onclick = function(){
+								if (!self.$store.state.currentUser){
+									alert("You must be logged in to flag tweets. Please log in and then try again.");
+									return;
+								}
+								
 								let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to flag this tweet. Would you like to flag this tweet as inappropriate or irrelevant?");
 								
 								if (!shouldFlag) return;
@@ -53740,7 +53745,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b556332", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-1b556332", __vue__options__)
+    hotAPI.reload("data-v-1b556332", __vue__options__)
   }
 })()}
 },{"./main-header.vue":20,"./side-menu.vue":25,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){

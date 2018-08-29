@@ -94,6 +94,11 @@
 								let flagButton = document.createElement("button");
 								flagButton.innerText = "Flag";
 								flagButton.onclick = function(){
+									if (!self.$store.state.currentUser){
+										alert("You must be logged in to flag tweets. Please log in and then try again.");
+										return;
+									}
+									
 									let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to flag this tweet. Would you like to flag this tweet as inappropriate or irrelevant?");
 									
 									if (!shouldFlag) return;

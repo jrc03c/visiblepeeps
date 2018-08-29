@@ -199,20 +199,20 @@ ul.category li span {
 }
 
 .flaggy {
-	color:rgb(29,161,242);	
+	color:rgb(240,0,0);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;
 	font-size:13.5px;
 	letter-spacing:1px;
 	padding:1em 1.25em;
-	border:1px solid rgb(29,161,242);
+	border:1px solid rgb(240,0,0);
 	border-radius:4px;
 	background:rgb(254,254,254);
 }
 
 .flaggy:hover {
 	color:rgb(254,254,254);	
-	background:rgb(29,161,242);
+	background:rgb(240,0,0);
 }
 
 .submit-page, .about-page {
@@ -260,13 +260,22 @@ ul.category li span {
 }
 
 .delete-profile {
+	color:rgb(240,0,0);	
 	font-weight:500;
-	padding:0 0 0 2em;
+	font-family: 'Roboto', sans-serif;
+	font-size:13.5px;
+	letter-spacing:1px;
+	padding:1em 1.25em;
+	border:1px solid rgb(240,0,0);
+	border-radius:4px;
+	background:rgb(254,254,254);
+	margin:0 0 0 2em;
 	cursor:pointer;	
 }
 
 .delete-profile:hover {
-	color:rgb(135,135,135);
+	color:rgb(254,254,254);	
+	background:rgb(240,0,0);
 }
 
 input[type=text] {

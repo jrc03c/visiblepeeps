@@ -8,8 +8,8 @@
 								
 				<!-- <li class="li-heading">ACCOUNT</li> -->
 				
-				<li v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a li-heading">Submit Tweet</router-link></li>
-				<li><a class="fake-a li-fat" @click="logInOrOut">{{ $store.state.currentUser ? "Log out" : "Log in" }}</a></li>
+				<li><router-link to="/profile" class="fake-a li-heading">Submit Tweet</router-link></li>
+				<li v-if="$store.state.currentUser"><a class="fake-a li-fat" @click="$store.dispatch('logout')">Log out</a></li>
 				
 				<span v-if="isAdmin">
 

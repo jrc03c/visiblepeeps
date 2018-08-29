@@ -58,6 +58,11 @@
 		
 		<h2>Blocked Users</h2>
 		
+		<form @submit.prevent="blockUserByUsername(userToBlock)">
+			<input type="text" v-model="userToBlock">
+			<input type="submit" value="Block">
+		</form>
+		
 		<ul v-if="blockedUsers.length > 0" class="manage-text">
 			<li v-for="user in blockedUsers">
 				<button style="margin:0 2em 0 0" @click="unblockUser(user)">Unblock</button>
@@ -80,6 +85,7 @@
 		data: function(){
 			return {
 				userToAdmin: "",
+				userToBlock: "",
 				adminUsers: [],
 				blockedUsers: [],
 				flaggedUsers: [],
@@ -167,6 +173,28 @@
 				// and set their username's value to true.
 				db.ref("/blockedUsers/" + user.uid).set(true);
 				db.ref("/approvedUsers/" + user.uid).set(null);
+			},
+			
+			blockUserByUsername: function(username){
+				let self = this;
+				let db = firebase.database();
+				
+				let ref = db.ref("/allUsers").orderByChild("username").equalTo(username);
+				
+				ref.once("value").then(function(snapshot){
+					let users = snapshot.val();
+					
+					if (!users){
+						alert("This user hasn't logged in yet.");
+						return;
+					}
+					
+					Object.keys(users).forEach(function(uid){
+						self.blockUser(users[uid]);
+					});
+				});
+				
+				self.userToBlock = "";
 			},
 			
 			// This is where we unblock a user.

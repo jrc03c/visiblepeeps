@@ -202,9 +202,9 @@ ul.category li span {
 	color:rgb(240,0,0);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;
-	font-size:13.5px;
+	font-size:10px;
+	padding:0.75em 1em;	
 	letter-spacing:1px;
-	padding:1em 1.25em;
 	border:1px solid rgb(240,0,0);
 	border-radius:4px;
 	background:rgb(254,254,254);

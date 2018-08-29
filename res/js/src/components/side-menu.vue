@@ -6,9 +6,9 @@
 			<ul class="category">
 
 								
-				<li class="li-heading">ACCOUNT</li>
-				<li><a style="font-weight:500;" class="fake-a" @click="logInOrOut">{{ $store.state.currentUser ? "Log out" : "Log in" }}</a></li>
-				<li style="font-weight:500;" v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Profile</router-link></li>
+				<!-- <li class="li-heading">ACCOUNT</li> -->
+				<li><a class="li-fat" class="fake-a" @click="logInOrOut">{{ $store.state.currentUser ? "Log out" : "Log in" }}</a></li>
+				<li class="li-fat" v-if="$store.state.currentUser"><router-link to="/profile" class="fake-a">Submit Tweet</router-link></li>
 				<span v-if="isAdmin">
 
 					<li><router-link to="/" class="fake-a">Home</router-link></li>

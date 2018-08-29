@@ -63,7 +63,6 @@
 				
 				let db = firebase.database();
 				let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(12);
-				let done = true;
 				
 				ref.once("value").then(function(snapshot){
 					let userUIDs = snapshot.val();
@@ -72,26 +71,18 @@
 					let uids = Object.keys(userUIDs);
 					self.lastUserUID = uids[uids.length-1];
 					
-					let index = 0;
+					let count = uids.length;
 					
-					let t = setInterval(function(){
-						if (!done) return;
-						
-						done = false;
-						
-						if (index >= uids.length){
-							clearInterval(t);
-							self.finishedLoading = true;
-							return;
-						}
-						
-						let uid = uids[index];
+					uids.forEach(function(uid){						
 						let ref2 = db.ref("/approvedUsers/" + uid);
 						
 						ref2.once("value").then(function(snapshot2){
 							let hasBeenApproved = !!snapshot2.val();
 							
-							if (!hasBeenApproved) return;
+							if (!hasBeenApproved){
+								count--;
+								if (count <= 0) self.finishedLoading = true;
+							}
 							
 							let ref3 = db.ref("/allUsers/" + uid);
 							
@@ -99,8 +90,8 @@
 								let userData = snapshot3.val();
 								
 								if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
-									index++;
-									done = true;
+									count--;
+									if (count <= 0) self.finishedLoading = true;
 									return;
 								}
 								
@@ -135,8 +126,8 @@
 								let script = document.createElement("script");
 								script.src = "https://platform.twitter.com/widgets.js";
 								script.onload = function(){
-									index++;
-									done = true;
+									count--;
+									if (count <= 0) self.finishedLoading = true;
 								};
 								
 								// Put the anchor element inside the blockquote element.

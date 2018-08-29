@@ -53665,6 +53665,7 @@ module.exports = Vue.component("index", {
 					
 					if (index >= uids.length){
 						clearInterval(t);
+						self.finishedLoading = true;
 						return;
 					}
 					

@@ -6,7 +6,7 @@
 			<main-header></main-header>
 			
 			<p id="submit-button-container">
-				<router-link to="/profile" class="submit-button">SUBMIT TWEET</router-link>
+				<router-link to="/profile" class="submit-button">Submit Tweet</router-link>
 			</p>
 
 			<div class="module-grid" ref="tweetContainer"></div>

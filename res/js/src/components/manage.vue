@@ -83,7 +83,7 @@
 							// If there are no admin users, or if this user's
 							// username is not in the list of adminUsers, then
 							// redirect the user back to the home page.
-							if (!adminUsers || !adminUsers[userData.username]){
+							if (!adminUsers || !adminUsers[user.uid]){
 								window.location.href = "/";
 							}
 							

@@ -111,7 +111,7 @@
 						let userData = snapshot1.val();
 						if (!userData) return;
 						
-						let ref2 = db.ref("/adminUsers/" + userData.username);
+						let ref2 = db.ref("/adminUsers/" + user.uid);
 						
 						ref2.on("value", function(snapshot2){
 							let isAdmin = snapshot2.val();

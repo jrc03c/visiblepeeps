@@ -62,10 +62,11 @@ window.onload = function(){
 					
 					// We store the username in the database under their 
 					// Firebase auth UID.
-					let ref = db.ref("/allUsers/" + result.user.uid + "/username");
-					ref.set(username);
+					db.ref("/allUsers/" + result.user.uid + "/username").set(username);
+					db.ref("/allUsers/" + result.user.uid + "/uid").set(result.user.uid);
 					
-					let ref2 = db.ref("/allUsers/" + result.user.uid + "/hasBeenApproved");
+					let ref2 = db.ref("/approvedUsers/" + result.user.uid);
+					
 					ref2.once("value").then(function(snapshot){
 						let hasBeenApproved = !!snapshot.val();
 						

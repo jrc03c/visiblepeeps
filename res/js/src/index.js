@@ -75,6 +75,29 @@ window.onload = function(){
 			logout: function(){
 				firebase.auth().signOut();
 			},
+			
+			deleteAccount: function(){
+				let shouldDeleteAccount = confirm("Are you sure that you want to remove your tweet from this site?");
+				
+				if (!shouldDeleteAccount) return;
+				
+				let self = this;
+				let db = firebase.database();
+				let user = firebase.auth().currentUser;
+				let categories = store.state.categories;
+				let updates = {};
+				
+				updates["/allUsers/" + user.uid] = null;
+				
+				categories.forEach(function(category){
+					updates["/tweets/" + category + "/" + user.uid] = null;
+				});
+				
+				updates["/tweets/ALL/" + user.uid] = null;
+				
+				db.ref().update(updates);
+				user.delete();
+			},
 		},
 	});
 	

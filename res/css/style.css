@@ -243,7 +243,8 @@ ul.category li span {
 
 .delete-profile {
 	font-weight:500;
-	padding:0 0 0 2em;	
+	padding:0 0 0 2em;
+	cursor:pointer;	
 }
 
 .delete-profile:hover {

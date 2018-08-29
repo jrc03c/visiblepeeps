@@ -64,7 +64,7 @@
 				</div>
 					
 				<div v-else>
-					<p>Hi! Before you can submit your tweet to the site, we need to ask you to login with your Twitter account. This is solely to prevent any malicious misuse of the site. We do not store any personal data, and we can't access your Twitter account.</p><br>
+					<p>Hi! Before you can submit your tweet to the site, we need to ask you to login with your Twitter account. This is solely to prevent any malicious misuse of the site. We do not store any personal data besides your username, and we can't access your Twitter account.</p><br>
 
 					<p>Once you have made a submission and been approved, you can at any point return to this page to, update your submitted tweet, update any categories you have picked, or if you wish, delete your tweet from the site.</p><br>
 

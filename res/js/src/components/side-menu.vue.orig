@@ -3,10 +3,19 @@
 		<button class="mobile-nav">&#x2630;</button>
 		
 		<div id="side-menu">
-
+<<<<<<< HEAD
 			<ul class="category">				
+				<li><router-link to="/profile" class="fake-a li-heading">Submit Tweet</router-link></li>
+				<li v-if="$store.state.currentUser"><a style="font-weight:500;" class="fake-a" @click="$store.dispatch('logout')">Log out</a></li>
+=======
+			<ul class="category">
+
+								
+				<!-- <li class="li-heading">ACCOUNT</li> -->
+				
 				<li><router-link to="/profile" class="fake-a li-fat">Submit Tweet</router-link></li>
 				<li v-if="$store.state.currentUser"><a style="font-weight:500;" class="fake-a li-fat" @click="$store.dispatch('logout')">Log out</a></li>
+>>>>>>> b7f7c39a5c2d643a12c2647ae0e64a56dcdc9b2c
 				
 				<span v-if="isAdmin">
 

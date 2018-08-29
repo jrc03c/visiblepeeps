@@ -91,6 +91,16 @@
 								let a = document.createElement("a");
 								a.href = userData.profileTweet;
 								
+								let flagButton = document.createElement("button");
+								flagButton.innerText = "Flag";
+								flagButton.onclick = function(){
+									let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to flag this tweet. Would you like to flag this tweet as inappropriate or irrelevant?");
+									
+									if (!shouldFlag) return;
+									
+									db.ref("/flaggedUsers/" + uid).set(self.$store.state.currentUser.uid);
+								};
+								
 								// Create a script element with the Twitter widgets JS file
 								// as its source.
 								let script = document.createElement("script");
@@ -102,6 +112,7 @@
 								// Put the blockquote and the script inside the tweetContainer
 								// element, which is referenced up in the HTML.
 								self.$refs.tweetContainer.appendChild(blockquote);
+								self.$refs.tweetContainer.appendChild(flagButton);
 								self.$refs.tweetContainer.appendChild(script);
 							});
 						});

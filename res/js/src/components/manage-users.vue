@@ -37,18 +37,11 @@
 		
 		<h2>Flagged Users</h2>
 		
-		<ul v-if="flaggedUsers.length > 0" class="manage-text">
-			<li v-for="user in flaggedUsers">
-				<a :href="'https://twitter.com/' + user.username">
-					{{ user.username }}
-				</a> / 
+		<ul v-if="flags.length > 0" class="manage-text">
+			<li v-for="flag in flags">
+				<a :href="flag.flaggedUser.profileTweet">tweet</a> by {{ flag.flaggedUser.username }}, flagged by {{ flag.flaggedBy.username }} (<a :href="flag.flaggedBy.profileTweet">tweet</a>)
 				
-				<a :href="user.profileTweet">
-					{{ user.profileTweet }}
-				</a>
-				
-				<button @click="ignoreUser(user)">Ignore</button>
-				<button @click="ignoreUser(user); blockUser(user)">Block</button>
+				<button @click="resolveFlag(flag)">Resolve Flag</button>
 			</li>
 		</ul>
 		
@@ -88,7 +81,7 @@
 				userToBlock: "",
 				adminUsers: [],
 				blockedUsers: [],
-				flaggedUsers: [],
+				flags: [],
 				newUsers: [],
 			};
 		},
@@ -152,13 +145,19 @@
 				db.ref().update(updates);
 			},
 			
+			resolveFlag: function(flag){
+				let self = this;
+				let db = firebase.database();
+				db.ref("/flaggedUsers/" + flag.flaggedUser.uid).set(null);
+			},
+			
 			// This is where we ignore a flagged user.
 			ignoreUser: function(user){
 				let self = this;
 				let db = firebase.database();
 				
 				let updates = {};
-				updates["/flaggedUsers/" + user.uid] = null;
+				updates["/flags/" + user.uid] = null;
 				updates["/newUsers/" + user.uid] = null;
 				
 				db.ref().update(updates);
@@ -250,8 +249,40 @@
 					
 					pushUserDataFromRefToList("adminUsers");
 					pushUserDataFromRefToList("blockedUsers");
-					pushUserDataFromRefToList("flaggedUsers");
 					pushUserDataFromRefToList("newUsers");
+					
+					let ref = db.ref("/flaggedUsers");
+					
+					ref.on("value", function(snapshot){
+						self.flags = [];
+						let flags = snapshot.val();
+						if (!flags) return;
+						
+						Object.keys(flags).forEach(function(flaggedUser){
+							let flaggedBy = flags[flaggedUser];
+							
+							let flag = {
+								flaggedUser: {username: "", uid: "", profileTweet: ""},
+								flaggedBy: {username: "", uid: "", profileTweet: ""},
+							};
+							
+							db.ref("/allUsers/" + flaggedUser).once("value").then(function(snapshot2){
+								let userData = snapshot2.val();
+								if (!userData) return;
+								userData.uid = flaggedUser;
+								flag.flaggedUser = userData;
+							});
+							
+							db.ref("/allUsers/" + flaggedBy).once("value").then(function(snapshot2){
+								let userData = snapshot2.val();
+								if (!userData) return;
+								userData.uid = flaggedBy;
+								flag.flaggedBy = userData;
+							});
+							
+							self.flags.push(flag);
+						});
+					});
 				}
 			},
 		},

@@ -94,7 +94,8 @@
 								a.href = userData.profileTweet;
 								
 								let flagButton = document.createElement("button");
-								flagButton.innerText = "Flag";
+								flagButton.className += "flaggy";
+								flagButton.innerText = "Report";
 								flagButton.onclick = function(){
 									if (!self.$store.state.currentUser){
 										alert("You must be logged in to flag tweets. Please log in and then try again.");

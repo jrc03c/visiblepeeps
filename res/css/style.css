@@ -198,6 +198,23 @@ ul.category li span {
 	color:rgb(29,161,242);	
 }
 
+.flaggy {
+	color:rgb(29,161,242);	
+	font-weight:500;
+	font-family: 'Roboto', sans-serif;
+	font-size:13.5px;
+	letter-spacing:1px;
+	padding:1em 1.25em;
+	border:1px solid rgb(29,161,242);
+	border-radius:4px;
+	background:rgb(254,254,254);
+}
+
+.flaggy:hover {
+	color:rgb(254,254,254);	
+	background:rgb(29,161,242);
+}
+
 .submit-page, .about-page {
 	width:85%;
 	max-width:900px;

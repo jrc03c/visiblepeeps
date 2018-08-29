@@ -8,7 +8,7 @@
 			<div class="submit-page">
 				<div v-if="isLoggedIn">
 					
-					<p>Hi! We are so happy you want to join! Once you have submitted your tweet, you can at any point return to this page and update your information. Totes! :D</p><br>
+					<p>Hi again! We are so happy you want to join! :D</p><br>
 						
 					<p>Please only submit tweets including the following hashtags: <span style="color:rgb(29,161,242);">#VisibleWomen · #VisibleWoman · #VisibleNB · #VisibileNBs</span></p>
 						
@@ -64,9 +64,9 @@
 				</div>
 					
 				<div v-else>
-					<p>This page will act as your profile when you log in with your Twitter account. Once you have made a submission and been approved, you'll be able to update your submitted tweet, and any categories you have picked.</p><br>
-					
-					<p>Please log in with your Twitter account to create a profile page.</p><br>
+					<p>Hi! Before you can submit your tweet to the site, we need to ask you to login with your Twitter account. This is solely to prevent any malicious misuse of the site. We do not store any personal data, and we can't access your Twitter account.</p><br>
+
+					<p>Once you have made a submission and been approved, you can at any point return to this page to, update your submitted tweet, update any categories you have picked, or if you wish, delete your tweet from the site.</p>
 
 					<button @click="$store.dispatch('login')">Login</button>
 				</div>

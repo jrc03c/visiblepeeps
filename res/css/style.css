@@ -170,7 +170,7 @@ ul.category li.li-heading {
 	font-weight:500;
 }
 
-ul.category li.li-fat {
+ul.category .li-fat {
 	font-weight:500;
 	text-transform:uppercase;
 }
@@ -200,7 +200,7 @@ ul.category li span {
 
 .flaggy {
 	position:absolute;
-	margin:-50px 0 0 -100px;
+	margin:-50px -250px 0 0;
 	color:rgb(240,0,0);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;

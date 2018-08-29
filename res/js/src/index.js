@@ -64,6 +64,16 @@ window.onload = function(){
 					// Firebase auth UID.
 					let ref = db.ref("/allUsers/" + result.user.uid + "/username");
 					ref.set(username);
+					
+					let ref2 = db.ref("/allUsers/" + result.user.uid + "/hasBeenApproved");
+					ref2.once("value").then(function(snapshot){
+						let hasBeenApproved = !!snapshot.val();
+						
+						if (!hasBeenApproved){
+							let ref3 = db.ref("/newUsers/" + result.user.uid);
+							ref3.set(true).then(function(){}).catch(function(error){});
+						}
+					});
 				}).catch(function(error){
 					console.error(error);
 				});
@@ -94,9 +104,13 @@ window.onload = function(){
 				});
 				
 				updates["/tweets/ALL/" + user.uid] = null;
+				updates["/newUsers/" + user.uid] = null;
 				
-				db.ref().update(updates);
-				user.delete();
+				db.ref().update(updates).then(function(){
+					user.delete();
+				}).catch(function(error){
+					console.error(error);
+				});
 			},
 		},
 	});

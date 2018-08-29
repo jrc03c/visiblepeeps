@@ -439,7 +439,7 @@ input[type="submit"]:hover, button:hover {
 	display:block;
 	width:calc(100% - 250px);
 	height:auto;
-	margin:0 0 0 calc(5em + 250px);
+	margin:0 5em 5em calc(5em + 250px);
 	text-align:left;
 }
 
@@ -532,8 +532,9 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1050px) {
 
 	#app #manage-content {
-		width:100%;
-		margin:0 auto;
+		width:calc(100% - 4em);
+		margin:0 2em auto;
+		margin-bottom: 2em;
 	}
 
 }

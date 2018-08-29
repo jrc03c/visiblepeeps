@@ -83,6 +83,8 @@
 									return;
 								}
 								
+								let wrapper = document.createElement("div");
+								
 								// Create a blockquote element of class "twitter-tweet".
 								let blockquote = document.createElement("blockquote");
 								blockquote.className += "twitter-tweet";
@@ -116,9 +118,11 @@
 								
 								// Put the blockquote and the script inside the tweetContainer
 								// element, which is referenced up in the HTML.
-								self.$refs.tweetContainer.appendChild(blockquote);
-								self.$refs.tweetContainer.appendChild(flagButton);
-								self.$refs.tweetContainer.appendChild(script);
+								wrapper.appendChild(blockquote);
+								wrapper.appendChild(flagButton);
+								wrapper.appendChild(script);
+								
+								self.$refs.tweetContainer.appendChild(wrapper);
 							});
 						});
 					});

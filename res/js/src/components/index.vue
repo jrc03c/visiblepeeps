@@ -51,6 +51,7 @@
 				let self = this;
 				
 				if (!self.finishedLoading) return;
+				self.finishedLoading = false;
 				
 				let category = self.$store.state.currentCategory;
 				let level = self.$store.state.currentLevel;
@@ -62,6 +63,7 @@
 				
 				let db = firebase.database();
 				let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(12);
+				let done = true;
 				
 				ref.once("value").then(function(snapshot){
 					let userUIDs = snapshot.val();
@@ -73,9 +75,9 @@
 					let index = 0;
 					
 					let t = setInterval(function(){
-						if (!self.finishedLoading) return;
+						if (!done) return;
 						
-						self.finishedLoading = false;
+						done = false;
 						
 						if (index >= uids.length){
 							clearInterval(t);
@@ -98,7 +100,7 @@
 								
 								if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 									index++;
-									self.finishedLoading = true;
+									done = true;
 									return;
 								}
 								
@@ -134,7 +136,7 @@
 								script.src = "https://platform.twitter.com/widgets.js";
 								script.onload = function(){
 									index++;
-									self.finishedLoading = true;
+									done = true;
 								};
 								
 								// Put the anchor element inside the blockquote element.
@@ -168,6 +170,7 @@
 				var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight);
 			
 				if (percent > 0.8){
+					console.log("too far down page...loading...");
 					self.loadTweetsFromCategory(true);
 				}
 			});

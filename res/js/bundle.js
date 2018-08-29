@@ -53653,35 +53653,43 @@ module.exports = Vue.component("index", {
 				self.lastUserUID = uids[uids.length-1];
 				
 				uids.forEach(function(uid){
-					let ref2 = db.ref("/allUsers/" + uid);
+					let ref2 = db.ref("/approvedUsers/" + uid);
 					
 					ref2.once("value").then(function(snapshot2){
-						let userData = snapshot2.val();
+						let hasBeenApproved = !!snapshot2.val();
 						
-						if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
-							return;
-						}
+						if (!hasBeenApproved) return;
 						
-						// Create a blockquote element of class "twitter-tweet".
-						let blockquote = document.createElement("blockquote");
-						blockquote.className += "twitter-tweet";
+						let ref3 = db.ref("/allUsers/" + uid);
 						
-						// Create an anchor element with the tweet's url as its href.
-						let a = document.createElement("a");
-						a.href = userData.profileTweet;
-						
-						// Create a script element with the Twitter widgets JS file
-						// as its source.
-						let script = document.createElement("script");
-						script.src = "https://platform.twitter.com/widgets.js";
-						
-						// Put the anchor element inside the blockquote element.
-						blockquote.appendChild(a);
-						
-						// Put the blockquote and the script inside the tweetContainer
-						// element, which is referenced up in the HTML.
-						self.$refs.tweetContainer.appendChild(blockquote);
-						self.$refs.tweetContainer.appendChild(script);
+						ref3.once("value").then(function(snapshot3){
+							let userData = snapshot3.val();
+							
+							if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
+								return;
+							}
+							
+							// Create a blockquote element of class "twitter-tweet".
+							let blockquote = document.createElement("blockquote");
+							blockquote.className += "twitter-tweet";
+							
+							// Create an anchor element with the tweet's url as its href.
+							let a = document.createElement("a");
+							a.href = userData.profileTweet;
+							
+							// Create a script element with the Twitter widgets JS file
+							// as its source.
+							let script = document.createElement("script");
+							script.src = "https://platform.twitter.com/widgets.js";
+							
+							// Put the anchor element inside the blockquote element.
+							blockquote.appendChild(a);
+							
+							// Put the blockquote and the script inside the tweetContainer
+							// element, which is referenced up in the HTML.
+							self.$refs.tweetContainer.appendChild(blockquote);
+							self.$refs.tweetContainer.appendChild(script);
+						});
 					});
 				});
 			});
@@ -53937,6 +53945,27 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
@@ -53950,6 +53979,7 @@ module.exports = Vue.component("manage-users", {
 			userToBlock: "",
 			blockedUsers: [],
 			flaggedUsers: [],
+			newUsers: [],
 		};
 	},
 	
@@ -53991,11 +54021,27 @@ module.exports = Vue.component("manage-users", {
 			db.ref("/adminUsers/" + username).set(null);
 		},
 		
+		approveUser: function(user){
+			let self = this;
+			let db = firebase.database();
+			
+			let updates = {};
+			updates["/approvedUsers/" + user.uid] = true;
+			updates["/newUsers/" + user.uid] = null;
+			
+			db.ref().update(updates);
+		},
+		
 		// This is where we ignore a flagged user.
 		ignoreUser: function(user){
 			let self = this;
 			let db = firebase.database();
-			db.ref("/flaggedUsers/" + user.uid).set(null);
+			
+			let updates = {};
+			updates["/flaggedUsers/" + user.uid] = null;
+			updates["/newUsers/" + user.uid] = null;
+			
+			db.ref().update(updates);
 		},
 		
 		// This is where we block a user.
@@ -54099,6 +54145,26 @@ module.exports = Vue.component("manage-users", {
 						});
 					});
 				});
+				
+				let ref6 = db.ref("/newUsers");
+				refs.push(ref6);
+				
+				ref6.on("value", function(snapshot){
+					self.newUsers = [];
+					let newUsers = snapshot.val();
+					if (!newUsers) return;
+					
+					Object.keys(newUsers).forEach(function(uid){
+						let ref7 = db.ref("/allUsers/" + uid);
+						
+						ref7.once("value").then(function(snapshot2){
+							let userData = snapshot2.val();
+							if (!userData) return;
+							userData.uid = uid;
+							self.newUsers.push(userData);
+						});
+					});
+				});
 			}
 		},
 	},
@@ -54121,7 +54187,7 @@ module.exports = Vue.component("manage-users", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),_c('ul',{staticClass:"manage-text"},_vm._l((_vm.adminUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeAdminUser(username)}}},[_vm._v("Remove")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})),_vm._v(" "),_c('h2',[_vm._v("Flagged Users")]),_vm._v(" "),(_vm.flaggedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.flaggedUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t")]),_vm._v(" / \n\t\t\t\n\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user)}}},[_vm._v("Ignore")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user.username)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no flagged users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.blockUser(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),(_vm.blockedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.blockedUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.unblockUser(username)}}},[_vm._v("Unblock")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no blocked users.\n\t")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),_c('ul',{staticClass:"manage-text"},_vm._l((_vm.adminUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeAdminUser(username)}}},[_vm._v("Remove")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})),_vm._v(" "),_c('h2',[_vm._v("New Users")]),_vm._v(" "),(_vm.newUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.newUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t")]),_vm._v(" / \n\t\t\t\n\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approveUser(user)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user.username)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no new users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Flagged Users")]),_vm._v(" "),(_vm.flaggedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.flaggedUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t")]),_vm._v(" / \n\t\t\t\n\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user)}}},[_vm._v("Ignore")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user.username)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no flagged users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.blockUser(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),(_vm.blockedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.blockedUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.unblockUser(username)}}},[_vm._v("Unblock")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no blocked users.\n\t")])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54203,10 +54269,10 @@ module.exports = Vue.component("manage", {
 				// Listen to this reference in case their data changes.
 				ref3.on("value", function(snapshot){
 					// Get their data.
-					let user = snapshot.val();
+					let userData = snapshot.val();
 					
 					// If the data doesn't exist, then return.
-					if (!user) return;
+					if (!userData) return;
 					
 					// Get a reference to the list of /adminUsers.
 					let ref1 = db.ref("/adminUsers");
@@ -54220,7 +54286,7 @@ module.exports = Vue.component("manage", {
 						// If there are no admin users, or if this user's
 						// username is not in the list of adminUsers, then
 						// redirect the user back to the home page.
-						if (!adminUsers || !adminUsers[user.username]){
+						if (!adminUsers || !adminUsers[userData.username]){
 							window.location.href = "/";
 						}
 						

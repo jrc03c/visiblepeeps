@@ -66,10 +66,10 @@
 					// Listen to this reference in case their data changes.
 					ref3.on("value", function(snapshot){
 						// Get their data.
-						let user = snapshot.val();
+						let userData = snapshot.val();
 						
 						// If the data doesn't exist, then return.
-						if (!user) return;
+						if (!userData) return;
 						
 						// Get a reference to the list of /adminUsers.
 						let ref1 = db.ref("/adminUsers");
@@ -83,7 +83,7 @@
 							// If there are no admin users, or if this user's
 							// username is not in the list of adminUsers, then
 							// redirect the user back to the home page.
-							if (!adminUsers || !adminUsers[user.username]){
+							if (!adminUsers || !adminUsers[userData.username]){
 								window.location.href = "/";
 							}
 							

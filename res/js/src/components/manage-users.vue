@@ -14,6 +14,27 @@
 			</li>
 		</ul>
 		
+		<h2>New Users</h2>
+		
+		<ul v-if="newUsers.length > 0" class="manage-text">
+			<li v-for="user in newUsers">
+				<a :href="'https://twitter.com/' + user.username">
+					{{ user.username }}
+				</a> / 
+				
+				<a :href="user.profileTweet">
+					{{ user.profileTweet }}
+				</a>
+				
+				<button @click="approveUser(user)">Approve</button>
+				<button @click="ignoreUser(user); blockUser(user.username)">Block</button>
+			</li>
+		</ul>
+		
+		<div v-else style="padding:1em 0 0; font-size:13px;">
+			There are currently no new users.
+		</div>
+		
 		<h2>Flagged Users</h2>
 		
 		<ul v-if="flaggedUsers.length > 0" class="manage-text">
@@ -68,6 +89,7 @@
 				userToBlock: "",
 				blockedUsers: [],
 				flaggedUsers: [],
+				newUsers: [],
 			};
 		},
 		
@@ -109,11 +131,27 @@
 				db.ref("/adminUsers/" + username).set(null);
 			},
 			
+			approveUser: function(user){
+				let self = this;
+				let db = firebase.database();
+				
+				let updates = {};
+				updates["/approvedUsers/" + user.uid] = true;
+				updates["/newUsers/" + user.uid] = null;
+				
+				db.ref().update(updates);
+			},
+			
 			// This is where we ignore a flagged user.
 			ignoreUser: function(user){
 				let self = this;
 				let db = firebase.database();
-				db.ref("/flaggedUsers/" + user.uid).set(null);
+				
+				let updates = {};
+				updates["/flaggedUsers/" + user.uid] = null;
+				updates["/newUsers/" + user.uid] = null;
+				
+				db.ref().update(updates);
 			},
 			
 			// This is where we block a user.
@@ -214,6 +252,26 @@
 								if (!userData) return;
 								userData.uid = uid;
 								self.flaggedUsers.push(userData);
+							});
+						});
+					});
+					
+					let ref6 = db.ref("/newUsers");
+					refs.push(ref6);
+					
+					ref6.on("value", function(snapshot){
+						self.newUsers = [];
+						let newUsers = snapshot.val();
+						if (!newUsers) return;
+						
+						Object.keys(newUsers).forEach(function(uid){
+							let ref7 = db.ref("/allUsers/" + uid);
+							
+							ref7.once("value").then(function(snapshot2){
+								let userData = snapshot2.val();
+								if (!userData) return;
+								userData.uid = uid;
+								self.newUsers.push(userData);
 							});
 						});
 					});

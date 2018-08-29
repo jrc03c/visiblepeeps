@@ -31,7 +31,7 @@
 			return {
 				lastUserUID: "-1",
 				finishedLoading: true,
-				numberOfTweetsToLoadAtOnce: 36,
+				numberOfTweetsToLoadAtOnce: 6,
 			};
 		},
 		

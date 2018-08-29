@@ -30,6 +30,7 @@
 		data: function(){
 			return {
 				lastUserUID: "-1",
+				finishedLoading: true,
 			};
 		},
 		
@@ -48,6 +49,10 @@
 		methods: {
 			loadTweetsFromCategory: function(shouldKeepCurrentTweets){
 				let self = this;
+				console.log('start loading');
+				
+				if (!self.finishedLoading) return;
+				
 				let category = self.$store.state.currentCategory;
 				let level = self.$store.state.currentLevel;
 				
@@ -66,7 +71,21 @@
 					let uids = Object.keys(userUIDs);
 					self.lastUserUID = uids[uids.length-1];
 					
-					uids.forEach(function(uid){
+					let index = 0;
+					
+					let t = setInterval(function(){
+						if (!self.finishedLoading) return;
+						console.log("loading another");
+						
+						self.finishedLoading = false;
+						
+						if (index >= uids.length){
+							clearInterval(t);
+							console.log("finished loading");
+							return;
+						}
+						
+						let uid = uids[index];
 						let ref2 = db.ref("/approvedUsers/" + uid);
 						
 						ref2.once("value").then(function(snapshot2){
@@ -80,6 +99,8 @@
 								let userData = snapshot3.val();
 								
 								if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
+									index++;
+									self.finishedLoading = true;
 									return;
 								}
 								
@@ -113,6 +134,10 @@
 								// as its source.
 								let script = document.createElement("script");
 								script.src = "https://platform.twitter.com/widgets.js";
+								script.onload = function(){
+									index++;
+									self.finishedLoading = true;
+								};
 								
 								// Put the anchor element inside the blockquote element.
 								blockquote.appendChild(a);

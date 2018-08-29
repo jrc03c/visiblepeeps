@@ -53756,7 +53756,6 @@ module.exports = Vue.component("index", {
 			var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight);
 		
 			if (percent > 0.8){
-				console.log("too far down page...loading...");
 				self.loadTweetsFromCategory(true);
 			}
 		});

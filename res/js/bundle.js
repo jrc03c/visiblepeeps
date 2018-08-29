@@ -54056,6 +54056,7 @@ module.exports = Vue.component("manage-users", {
 			// Get a reference to /blockedUsers	in the database
 			// and set their username's value to true.
 			db.ref("/blockedUsers/" + user.uid).set(true);
+			db.ref("/approvedUsers/" + user.uid).set(null);
 		},
 		
 		// This is where we unblock a user.
@@ -54070,6 +54071,7 @@ module.exports = Vue.component("manage-users", {
 			// and set their username's value to null.
 			let db = firebase.database();
 			db.ref("/blockedUsers/" + user.uid).set(null);
+			db.ref("/approvedUsers/" + user.uid).set(true);
 		},
 		
 		onAuthStateChanged: function(){

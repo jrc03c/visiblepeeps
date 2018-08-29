@@ -125,12 +125,6 @@
 				self.currentView = view;
 			},
 			
-			logInOrOut: function(){
-				let self = this;
-				if (self.isLoggedIn) self.logout();
-				else self.login();
-			},
-			
 			// This is where we add admin users.
 			addAdminUser: function(username){
 				let self = this;

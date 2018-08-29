@@ -68,7 +68,7 @@
 					
 					<p>Please log in with your Twitter account to create a profile page.</p><br>
 
-					<button @click="logIn">Login</button>
+					<button @click="$store.dispatch('login')">Login</button>
 				</div>
 			</div>
 		</div>

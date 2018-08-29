@@ -31,6 +31,7 @@
 			return {
 				lastUserUID: "-1",
 				finishedLoading: true,
+				numberOfTweetsToLoadAtOnce: 36,
 			};
 		},
 		
@@ -62,7 +63,7 @@
 				}
 				
 				let db = firebase.database();
-				let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(12);
+				let ref = db.ref("/tweets/" + category).orderByKey().startAt(self.lastUserUID + "0").limitToFirst(self.numberOfTweetsToLoadAtOnce);
 				
 				ref.once("value").then(function(snapshot){
 					let userUIDs = snapshot.val();

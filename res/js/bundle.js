@@ -53990,21 +53990,31 @@ module.exports = Vue.component("manage-users", {
 			let self = this;
 			let db = firebase.database();
 			
-			// Get a reference to the /adminUsers list
-			// in the database and set their username's
-			// value to true.
-			db.ref("/adminUsers/" + username).set(true);
+			let ref = db.ref("/allUsers").orderByChild("username").equalTo(self.userToAdmin);
 			
-			// Reset the userToAdmin variable, which will
-			// reset the text input field.
+			ref.once("value").then(function(snapshot){
+				let users = snapshot.val();
+				
+				if (!users){
+					alert("This user has not yet logged in. Please ask them to log in, and then try adding them as an administrator again.");
+					return;
+				}
+				
+				Object.keys(users).forEach(function(uid){
+					db.ref("/adminUsers/" + uid).set(true);
+				});
+			});
+			
+			// // Reset the userToAdmin variable, which will
+			// // reset the text input field.
 			self.userToAdmin = "";
 		},
 		
 		// This is where we remove an admin user.
-		removeAdminUser: function(username){
+		removeAdminUser: function(user){
 			// Prompt for confirmation that this is really 
 			// what we want to do.
-			let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + username + " as an administrator?");
+			let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + user.username + " as an administrator?");
 			
 			// If we decide not to remove them, then return.
 			if (!shouldRemoveAdminUser) return;
@@ -54012,7 +54022,7 @@ module.exports = Vue.component("manage-users", {
 			// Otherwise, get a reference to /adminUsers in the 
 			// database and set their username's value to null.
 			let db = firebase.database();
-			db.ref("/adminUsers/" + username).set(null);
+			db.ref("/adminUsers/" + user.uid).set(null);
 		},
 		
 		approveUser: function(user){

@@ -136,6 +136,7 @@ img.peeps-lettering {
 	overflow-y:scroll;
 	height:100%;
 	-ms-overflow-style: none;
+	z-index:993;
 }
 
 #side-menu::-webkit-scrollbar { 

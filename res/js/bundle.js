@@ -53949,11 +53949,11 @@ module.exports = Vue.component("index", {
 							flagButton.innerText = "Report";
 							flagButton.onclick = function(){
 								if (!self.$store.state.currentUser){
-									alert("You must be logged in to flag tweets. Please log in and then try again.");
+									alert("You must be logged in to report tweets. Please log in and then try again.");
 									return;
 								}
 								
-								let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to flag this tweet. Would you like to flag this tweet as inappropriate or irrelevant?");
+								let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to report this tweet. Would you like to report this tweet as inappropriate or irrelevant?");
 								
 								if (!shouldFlag) return;
 								
@@ -54015,7 +54015,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-6f9faaac", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-6f9faaac", __vue__options__)
+    hotAPI.reload("data-v-6f9faaac", __vue__options__)
   }
 })()}
 },{"./main-header.vue":22,"./side-menu.vue":27,"firebase/app":9,"vue":17,"vue-hot-reload-api":14,"vue/dist/vue":16}],22:[function(require,module,exports){

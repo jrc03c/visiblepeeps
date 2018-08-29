@@ -22,7 +22,10 @@ window.onload = function(){
 		{path: "/", component: require("./components/index.vue")},
 		{path: "/about", component: require("./components/about.vue")},
 		{path: "/profile", component: require("./components/profile.vue")},
-		{path: "/manage", component: require("./components/manage.vue")},
+		{path: "/manage", component: require("./components/manage.vue"), children: [
+			{path: "users", component: require("./components/manage-users.vue")},
+			{path: "categories", component: require("./components/manage-categories.vue")},
+		]},
 	];
 	
 	let router = new VueRouter({routes});
@@ -37,7 +40,6 @@ window.onload = function(){
 			currentLevel: "ALL",
 			currentCategory: "ALL",
 			currentUser: null,
-			currentManagementView: "users",
 		},
 		getters: {},
 		mutations: {},

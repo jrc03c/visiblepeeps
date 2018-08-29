@@ -14,15 +14,15 @@
 					<li><a href="" class="fake-a">Home</a></li>
 		
 					<li>
-						<a @click="manage('users')" class="fake-a">
+						<router-link to="/manage/users" class="fake-a">
 							Users
-						</a>
+						</router-link>
 					</li>
 					
 					<li>
-						<a @click="manage('categories')" class="fake-a">
+						<router-link to="/manage/categories" class="fake-a">
 							Categories
-						</a>
+						</router-link>
 					</li>
 					
 				</span>	
@@ -91,12 +91,6 @@
 				self.$store.state.currentCategory = category;
 				self.$router.push("/");
 			},
-			
-			manage: function(page){
-				let self = this;
-				self.$router.push("/manage");
-				self.$store.state.currentManagementView = page;
-			}
 		},
 		
 		mounted: function(){

@@ -16072,7 +16072,7 @@ exports.DataSnapshot = DataSnapshot;
 exports.OnDisconnect = OnDisconnect;
 
 }).call(this,require('_process'))
-},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":25,"tslib":11}],4:[function(require,module,exports){
+},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":27,"tslib":11}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -17795,7 +17795,7 @@ var iterator = _wksExt.f('iterator');
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":26,"whatwg-fetch":17}],6:[function(require,module,exports){
+},{"timers":28,"whatwg-fetch":17}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -33127,7 +33127,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":25}],14:[function(require,module,exports){
+},{"_process":27}],14:[function(require,module,exports){
 (function (global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -44078,7 +44078,7 @@ return Vue;
 })));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":26}],15:[function(require,module,exports){
+},{"timers":28}],15:[function(require,module,exports){
 (function (process,global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -52116,7 +52116,7 @@ if (inBrowser) {
 module.exports = Vue;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"_process":25,"timers":26}],16:[function(require,module,exports){
+},{"_process":27,"timers":28}],16:[function(require,module,exports){
 (function (process){
 /**
  * vuex v3.0.1
@@ -53052,7 +53052,7 @@ var index = {
 module.exports = index;
 
 }).call(this,require('_process'))
-},{"_process":25}],17:[function(require,module,exports){
+},{"_process":27}],17:[function(require,module,exports){
 (function(self) {
   'use strict';
 
@@ -53724,7 +53724,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-1b556332", __vue__options__)
   }
 })()}
-},{"./main-header.vue":20,"./side-menu.vue":23,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){
+},{"./main-header.vue":20,"./side-menu.vue":25,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -53779,20 +53779,101 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+let Vue = require("vue/dist/vue");
+let firebase = require("firebase/app");
+let refs = [];
+
+module.exports = Vue.component("manage-users", {
+	data: function(){
+		return {
+			categoryToAdd: "",
+			categories: {},
+		};
+	},
+	
+	methods: {
+		addNewCategory: function(category){
+			let self = this;
+			self.categories[category] = true;
+			let db = firebase.database();
+			db.ref("/categoryList").set(self.categories);
+			self.categoryToAdd = "";
+		},
+		
+		removeCategory: function(category){
+			let self = this;
+			self.categories[category] = null;
+			let db = firebase.database();
+			db.ref("/categoryList").set(self.categories);
+			db.ref("/tweets/" + category).set(null);
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		
+		// Listen for users logging in and out, and then...
+		firebase.auth().onAuthStateChanged(function(user){
+			// Unhide the #app element, which was hidden so as
+			// not to show the weird markup.
+			document.getElementById("app").style.display = "block";
+			
+			// Set the isLoggedIn variable.
+			self.isLoggedIn = !!user;
+			
+			// If the references are still listening, then 
+			// turn them off.
+			refs.forEach(function(ref){
+				ref.off();
+			});
+			
+			refs = [];
+			
+			// If the user is logged in, then...
+			if (user){
+				let db = firebase.database();
+				
+				let ref6 = db.ref("/categoryList");
+				refs.push(ref6);
+				
+				ref6.on("value", function(snapshot){
+					self.categories = {};
+					let categories = snapshot.val();
+					if (!categories) return;
+					self.categories = categories;
+				});
+			}
+		});
+	},
+	
+	beforeDestroy: function(){
+		refs.forEach(function(ref){
+			ref.off();
+		});
+		
+		refs = [];
+	},
+});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Categories")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addNewCategory(_vm.categoryToAdd)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.categoryToAdd),expression:"categoryToAdd"}],attrs:{"type":"text"},domProps:{"value":(_vm.categoryToAdd)},on:{"input":function($event){if($event.target.composing){ return; }_vm.categoryToAdd=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),(Object.keys(_vm.categories).length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((Object.keys(_vm.categories)),function(category){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeCategory(category)}}},[_vm._v("Delete")]),_vm._v("\n\n\t\t\t"+_vm._s(category)+"\n\t\t")])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no categories.\n\t")])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-807e4e38", __vue__options__)
+  } else {
+    hotAPI.rerender("data-v-807e4e38", __vue__options__)
+  }
+})()}
+},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],22:[function(require,module,exports){
+;(function(){
 //
 //
 //
@@ -53855,34 +53936,18 @@ let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
 let refs = [];
 
-module.exports = Vue.component("manage", {
+module.exports = Vue.component("manage-users", {
 	data: function(){
 		return {
-			isLoggedIn: false,
-			isAdmin: false,
 			userToAdmin: "",
 			adminUsers: [],
 			userToBlock: "",
 			blockedUsers: [],
 			flaggedUsers: [],
-			categoryToAdd: "",
-			categories: {},
 		};
 	},
 	
-	computed: {
-		currentView: function(){
-			let self = this;
-			return self.$store.state.currentManagementView;
-		},
-	},
-	
 	methods: {
-		setCurrentView: function(view){
-			let self = this;
-			self.$store.state.currentManagementView = view;
-		},
-		
 		// This is where we add admin users.
 		addAdminUser: function(username){
 			let self = this;
@@ -53915,6 +53980,7 @@ module.exports = Vue.component("manage", {
 		
 		// This is where we ignore a flagged user.
 		ignoreUser: function(user){
+			console.log("ignoring " + user.uid);
 			let self = this;
 			let db = firebase.database();
 			db.ref("/flaggedUsers/" + user.uid).set(null);
@@ -53947,22 +54013,6 @@ module.exports = Vue.component("manage", {
 			let db = firebase.database();
 			db.ref("/blockedUsers/" + username).set(null);
 		},
-		
-		addNewCategory: function(category){
-			let self = this;
-			self.categories[category] = true;
-			let db = firebase.database();
-			db.ref("/categoryList").set(self.categories);
-			self.categoryToAdd = "";
-		},
-		
-		removeCategory: function(category){
-			let self = this;
-			self.categories[category] = null;
-			let db = firebase.database();
-			db.ref("/categoryList").set(self.categories);
-			db.ref("/tweets/" + category).set(null);
-		},
 	},
 	
 	mounted: function(){
@@ -53970,10 +54020,143 @@ module.exports = Vue.component("manage", {
 		
 		// Listen for users logging in and out, and then...
 		firebase.auth().onAuthStateChanged(function(user){
-			// Unhide the #app element, which was hidden so as
-			// not to show the weird markup.
-			document.getElementById("app").style.display = "block";
+			// If the references are still listening, then 
+			// turn them off.
+			refs.forEach(function(ref){
+				ref.off();
+			});
 			
+			refs = [];
+			
+			// If the user is logged in, then...
+			if (user){
+				let db = firebase.database();
+				
+				// Get a reference to the logged-in user's data
+				// in the database.
+				let ref3 = db.ref("/allUsers/" + user.uid);
+				refs.push(ref3);
+				
+				// Listen to this reference in case their data changes.
+				ref3.on("value", function(snapshot){
+					// Get their data.
+					let user = snapshot.val();
+					
+					// If the data doesn't exist, then return.
+					if (!user) return;
+					
+					// Get a reference to the list of /adminUsers.
+					let ref1 = db.ref("/adminUsers");
+					refs.push(ref1);
+					
+					// Listen to this reference.
+					ref1.on("value", function(snapshot2){
+						self.adminUsers = [];
+						let adminUsers = snapshot2.val();
+						if (!adminUsers) return;
+						self.adminUsers = Object.keys(adminUsers);
+					});
+				});
+				
+				// Get a reference to /blockedUsers.
+				let ref2 = db.ref("/blockedUsers");
+				refs.push(ref2);
+				
+				// Listen to this reference.
+				ref2.on("value", function(snapshot){
+					self.blockedUsers = [];
+					let blockedUsers = snapshot.val();
+					if (!blockedUsers) return;
+					self.blockedUsers = Object.keys(blockedUsers);
+				});
+				
+				let ref4 = db.ref("/flaggedUsers");
+				refs.push(ref4);
+				
+				ref4.on("value", function(snapshot){
+					self.flaggedUsers = [];
+					let flaggedUsers = snapshot.val();
+					if (!flaggedUsers) return;
+					
+					Object.keys(flaggedUsers).forEach(function(uid){
+						let ref5 = db.ref("/allUsers/" + uid);
+						
+						ref5.once("value").then(function(snapshot2){
+							let userData = snapshot2.val();
+							if (!userData) return;
+							self.flaggedUsers.push(userData);
+						});
+					});
+				});
+			}
+		});
+	},
+	
+	beforeDestroy: function(){
+		refs.forEach(function(ref){
+			ref.off();
+		});
+		
+		refs = [];
+	},
+});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),_c('ul',{staticClass:"manage-text"},_vm._l((_vm.adminUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeAdminUser(username)}}},[_vm._v("Remove")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})),_vm._v(" "),_c('h2',[_vm._v("Flagged Users")]),_vm._v(" "),(_vm.flaggedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.flaggedUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t")]),_vm._v(" / \n\t\t\t\n\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user)}}},[_vm._v("Ignore")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user.username)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no flagged users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.blockUser(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),(_vm.blockedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.blockedUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.unblockUser(username)}}},[_vm._v("Unblock")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no blocked users.\n\t")])])}
+__vue__options__.staticRenderFns = []
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-00c0df20", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-00c0df20", __vue__options__)
+  }
+})()}
+},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],23:[function(require,module,exports){
+;(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+let firebase = require("firebase/app");
+let refs = [];
+
+module.exports = Vue.component("manage", {
+	data: function(){
+		return {
+			isLoggedIn: false,
+			isAdmin: false,
+		};
+	},
+	
+	mounted: function(){
+		let self = this;
+		
+		// Listen for users logging in and out, and then...
+		firebase.auth().onAuthStateChanged(function(user){				
 			// Set the isLoggedIn variable.
 			self.isLoggedIn = !!user;
 			
@@ -54026,57 +54209,6 @@ module.exports = Vue.component("manage", {
 						self.isAdmin = true;
 					});
 				});
-				
-				// Get a reference to /blockedUsers.
-				let ref2 = db.ref("/blockedUsers");
-				refs.push(ref2);
-				
-				// Listen to this reference.
-				ref2.on("value", function(snapshot){
-					// Get the data.
-					let blockedUsers = snapshot.val();
-					
-					// If there are no blocked users, then
-					// set blockedUsers to be an empty array,
-					// then return.
-					if (!blockedUsers){
-						self.blockedUsers = [];
-						return;
-					}
-					
-					// Set blockedUsers to the list of usernames,
-					// which are the keys to the data object.
-					self.blockedUsers = Object.keys(blockedUsers);
-				});
-				
-				let ref4 = db.ref("/flaggedUsers");
-				refs.push(ref4);
-				
-				ref4.on("value", function(snapshot){
-					self.flaggedUsers = [];
-					let flaggedUsers = snapshot.val();
-					if (!flaggedUsers) return;
-					
-					Object.keys(flaggedUsers).forEach(function(uid){
-						let ref5 = db.ref("/allUsers/" + uid);
-						
-						ref5.once("value").then(function(snapshot2){
-							let userData = snapshot2.val();
-							if (!userData) return;
-							self.flaggedUsers.push(userData);
-						});
-					});
-				});
-				
-				let ref6 = db.ref("/categoryList");
-				refs.push(ref6);
-				
-				ref6.on("value", function(snapshot){
-					self.categories = {};
-					let categories = snapshot.val();
-					if (!categories) return;
-					self.categories = categories;
-				});
 			}
 		});
 	},
@@ -54094,7 +54226,7 @@ module.exports = Vue.component("manage", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu',{on:{"manage":_vm.setCurrentView}}),_vm._v(" "),_c('div',{attrs:{"id":"manage-content"}},[(_vm.isLoggedIn && _vm.isAdmin)?_c('div',[(_vm.currentView === 'users')?_c('div',[_c('h2',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),_c('ul',{staticClass:"manage-text"},_vm._l((_vm.adminUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeAdminUser(username)}}},[_vm._v("Remove")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})),_vm._v(" "),_c('h2',[_vm._v("Flagged Users")]),_vm._v(" "),(_vm.flaggedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.flaggedUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t\t\t\t\t")]),_vm._v(" / \n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t\t\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user)}}},[_vm._v("Ignore")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user.username)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\t\t\t\t\tThere are currently no flagged users.\n\t\t\t\t\t")]),_vm._v(" "),_c('h2',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.blockUser(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),(_vm.blockedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.blockedUsers),function(username){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.unblockUser(username)}}},[_vm._v("Unblock")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + username}},[_vm._v(_vm._s(username))])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\t\t\t\t\tThere are currently no blocked users.\n\t\t\t\t\t")])]):_vm._e(),_vm._v(" "),(_vm.currentView === 'categories')?_c('div',[_c('h2',[_vm._v("Categories")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addNewCategory(_vm.categoryToAdd)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.categoryToAdd),expression:"categoryToAdd"}],attrs:{"type":"text"},domProps:{"value":(_vm.categoryToAdd)},on:{"input":function($event){if($event.target.composing){ return; }_vm.categoryToAdd=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),(Object.keys(_vm.categories).length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((Object.keys(_vm.categories)),function(category){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeCategory(category)}}},[_vm._v("Delete")]),_vm._v("\n\n\t\t\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t\t\t")])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\t\t\t\t\tThere are currently no categories.\n\t\t\t\t\t")])]):_vm._e()]):_c('div',[_c('h2',[_vm._v("Log in")]),_vm._v(" "),_c('p',[_vm._v("You are not logged in. Please log in to manage stuff.")])])])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"manage-content"}},[(_vm.isLoggedIn && _vm.isAdmin)?_c('div',[_c('router-view')],1):_c('div',[_c('h2',[_vm._v("Log in")]),_vm._v(" "),_c('p',[_vm._v("You are not logged in. Please log in to manage stuff.")])])])],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54106,7 +54238,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.rerender("data-v-8bcc2496", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],22:[function(require,module,exports){
+},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],24:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -54389,7 +54521,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.rerender("data-v-d5fd22ee", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],23:[function(require,module,exports){
+},{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],25:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -54484,12 +54616,6 @@ module.exports = Vue.component("side-menu", {
 			self.$store.state.currentCategory = category;
 			self.$router.push("/");
 		},
-		
-		manage: function(page){
-			let self = this;
-			self.$router.push("/manage");
-			self.$store.state.currentManagementView = page;
-		}
 	},
 	
 	mounted: function(){
@@ -54554,7 +54680,7 @@ module.exports = Vue.component("side-menu", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',{staticClass:"li-heading"},[_vm._v("ACCOUNT")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",staticStyle:{"font-weight":"500"},on:{"click":_vm.logInOrOut}},[_vm._v(_vm._s(_vm.$store.state.currentUser ? "Log out" : "Log in"))])]),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',{staticStyle:{"font-weight":"500"}},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1):_vm._e(),_vm._v(" "),(_vm.isAdmin)?_c('span',[_vm._m(0),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.manage('users')}}},[_vm._v("\n\t\t\t\t\t\tUsers\n\t\t\t\t\t")])]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.manage('categories')}}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])])]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_vm._m(1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',{staticStyle:{"font-weight":"500"}},[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentCategory(category)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',{staticClass:"li-heading"},[_vm._v("ACCOUNT")]),_vm._v(" "),_c('li',[_c('a',{staticClass:"fake-a",staticStyle:{"font-weight":"500"},on:{"click":_vm.logInOrOut}},[_vm._v(_vm._s(_vm.$store.state.currentUser ? "Log out" : "Log in"))])]),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',{staticStyle:{"font-weight":"500"}},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/profile"}},[_vm._v("Profile")])],1):_vm._e(),_vm._v(" "),(_vm.isAdmin)?_c('span',[_vm._m(0),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/users"}},[_vm._v("\n\t\t\t\t\t\tUsers\n\t\t\t\t\t")])],1),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/categories"}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])],1)]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_vm._m(1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',{staticStyle:{"font-weight":"500"}},[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentCategory(category)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('a',{staticClass:"fake-a",attrs:{"href":""}},[_vm._v("Home")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"li-fat"},[_c('a',{attrs:{"href":""}},[_vm._v("SHOW ALL")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54566,7 +54692,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-c9275616", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],24:[function(require,module,exports){
+},{"firebase/app":7,"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],26:[function(require,module,exports){
 let Vue = require("vue/dist/vue");
 let VueRouter = require("vue-router");
 let Vuex = require("vuex");
@@ -54591,7 +54717,10 @@ window.onload = function(){
 		{path: "/", component: require("./components/index.vue")},
 		{path: "/about", component: require("./components/about.vue")},
 		{path: "/profile", component: require("./components/profile.vue")},
-		{path: "/manage", component: require("./components/manage.vue")},
+		{path: "/manage", component: require("./components/manage.vue"), children: [
+			{path: "users", component: require("./components/manage-users.vue")},
+			{path: "categories", component: require("./components/manage-categories.vue")},
+		]},
 	];
 	
 	let router = new VueRouter({routes});
@@ -54606,7 +54735,6 @@ window.onload = function(){
 			currentLevel: "ALL",
 			currentCategory: "ALL",
 			currentUser: null,
-			currentManagementView: "users",
 		},
 		getters: {},
 		mutations: {},
@@ -54662,7 +54790,7 @@ window.onload = function(){
 	
 	document.getElementById("app").style.display = "block";
 };
-},{"./components/about.vue":18,"./components/index.vue":19,"./components/manage.vue":21,"./components/profile.vue":22,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":13,"vue/dist/vue":14,"vuex":16}],25:[function(require,module,exports){
+},{"./components/about.vue":18,"./components/index.vue":19,"./components/manage-categories.vue":21,"./components/manage-users.vue":22,"./components/manage.vue":23,"./components/profile.vue":24,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":13,"vue/dist/vue":14,"vuex":16}],27:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -54848,7 +54976,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -54927,4 +55055,4 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":25,"timers":26}]},{},[24]);
+},{"process/browser.js":27,"timers":28}]},{},[26]);

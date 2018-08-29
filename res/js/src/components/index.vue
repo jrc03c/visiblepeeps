@@ -108,7 +108,7 @@
 								
 								let flagButton = document.createElement("button");
 								flagButton.className += "flaggy";
-								flagButton.innerText = "⚐";
+								flagButton.innerText = "⚑";
 								flagButton.onclick = function(){
 									if (!self.$store.state.currentUser){
 										alert("You must be logged in to report tweets. Please log in and then try again.");

@@ -54,7 +54,7 @@
 						
 						<br><br><br><br>
 						
-						<input type="submit" value="Save"><a class="delete-profile" @click="$store.dispatch('deleteAccount')">Delete profile</a>
+						<input type="submit" value="Save"><a class="delete-profile" @click="$store.dispatch('deleteAccount')">Delete</a>
 						
 						<p v-if="message.length > 0" class="profile-msg">
 							{{ message }}

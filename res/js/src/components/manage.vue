@@ -122,7 +122,7 @@
 		methods: {
 			setCurrentView: function(view){
 				let self = this;
-				self.currentView = view;
+				self.$store.state.currentManagementView = view;
 			},
 			
 			// This is where we add admin users.

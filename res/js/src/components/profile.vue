@@ -78,6 +78,7 @@
 <script>
 	let Vue = require("vue/dist/vue");
 	let firebase = require("firebase/app");
+	let refs = [];
 
 	module.exports = Vue.component("profile", {
 		// The url variable keeps track of what the user types
@@ -190,13 +191,7 @@
 		
 		mounted: function(){
 			let self = this;
-			
-			// We listen to a bunch of database references. I'm not sure
-			// whether this is optimal or not, but it is what it is. :) 
-			// Anyway, I'm making references to them here so that I can 
-			// turn them off when the user logs out.
-			let ref1, ref2;
-			
+						
 			// Listen for users logging in and out, and then...
 			firebase.auth().onAuthStateChanged(function(user){
 				// Unhide the #app element, which was hidden so as not
@@ -207,15 +202,19 @@
 				self.isLoggedIn = !!user;
 				
 				// turn off listeners
-				if (ref1) ref1.off();
-				if (ref2) ref2.off();
+				refs.forEach(function(ref){
+					ref.off();
+				});
+				
+				refs = [];
 				
 				// If the user is logged in, then...
 				if (user){
 					let db = firebase.database();
 					
 					// Get a reference to the user's data in the database.
-					ref1 = db.ref("/allUsers/" + user.uid);
+					let ref1 = db.ref("/allUsers/" + user.uid);
+					refs.push(ref1);
 					
 					// Listen to that reference, in case the user suddenly
 					// gets blocked or their data changes in some other way.
@@ -233,10 +232,9 @@
 						
 						self.url = self.user.profileTweet || "";
 						self.selectedLevel = self.user.professionalLevel || "";
-						
-						if (ref2) ref2.off();
-						
-						ref2 = db.ref("/categoryList");
+												
+						let ref2 = db.ref("/categoryList");
+						refs.push(ref2);
 						
 						ref2.on("value", function(snapshot){
 							self.categories = [];
@@ -254,6 +252,14 @@
 					});
 				}
 			});
+		},
+		
+		beforeDestroy: function(){
+			refs.forEach(function(ref){
+				ref.off();
+			});
+			
+			refs = [];
 		},
 	});
 </script>

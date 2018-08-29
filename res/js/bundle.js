@@ -53880,7 +53880,7 @@ module.exports = Vue.component("manage", {
 	methods: {
 		setCurrentView: function(view){
 			let self = this;
-			self.currentView = view;
+			self.$store.state.currentManagementView = view;
 		},
 		
 		// This is where we add admin users.
@@ -54103,7 +54103,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-8bcc2496", __vue__options__)
   } else {
-    hotAPI.reload("data-v-8bcc2496", __vue__options__)
+    hotAPI.rerender("data-v-8bcc2496", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],22:[function(require,module,exports){
@@ -54188,6 +54188,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
+let refs = [];
 
 module.exports = Vue.component("profile", {
 	// The url variable keeps track of what the user types
@@ -54300,13 +54301,7 @@ module.exports = Vue.component("profile", {
 	
 	mounted: function(){
 		let self = this;
-		
-		// We listen to a bunch of database references. I'm not sure
-		// whether this is optimal or not, but it is what it is. :) 
-		// Anyway, I'm making references to them here so that I can 
-		// turn them off when the user logs out.
-		let ref1, ref2;
-		
+					
 		// Listen for users logging in and out, and then...
 		firebase.auth().onAuthStateChanged(function(user){
 			// Unhide the #app element, which was hidden so as not
@@ -54317,15 +54312,19 @@ module.exports = Vue.component("profile", {
 			self.isLoggedIn = !!user;
 			
 			// turn off listeners
-			if (ref1) ref1.off();
-			if (ref2) ref2.off();
+			refs.forEach(function(ref){
+				ref.off();
+			});
+			
+			refs = [];
 			
 			// If the user is logged in, then...
 			if (user){
 				let db = firebase.database();
 				
 				// Get a reference to the user's data in the database.
-				ref1 = db.ref("/allUsers/" + user.uid);
+				let ref1 = db.ref("/allUsers/" + user.uid);
+				refs.push(ref1);
 				
 				// Listen to that reference, in case the user suddenly
 				// gets blocked or their data changes in some other way.
@@ -54343,10 +54342,9 @@ module.exports = Vue.component("profile", {
 					
 					self.url = self.user.profileTweet || "";
 					self.selectedLevel = self.user.professionalLevel || "";
-					
-					if (ref2) ref2.off();
-					
-					ref2 = db.ref("/categoryList");
+											
+					let ref2 = db.ref("/categoryList");
+					refs.push(ref2);
 					
 					ref2.on("value", function(snapshot){
 						self.categories = [];
@@ -54364,6 +54362,14 @@ module.exports = Vue.component("profile", {
 				});
 			}
 		});
+	},
+	
+	beforeDestroy: function(){
+		refs.forEach(function(ref){
+			ref.off();
+		});
+		
+		refs = [];
 	},
 });
 
@@ -54600,7 +54606,7 @@ window.onload = function(){
 			currentLevel: "ALL",
 			currentCategory: "ALL",
 			currentUser: null,
-			currentManagementView: "adminUsers",
+			currentManagementView: "users",
 		},
 		getters: {},
 		mutations: {},

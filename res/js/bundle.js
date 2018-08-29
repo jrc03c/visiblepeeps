@@ -53980,7 +53980,6 @@ module.exports = Vue.component("manage-users", {
 		
 		// This is where we ignore a flagged user.
 		ignoreUser: function(user){
-			console.log("ignoring " + user.uid);
 			let self = this;
 			let db = firebase.database();
 			db.ref("/flaggedUsers/" + user.uid).set(null);
@@ -54084,6 +54083,7 @@ module.exports = Vue.component("manage-users", {
 						ref5.once("value").then(function(snapshot2){
 							let userData = snapshot2.val();
 							if (!userData) return;
+							userData.uid = uid;
 							self.flaggedUsers.push(userData);
 						});
 					});

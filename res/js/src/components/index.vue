@@ -49,7 +49,6 @@
 		methods: {
 			loadTweetsFromCategory: function(shouldKeepCurrentTweets){
 				let self = this;
-				console.log('start loading');
 				
 				if (!self.finishedLoading) return;
 				
@@ -75,13 +74,11 @@
 					
 					let t = setInterval(function(){
 						if (!self.finishedLoading) return;
-						console.log("loading another");
 						
 						self.finishedLoading = false;
 						
 						if (index >= uids.length){
 							clearInterval(t);
-							console.log("finished loading");
 							return;
 						}
 						

@@ -7,7 +7,7 @@
 			
 			<div class="about-page">
 				
-				<p>Visible Peeps is a site where women, non-binary and trans creators of all skill levels can share their tweets from the popular hashtags #VisibleWomen and #VisibleNB on Twitter. Started by the folks at <a href="https://milkfed.us/">Milkfed Criminal Masterminds</a> these hashtags are intended to raise the visiblity of women, non-binary and trans creators. The goal of this site is to facilitate the purpose of the hashtag by creating a place where people can explore and discover new creators and their tweets.</p><br>
+				<p>Visible Peeps is a site where women, non-binary and trans creators of all skill levels can share their tweets from the popular hashtags #VisibleWomen and #VisibleNB on Twitter. Started by the folks at <a href="https://milkfed.us/">Milkfed Criminal Masterminds</a> these hashtags are intended to raise the visiblity of women, non-binary and trans creators. The goal of this site is to facilitate the purpose of the hashtag by creating a place where people can explore and discover new creators, their tweets and their work.</p><br>
 
 				<p>Visible Peeps was created by <a href="https://twitter.com/jrc03c">Josh Castle</a> and <a href="https://twitter.com/A_Werchmeister">Andreas Werchmeister</a>, and with the gracious support and help of <a href="https://twitter.com/LetsWoolgather">Toby Brommerich</a>, <a href="https://twitter.com/kylemadkins">Kyle Adkins</a>, as well as <a href="https://twitter.com/tarakeet">Tara Han-Tran Johnson</a>, who created the beautiful title logo.</p>
 

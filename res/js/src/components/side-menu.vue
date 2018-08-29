@@ -9,7 +9,7 @@
 				<!-- <li class="li-heading">ACCOUNT</li> -->
 				
 				<li><router-link to="/profile" class="fake-a li-heading">Submit Tweet</router-link></li>
-				<li v-if="$store.state.currentUser"><a class="fake-a li-fat" @click="$store.dispatch('logout')">Log out</a></li>
+				<li v-if="$store.state.currentUser"><a style="font-weight:500;" class="fake-a" @click="$store.dispatch('logout')">Log out</a></li>
 				
 				<span v-if="isAdmin">
 

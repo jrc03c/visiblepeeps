@@ -34,6 +34,13 @@
 			};
 		},
 		
+		watch: {
+			"$store.state.currentUser": function(){
+				let self = this;
+				self.onAuthStateChanged();
+			},
+		},
+		
 		methods: {
 			addNewCategory: function(category){
 				let self = this;
@@ -50,16 +57,10 @@
 				db.ref("/categoryList").set(self.categories);
 				db.ref("/tweets/" + category).set(null);
 			},
-		},
-		
-		mounted: function(){
-			let self = this;
 			
-			// Listen for users logging in and out, and then...
-			firebase.auth().onAuthStateChanged(function(user){
-				// Unhide the #app element, which was hidden so as
-				// not to show the weird markup.
-				document.getElementById("app").style.display = "block";
+			onAuthStateChanged: function(){
+				let self = this;
+				let user = self.$store.state.currentUser;
 				
 				// Set the isLoggedIn variable.
 				self.isLoggedIn = !!user;
@@ -86,7 +87,12 @@
 						self.categories = categories;
 					});
 				}
-			});
+			},
+		},
+		
+		mounted: function(){
+			let self = this;
+			self.onAuthStateChanged();
 		},
 		
 		beforeDestroy: function(){

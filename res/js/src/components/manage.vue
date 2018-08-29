@@ -31,11 +31,18 @@
 			};
 		},
 		
-		mounted: function(){
-			let self = this;
-			
-			// Listen for users logging in and out, and then...
-			firebase.auth().onAuthStateChanged(function(user){				
+		watch: {
+			"$store.state.currentUser": function(){
+				let self = this;
+				self.onAuthStateChanged();
+			},
+		},
+		
+		methods: {
+			onAuthStateChanged: function(){
+				let self = this;
+				let user = self.$store.state.currentUser;
+				
 				// Set the isLoggedIn variable.
 				self.isLoggedIn = !!user;
 				
@@ -89,7 +96,12 @@
 						});
 					});
 				}
-			});
+			},
+		},
+		
+		mounted: function(){
+			let self = this;
+			self.onAuthStateChanged();
 		},
 		
 		beforeDestroy: function(){

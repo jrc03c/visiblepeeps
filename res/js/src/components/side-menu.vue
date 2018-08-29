@@ -73,6 +73,13 @@
 			};
 		},
 		
+		watch: {
+			"$store.state.currentUser": function(){
+				let self = this;
+				self.onAuthStateChanged();
+			},
+		},
+		
 		methods: {
 			logInOrOut: function(){
 				let self = this;
@@ -91,10 +98,36 @@
 				self.$store.state.currentCategory = category;
 				self.$router.push("/");
 			},
+			
+			onAuthStateChanged: function(){
+				let self = this;
+				let user = self.$store.state.currentUser;
+				
+				if (user){
+					let db = firebase.database();
+					let ref1 = db.ref("/allUsers/" + user.uid);
+					
+					ref1.on("value", function(snapshot1){
+						let userData = snapshot1.val();
+						if (!userData) return;
+						
+						let ref2 = db.ref("/adminUsers/" + userData.username);
+						
+						ref2.on("value", function(snapshot2){
+							let isAdmin = snapshot2.val();
+							self.isAdmin = !!isAdmin;
+						});
+					});
+				} else {
+					self.isAdmin = false;
+				}
+			},
 		},
 		
 		mounted: function(){
 			let self = this;
+			self.onAuthStateChanged();
+			
 			let oldWidth = 0;
 
 			function toggleMenu(e){
@@ -125,29 +158,6 @@
 			$(window).ready(setCSSRules);
 			$(window).resize(setCSSRules);
 			$(".mobile-nav").click(toggleMenu);
-						
-			firebase.auth().onAuthStateChanged(function(user){
-				self.$store.state.currentUser = user;
-				
-				if (user){
-					let db = firebase.database();
-					let ref1 = db.ref("/allUsers/" + user.uid);
-					
-					ref1.on("value", function(snapshot1){
-						let userData = snapshot1.val();
-						if (!userData) return;
-						
-						let ref2 = db.ref("/adminUsers/" + userData.username);
-						
-						ref2.on("value", function(snapshot2){
-							let isAdmin = snapshot2.val();
-							self.isAdmin = !!isAdmin;
-						});
-					});
-				} else {
-					self.isAdmin = false;
-				}
-			});
 		},
 	});
 </script>

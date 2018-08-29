@@ -71,6 +71,13 @@
 			};
 		},
 		
+		watch: {
+			"$store.state.currentUser": function(){
+				let self = this;
+				self.onAuthStateChanged();
+			},
+		},
+		
 		methods: {
 			// This is where we add admin users.
 			addAdminUser: function(username){
@@ -136,13 +143,11 @@
 				let db = firebase.database();
 				db.ref("/blockedUsers/" + username).set(null);
 			},
-		},
-		
-		mounted: function(){
-			let self = this;
 			
-			// Listen for users logging in and out, and then...
-			firebase.auth().onAuthStateChanged(function(user){
+			onAuthStateChanged: function(){
+				let self = this;
+				let user = self.$store.state.currentUser;
+				
 				// If the references are still listening, then 
 				// turn them off.
 				refs.forEach(function(ref){
@@ -213,7 +218,12 @@
 						});
 					});
 				}
-			});
+			},
+		},
+		
+		mounted: function(){
+			let self = this;
+			self.onAuthStateChanged();
 		},
 		
 		beforeDestroy: function(){

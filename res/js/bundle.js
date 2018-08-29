@@ -53792,6 +53792,13 @@ module.exports = Vue.component("manage-users", {
 		};
 	},
 	
+	watch: {
+		"$store.state.currentUser": function(){
+			let self = this;
+			self.onAuthStateChanged();
+		},
+	},
+	
 	methods: {
 		addNewCategory: function(category){
 			let self = this;
@@ -53808,16 +53815,10 @@ module.exports = Vue.component("manage-users", {
 			db.ref("/categoryList").set(self.categories);
 			db.ref("/tweets/" + category).set(null);
 		},
-	},
-	
-	mounted: function(){
-		let self = this;
 		
-		// Listen for users logging in and out, and then...
-		firebase.auth().onAuthStateChanged(function(user){
-			// Unhide the #app element, which was hidden so as
-			// not to show the weird markup.
-			document.getElementById("app").style.display = "block";
+		onAuthStateChanged: function(){
+			let self = this;
+			let user = self.$store.state.currentUser;
 			
 			// Set the isLoggedIn variable.
 			self.isLoggedIn = !!user;
@@ -53844,7 +53845,12 @@ module.exports = Vue.component("manage-users", {
 					self.categories = categories;
 				});
 			}
-		});
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		self.onAuthStateChanged();
 	},
 	
 	beforeDestroy: function(){
@@ -53947,6 +53953,13 @@ module.exports = Vue.component("manage-users", {
 		};
 	},
 	
+	watch: {
+		"$store.state.currentUser": function(){
+			let self = this;
+			self.onAuthStateChanged();
+		},
+	},
+	
 	methods: {
 		// This is where we add admin users.
 		addAdminUser: function(username){
@@ -54012,13 +54025,11 @@ module.exports = Vue.component("manage-users", {
 			let db = firebase.database();
 			db.ref("/blockedUsers/" + username).set(null);
 		},
-	},
-	
-	mounted: function(){
-		let self = this;
 		
-		// Listen for users logging in and out, and then...
-		firebase.auth().onAuthStateChanged(function(user){
+		onAuthStateChanged: function(){
+			let self = this;
+			let user = self.$store.state.currentUser;
+			
 			// If the references are still listening, then 
 			// turn them off.
 			refs.forEach(function(ref){
@@ -54089,7 +54100,12 @@ module.exports = Vue.component("manage-users", {
 					});
 				});
 			}
-		});
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		self.onAuthStateChanged();
 	},
 	
 	beforeDestroy: function(){
@@ -54114,7 +54130,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-00c0df20", __vue__options__)
   } else {
-    hotAPI.reload("data-v-00c0df20", __vue__options__)
+    hotAPI.rerender("data-v-00c0df20", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],23:[function(require,module,exports){
@@ -54152,11 +54168,18 @@ module.exports = Vue.component("manage", {
 		};
 	},
 	
-	mounted: function(){
-		let self = this;
-		
-		// Listen for users logging in and out, and then...
-		firebase.auth().onAuthStateChanged(function(user){				
+	watch: {
+		"$store.state.currentUser": function(){
+			let self = this;
+			self.onAuthStateChanged();
+		},
+	},
+	
+	methods: {
+		onAuthStateChanged: function(){
+			let self = this;
+			let user = self.$store.state.currentUser;
+			
 			// Set the isLoggedIn variable.
 			self.isLoggedIn = !!user;
 			
@@ -54210,7 +54233,12 @@ module.exports = Vue.component("manage", {
 					});
 				});
 			}
-		});
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		self.onAuthStateChanged();
 	},
 	
 	beforeDestroy: function(){
@@ -54352,6 +54380,13 @@ module.exports = Vue.component("profile", {
 		};
 	},
 	
+	watch: {
+		"$store.state.currentUser": function(){
+			let self = this;
+			self.onAuthStateChanged();
+		},
+	},
+	
 	methods: {
 		// This is where we do all the submission magic.
 		save: function(){
@@ -54429,16 +54464,10 @@ module.exports = Vue.component("profile", {
 				self.message = "There was an error saving your profile information. :(";
 			});
 		},
-	},
-	
-	mounted: function(){
-		let self = this;
-					
-		// Listen for users logging in and out, and then...
-		firebase.auth().onAuthStateChanged(function(user){
-			// Unhide the #app element, which was hidden so as not
-			// to show off its weird markup.
-			document.getElementById("app").style.display = "block";
+		
+		onAuthStateChanged: function(){
+			let self = this;
+			let user = self.$store.state.currentUser;
 			
 			// Set the isLoggedIn variable.
 			self.isLoggedIn = !!user;
@@ -54493,7 +54522,12 @@ module.exports = Vue.component("profile", {
 					});
 				});
 			}
-		});
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		self.onAuthStateChanged();
 	},
 	
 	beforeDestroy: function(){
@@ -54518,7 +54552,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-d5fd22ee", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-d5fd22ee", __vue__options__)
+    hotAPI.reload("data-v-d5fd22ee", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],25:[function(require,module,exports){
@@ -54598,6 +54632,13 @@ module.exports = Vue.component("side-menu", {
 		};
 	},
 	
+	watch: {
+		"$store.state.currentUser": function(){
+			let self = this;
+			self.onAuthStateChanged();
+		},
+	},
+	
 	methods: {
 		logInOrOut: function(){
 			let self = this;
@@ -54616,10 +54657,36 @@ module.exports = Vue.component("side-menu", {
 			self.$store.state.currentCategory = category;
 			self.$router.push("/");
 		},
+		
+		onAuthStateChanged: function(){
+			let self = this;
+			let user = self.$store.state.currentUser;
+			
+			if (user){
+				let db = firebase.database();
+				let ref1 = db.ref("/allUsers/" + user.uid);
+				
+				ref1.on("value", function(snapshot1){
+					let userData = snapshot1.val();
+					if (!userData) return;
+					
+					let ref2 = db.ref("/adminUsers/" + userData.username);
+					
+					ref2.on("value", function(snapshot2){
+						let isAdmin = snapshot2.val();
+						self.isAdmin = !!isAdmin;
+					});
+				});
+			} else {
+				self.isAdmin = false;
+			}
+		},
 	},
 	
 	mounted: function(){
 		let self = this;
+		self.onAuthStateChanged();
+		
 		let oldWidth = 0;
 
 		function toggleMenu(e){
@@ -54650,29 +54717,6 @@ module.exports = Vue.component("side-menu", {
 		$(window).ready(setCSSRules);
 		$(window).resize(setCSSRules);
 		$(".mobile-nav").click(toggleMenu);
-					
-		firebase.auth().onAuthStateChanged(function(user){
-			self.$store.state.currentUser = user;
-			
-			if (user){
-				let db = firebase.database();
-				let ref1 = db.ref("/allUsers/" + user.uid);
-				
-				ref1.on("value", function(snapshot1){
-					let userData = snapshot1.val();
-					if (!userData) return;
-					
-					let ref2 = db.ref("/adminUsers/" + userData.username);
-					
-					ref2.on("value", function(snapshot2){
-						let isAdmin = snapshot2.val();
-						self.isAdmin = !!isAdmin;
-					});
-				});
-			} else {
-				self.isAdmin = false;
-			}
-		});
 	},
 });
 
@@ -54689,7 +54733,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-c9275616", __vue__options__)
   } else {
-    hotAPI.reload("data-v-c9275616", __vue__options__)
+    hotAPI.rerender("data-v-c9275616", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],26:[function(require,module,exports){
@@ -54711,6 +54755,10 @@ window.onload = function(){
 		projectId: "visiblewomen-net",
 		storageBucket: "visiblewomen-net.appspot.com",
 		messagingSenderId: "532732660193"
+	});
+	
+	firebase.auth().onAuthStateChanged(function(user){
+		store.state.currentUser = user;
 	});
 	
 	let routes = [

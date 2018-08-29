@@ -18,6 +18,10 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
+	firebase.auth().onAuthStateChanged(function(user){
+		store.state.currentUser = user;
+	});
+	
 	let routes = [
 		{path: "/", component: require("./components/index.vue")},
 		{path: "/about", component: require("./components/about.vue")},

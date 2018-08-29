@@ -110,6 +110,13 @@
 			};
 		},
 		
+		watch: {
+			"$store.state.currentUser": function(){
+				let self = this;
+				self.onAuthStateChanged();
+			},
+		},
+		
 		methods: {
 			// This is where we do all the submission magic.
 			save: function(){
@@ -187,16 +194,10 @@
 					self.message = "There was an error saving your profile information. :(";
 				});
 			},
-		},
-		
-		mounted: function(){
-			let self = this;
-						
-			// Listen for users logging in and out, and then...
-			firebase.auth().onAuthStateChanged(function(user){
-				// Unhide the #app element, which was hidden so as not
-				// to show off its weird markup.
-				document.getElementById("app").style.display = "block";
+			
+			onAuthStateChanged: function(){
+				let self = this;
+				let user = self.$store.state.currentUser;
 				
 				// Set the isLoggedIn variable.
 				self.isLoggedIn = !!user;
@@ -251,7 +252,12 @@
 						});
 					});
 				}
-			});
+			},
+		},
+		
+		mounted: function(){
+			let self = this;
+			self.onAuthStateChanged();
 		},
 		
 		beforeDestroy: function(){

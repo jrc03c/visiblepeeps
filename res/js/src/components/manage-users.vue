@@ -59,7 +59,7 @@
 		<ul v-if="blockedUsers.length > 0" class="manage-text">
 			<li v-for="user in blockedUsers">
 				<button style="margin:0 2em 0 0" @click="unblockUser(user)">Unblock</button>
-				<a :href="'https://twitter.com/' + user.username">{{ user.username }}</a>
+				<a :href="'https://twitter.com/' + user.username">{{ user.username }}</a> <span v-if="user.uid.length === 0">(deleted account)</span>
 			</li>
 		</ul>
 		
@@ -172,7 +172,7 @@
 				// Get a reference to /blockedUsers	in the database
 				// and set their username's value to true.
 				db.ref("/blockedUsers/" + user.username).set(true);
-				db.ref("/approvedUsers/" + user.uid).set(null);
+				if (user.uid.length > 0) db.ref("/approvedUsers/" + user.uid).set(null);
 			},
 			
 			blockUserByUsername: function(username){
@@ -183,11 +183,17 @@
 				
 				ref.once("value").then(function(snapshot){
 					let users = snapshot.val();
-					if (!users) return;
 					
-					Object.keys(users).forEach(function(uid){
-						self.blockUser(users[uid]);
-					});
+					if (!users){
+						self.blockUser({
+							username,
+							uid: "",
+						});
+					} else {	
+						Object.keys(users).forEach(function(uid){
+							self.blockUser(users[uid]);
+						});
+					}
 				});
 				
 				self.userToBlock = "";
@@ -205,7 +211,7 @@
 				// and set their username's value to null.
 				let db = firebase.database();
 				db.ref("/blockedUsers/" + user.username).set(null);
-				db.ref("/approvedUsers/" + user.uid).set(true);
+				if (user.uid.length > 0) db.ref("/approvedUsers/" + user.uid).set(true);
 			},
 			
 			onAuthStateChanged: function(){
@@ -294,13 +300,18 @@
 							
 							ref3.once("value").then(function(snapshot3){
 								let users = snapshot3.val();
-								if (!users) return;
-								
-								Object.keys(users).forEach(function(uid){
-									let userData = users[uid];
-									userData.uid = uid;
-									self.blockedUsers.push(userData);
-								});
+								if (!users){
+									self.blockedUsers.push({
+										username,
+										uid: "",
+									});
+								} else {	
+									Object.keys(users).forEach(function(uid){
+										let userData = users[uid];
+										userData.uid = uid;
+										self.blockedUsers.push(userData);
+									});
+								}
 							});
 						});
 					});

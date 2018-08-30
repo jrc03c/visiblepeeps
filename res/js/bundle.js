@@ -53616,6 +53616,7 @@ module.exports = Vue.component("index", {
 			lastUserUID: "-1",
 			finishedLoading: true,
 			numberOfTweetsToLoadAtOnce: 6,
+			message: "",
 		};
 	},
 	
@@ -53637,6 +53638,7 @@ module.exports = Vue.component("index", {
 			
 			if (!self.finishedLoading) return;
 			self.finishedLoading = false;
+			self.message = "Loading...";
 			
 			let category = self.$store.state.currentCategory;
 			let level = self.$store.state.currentLevel;
@@ -53651,7 +53653,10 @@ module.exports = Vue.component("index", {
 			
 			ref.once("value").then(function(snapshot){
 				let userUIDs = snapshot.val();
-				if (!userUIDs) return;
+				if (!userUIDs){
+					self.message = "There are no more tweets in this category.";
+					return;
+				}
 				
 				let uids = Object.keys(userUIDs);
 				self.lastUserUID = uids[uids.length-1];
@@ -53667,6 +53672,8 @@ module.exports = Vue.component("index", {
 						if (!hasBeenApproved){
 							count--;
 							if (count <= 0) self.finishedLoading = true;
+							self.message = "There are no more tweets in this category.";
+							return;
 						}
 						
 						let ref3 = db.ref("/allUsers/" + uid);
@@ -53677,6 +53684,7 @@ module.exports = Vue.component("index", {
 							if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 								count--;
 								if (count <= 0) self.finishedLoading = true;
+								self.message = "There are no more tweets in this category.";
 								return;
 							}
 							
@@ -53702,11 +53710,17 @@ module.exports = Vue.component("index", {
 								let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to report this tweet. Would you like to report this tweet as inappropriate or irrelevant?");
 								
 								if (!shouldFlag) return;
+								let userUid = self.$store.state.currentUser.uid;
 								
-								db.ref("/blockedUsers/" + self.$store.state.currentUser.uid).once("value").then(function(snapshot){
-									let isBlocked = !!snapshot.val();
-									if (isBlocked) return;
-									db.ref("/flaggedUsers/" + uid).set(self.$store.state.currentUser.uid);
+								db.ref("/allUsers/" + userUid + "/username").once("value").then(function(snapshot){
+									let username = snapshot.val();
+									if (!username) return;
+									
+									db.ref("/blockedUsers/" + username).once("value").then(function(snapshot){
+										let isBlocked = !!snapshot.val();
+										if (isBlocked) return;
+										db.ref("/flaggedUsers/" + uid).set(userUid);
+									});
 								});
 							};
 							
@@ -53717,6 +53731,7 @@ module.exports = Vue.component("index", {
 							script.onload = function(){
 								count--;
 								if (count <= 0) self.finishedLoading = true;
+								self.message = "There are no more tweets in this category.";
 							};
 							
 							// Put the anchor element inside the blockquote element.
@@ -53760,7 +53775,7 @@ module.exports = Vue.component("index", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/profile"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(!_vm.finishedLoading)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\tLoading...\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e()],1)],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/profile"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e()],1)],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -53769,7 +53784,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b556332", __vue__options__)
   } else {
-    hotAPI.reload("data-v-1b556332", __vue__options__)
+    hotAPI.rerender("data-v-1b556332", __vue__options__)
   }
 })()}
 },{"./main-header.vue":20,"./side-menu.vue":25,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){
@@ -54071,6 +54086,7 @@ module.exports = Vue.component("manage-users", {
 			let updates = {};
 			updates["/approvedUsers/" + user.uid] = true;
 			updates["/newUsers/" + user.uid] = null;
+			updates["/blockedUsers/" + user.username] = null;
 			
 			db.ref().update(updates);
 		},
@@ -54087,7 +54103,7 @@ module.exports = Vue.component("manage-users", {
 			let db = firebase.database();
 			
 			let updates = {};
-			updates["/flags/" + user.uid] = null;
+			updates["/flaggedUsers/" + user.uid] = null;
 			updates["/newUsers/" + user.uid] = null;
 			
 			db.ref().update(updates);
@@ -54100,8 +54116,8 @@ module.exports = Vue.component("manage-users", {
 			
 			// Get a reference to /blockedUsers	in the database
 			// and set their username's value to true.
-			db.ref("/blockedUsers/" + user.uid).set(true);
-			db.ref("/approvedUsers/" + user.uid).set(null);
+			db.ref("/blockedUsers/" + user.username).set(true);
+			if (user.uid.length > 0) db.ref("/approvedUsers/" + user.uid).set(null);
 		},
 		
 		blockUserByUsername: function(username){
@@ -54114,13 +54130,15 @@ module.exports = Vue.component("manage-users", {
 				let users = snapshot.val();
 				
 				if (!users){
-					alert("This user hasn't logged in yet.");
-					return;
+					self.blockUser({
+						username,
+						uid: "",
+					});
+				} else {	
+					Object.keys(users).forEach(function(uid){
+						self.blockUser(users[uid]);
+					});
 				}
-				
-				Object.keys(users).forEach(function(uid){
-					self.blockUser(users[uid]);
-				});
 			});
 			
 			self.userToBlock = "";
@@ -54137,8 +54155,8 @@ module.exports = Vue.component("manage-users", {
 			// Get a reference to /blockedUsers in the database
 			// and set their username's value to null.
 			let db = firebase.database();
-			db.ref("/blockedUsers/" + user.uid).set(null);
-			db.ref("/approvedUsers/" + user.uid).set(true);
+			db.ref("/blockedUsers/" + user.username).set(null);
+			if (user.uid.length > 0) db.ref("/approvedUsers/" + user.uid).set(true);
 		},
 		
 		onAuthStateChanged: function(){
@@ -54178,12 +54196,12 @@ module.exports = Vue.component("manage-users", {
 				}
 				
 				pushUserDataFromRefToList("adminUsers");
-				pushUserDataFromRefToList("blockedUsers");
 				pushUserDataFromRefToList("newUsers");
 				
-				let ref = db.ref("/flaggedUsers");
+				let ref1 = db.ref("/flaggedUsers");
+				refs.push(ref1);
 				
-				ref.on("value", function(snapshot){
+				ref1.on("value", function(snapshot){
 					self.flags = [];
 					let flags = snapshot.val();
 					if (!flags) return;
@@ -54213,6 +54231,35 @@ module.exports = Vue.component("manage-users", {
 						self.flags.push(flag);
 					});
 				});
+				
+				let ref2 = db.ref("/blockedUsers");
+				refs.push(ref2);
+				
+				ref2.on("value", function(snapshot2){
+					self.blockedUsers = [];
+					let blockedUsers = snapshot2.val();
+					if (!blockedUsers) return;
+					
+					Object.keys(blockedUsers).forEach(function(username){
+						let ref3 = db.ref("/allUsers").orderByChild("username").equalTo(username);
+						
+						ref3.once("value").then(function(snapshot3){
+							let users = snapshot3.val();
+							if (!users){
+								self.blockedUsers.push({
+									username,
+									uid: "",
+								});
+							} else {	
+								Object.keys(users).forEach(function(uid){
+									let userData = users[uid];
+									userData.uid = uid;
+									self.blockedUsers.push(userData);
+								});
+							}
+						});
+					});
+				});
 			}
 		},
 	},
@@ -54235,7 +54282,7 @@ module.exports = Vue.component("manage-users", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),_c('ul',{staticClass:"manage-text"},_vm._l((_vm.adminUsers),function(user){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeAdminUser(user)}}},[_vm._v("Remove")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v(_vm._s(user.username))])])})),_vm._v(" "),_c('h2',[_vm._v("New Users")]),_vm._v(" "),(_vm.newUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.newUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t")]),_vm._v(" / \n\t\t\t\n\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approveUser(user)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no new users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Flagged Users")]),_vm._v(" "),(_vm.flags.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.flags),function(flag){return _c('li',[_c('a',{attrs:{"href":flag.flaggedUser.profileTweet}},[_vm._v("tweet")]),_vm._v(" by "+_vm._s(flag.flaggedUser.username)+", flagged by "+_vm._s(flag.flaggedBy.username)+" ("),_c('a',{attrs:{"href":flag.flaggedBy.profileTweet}},[_vm._v("tweet")]),_vm._v(")\n\t\t\t\n\t\t\t"),_c('button',{on:{"click":function($event){_vm.resolveFlag(flag)}}},[_vm._v("Resolve Flag")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no flagged users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.blockUserByUsername(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),(_vm.blockedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.blockedUsers),function(user){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.unblockUser(user)}}},[_vm._v("Unblock")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v(_vm._s(user.username))])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no blocked users.\n\t")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Admin Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addAdminUser(_vm.userToAdmin)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToAdmin),expression:"userToAdmin"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToAdmin)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToAdmin=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),_c('ul',{staticClass:"manage-text"},_vm._l((_vm.adminUsers),function(user){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeAdminUser(user)}}},[_vm._v("Remove")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v(_vm._s(user.username))])])})),_vm._v(" "),_c('h2',[_vm._v("New Users")]),_vm._v(" "),(_vm.newUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.newUsers),function(user){return _c('li',[_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v("\n\t\t\t\t"+_vm._s(user.username)+"\n\t\t\t")]),_vm._v(" / \n\t\t\t\n\t\t\t"),_c('a',{attrs:{"href":user.profileTweet}},[_vm._v("\n\t\t\t\t"+_vm._s(user.profileTweet)+"\n\t\t\t")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.approveUser(user)}}},[_vm._v("Approve")]),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.ignoreUser(user); _vm.blockUser(user)}}},[_vm._v("Block")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no new users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Flagged Users")]),_vm._v(" "),(_vm.flags.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.flags),function(flag){return _c('li',[_c('a',{attrs:{"href":flag.flaggedUser.profileTweet}},[_vm._v("tweet")]),_vm._v(" by "+_vm._s(flag.flaggedUser.username)+", flagged by "+_vm._s(flag.flaggedBy.username)+" ("),_c('a',{attrs:{"href":flag.flaggedBy.profileTweet}},[_vm._v("tweet")]),_vm._v(")\n\t\t\t\n\t\t\t"),_c('button',{on:{"click":function($event){_vm.resolveFlag(flag)}}},[_vm._v("Resolve Flag")])])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no flagged users.\n\t")]),_vm._v(" "),_c('h2',[_vm._v("Blocked Users")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.blockUserByUsername(_vm.userToBlock)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.userToBlock),expression:"userToBlock"}],attrs:{"type":"text"},domProps:{"value":(_vm.userToBlock)},on:{"input":function($event){if($event.target.composing){ return; }_vm.userToBlock=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Block"}})]),_vm._v(" "),(_vm.blockedUsers.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.blockedUsers),function(user){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.unblockUser(user)}}},[_vm._v("Unblock")]),_vm._v(" "),_c('a',{attrs:{"href":'https://twitter.com/' + user.username}},[_vm._v(_vm._s(user.username))]),_vm._v(" "),(user.uid.length === 0)?_c('span',[_vm._v("(deleted account)")]):_vm._e()])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no blocked users.\n\t")])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -54873,7 +54920,6 @@ Vue.use(Vuex);
 let firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-window.firebase = firebase;
 
 window.onload = function(){
 	firebase.initializeApp({

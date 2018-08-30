@@ -11,9 +11,9 @@
 
 			<div class="module-grid" ref="tweetContainer"></div>
 			
-			<div v-if="!finishedLoading">
+			<div v-if="message.length > 0">
 				<br><br><br>
-				Loading...
+				{{ message }}
 				<br><br><br>
 			</div>
 		</div>
@@ -32,6 +32,7 @@
 				lastUserUID: "-1",
 				finishedLoading: true,
 				numberOfTweetsToLoadAtOnce: 6,
+				message: "",
 			};
 		},
 		
@@ -53,6 +54,7 @@
 				
 				if (!self.finishedLoading) return;
 				self.finishedLoading = false;
+				self.message = "Loading...";
 				
 				let category = self.$store.state.currentCategory;
 				let level = self.$store.state.currentLevel;
@@ -67,7 +69,10 @@
 				
 				ref.once("value").then(function(snapshot){
 					let userUIDs = snapshot.val();
-					if (!userUIDs) return;
+					if (!userUIDs){
+						self.message = "There are no more tweets in this category.";
+						return;
+					}
 					
 					let uids = Object.keys(userUIDs);
 					self.lastUserUID = uids[uids.length-1];
@@ -83,6 +88,8 @@
 							if (!hasBeenApproved){
 								count--;
 								if (count <= 0) self.finishedLoading = true;
+								self.message = "There are no more tweets in this category.";
+								return;
 							}
 							
 							let ref3 = db.ref("/allUsers/" + uid);
@@ -93,6 +100,7 @@
 								if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 									count--;
 									if (count <= 0) self.finishedLoading = true;
+									self.message = "There are no more tweets in this category.";
 									return;
 								}
 								
@@ -118,11 +126,17 @@
 									let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to report this tweet. Would you like to report this tweet as inappropriate or irrelevant?");
 									
 									if (!shouldFlag) return;
+									let userUid = self.$store.state.currentUser.uid;
 									
-									db.ref("/blockedUsers/" + self.$store.state.currentUser.uid).once("value").then(function(snapshot){
-										let isBlocked = !!snapshot.val();
-										if (isBlocked) return;
-										db.ref("/flaggedUsers/" + uid).set(self.$store.state.currentUser.uid);
+									db.ref("/allUsers/" + userUid + "/username").once("value").then(function(snapshot){
+										let username = snapshot.val();
+										if (!username) return;
+										
+										db.ref("/blockedUsers/" + username).once("value").then(function(snapshot){
+											let isBlocked = !!snapshot.val();
+											if (isBlocked) return;
+											db.ref("/flaggedUsers/" + uid).set(userUid);
+										});
 									});
 								};
 								
@@ -133,6 +147,7 @@
 								script.onload = function(){
 									count--;
 									if (count <= 0) self.finishedLoading = true;
+									self.message = "There are no more tweets in this category.";
 								};
 								
 								// Put the anchor element inside the blockquote element.

@@ -59,7 +59,7 @@
 		<ul v-if="blockedUsers.length > 0" class="manage-text">
 			<li v-for="user in blockedUsers">
 				<button style="margin:0 2em 0 0" @click="unblockUser(user)">Unblock</button>
-				<a :href="'https://twitter.com/' + user.username">{{ user.username }}</a>
+				<a :href="'https://twitter.com/' + user.username">{{ user.username }}</a> <span v-if="user.uid.length === 0">(deleted account)</span>
 			</li>
 		</ul>
 		
@@ -141,6 +141,7 @@
 				let updates = {};
 				updates["/approvedUsers/" + user.uid] = true;
 				updates["/newUsers/" + user.uid] = null;
+				updates["/blockedUsers/" + user.username] = null;
 				
 				db.ref().update(updates);
 			},
@@ -157,7 +158,7 @@
 				let db = firebase.database();
 				
 				let updates = {};
-				updates["/flags/" + user.uid] = null;
+				updates["/flaggedUsers/" + user.uid] = null;
 				updates["/newUsers/" + user.uid] = null;
 				
 				db.ref().update(updates);
@@ -170,8 +171,8 @@
 				
 				// Get a reference to /blockedUsers	in the database
 				// and set their username's value to true.
-				db.ref("/blockedUsers/" + user.uid).set(true);
-				db.ref("/approvedUsers/" + user.uid).set(null);
+				db.ref("/blockedUsers/" + user.username).set(true);
+				if (user.uid.length > 0) db.ref("/approvedUsers/" + user.uid).set(null);
 			},
 			
 			blockUserByUsername: function(username){
@@ -184,13 +185,15 @@
 					let users = snapshot.val();
 					
 					if (!users){
-						alert("This user hasn't logged in yet.");
-						return;
+						self.blockUser({
+							username,
+							uid: "",
+						});
+					} else {	
+						Object.keys(users).forEach(function(uid){
+							self.blockUser(users[uid]);
+						});
 					}
-					
-					Object.keys(users).forEach(function(uid){
-						self.blockUser(users[uid]);
-					});
 				});
 				
 				self.userToBlock = "";
@@ -207,8 +210,8 @@
 				// Get a reference to /blockedUsers in the database
 				// and set their username's value to null.
 				let db = firebase.database();
-				db.ref("/blockedUsers/" + user.uid).set(null);
-				db.ref("/approvedUsers/" + user.uid).set(true);
+				db.ref("/blockedUsers/" + user.username).set(null);
+				if (user.uid.length > 0) db.ref("/approvedUsers/" + user.uid).set(true);
 			},
 			
 			onAuthStateChanged: function(){
@@ -248,12 +251,12 @@
 					}
 					
 					pushUserDataFromRefToList("adminUsers");
-					pushUserDataFromRefToList("blockedUsers");
 					pushUserDataFromRefToList("newUsers");
 					
-					let ref = db.ref("/flaggedUsers");
+					let ref1 = db.ref("/flaggedUsers");
+					refs.push(ref1);
 					
-					ref.on("value", function(snapshot){
+					ref1.on("value", function(snapshot){
 						self.flags = [];
 						let flags = snapshot.val();
 						if (!flags) return;
@@ -281,6 +284,35 @@
 							});
 							
 							self.flags.push(flag);
+						});
+					});
+					
+					let ref2 = db.ref("/blockedUsers");
+					refs.push(ref2);
+					
+					ref2.on("value", function(snapshot2){
+						self.blockedUsers = [];
+						let blockedUsers = snapshot2.val();
+						if (!blockedUsers) return;
+						
+						Object.keys(blockedUsers).forEach(function(username){
+							let ref3 = db.ref("/allUsers").orderByChild("username").equalTo(username);
+							
+							ref3.once("value").then(function(snapshot3){
+								let users = snapshot3.val();
+								if (!users){
+									self.blockedUsers.push({
+										username,
+										uid: "",
+									});
+								} else {	
+									Object.keys(users).forEach(function(uid){
+										let userData = users[uid];
+										userData.uid = uid;
+										self.blockedUsers.push(userData);
+									});
+								}
+							});
 						});
 					});
 				}

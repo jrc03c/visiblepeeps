@@ -11,7 +11,7 @@
 
 				<p>Visible Peeps was created by <a href="https://twitter.com/jrc03c">Josh Castle</a> and <a href="https://twitter.com/A_Werchmeister">Andreas Werchmeister</a>, and with the gracious support and help of <a href="https://twitter.com/LetsWoolgather">Toby Brommerich</a>, <a href="https://twitter.com/kylemadkins">Kyle Adkins</a>, as well as <a href="https://twitter.com/tarakeet">Tara Han-Tran Johnson</a>, who created the beautiful title logo.</p>
 
-				<h3>How to use</h3>
+				<h3>How to use to site</h3>
 
 				<p>To submit a tweet, all you have to do is click the 'Submit Tweet' button on the home page. Once you have logged in using your Twitter account, you'll be able to submit your tweet by simply copy / pasting the direct URL to your tweet, selecting any categories you want your tweet to appear in, and hit 'Save'. That's it! :D</p><br>
 

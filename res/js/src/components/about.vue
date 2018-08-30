@@ -15,7 +15,7 @@
 
 				<p>To submit a tweet, all you have to do is click the "Submit Tweet" link on the menu. Before submitting a tweet, we ask that you log in with your Twitter account. This helps us to prevent malicious misuse of the site and to verify that the submitted tweet belongs to you; but we do not store any personal data besides your username, and we can't access or control any part your Twitter account. Once you have logged in using your Twitter account, you'll be able to submit your tweet by simply copying and pasting the URL to your tweet into the submission form, selecting up to three categories you want your tweet to appear in, and hitting the "Save" button. That's it! :D</p><br>
 
-				<p>We approve all submissions before they appear publicly on the home page. Like the login requirement, this process helps us to cut down on abuse of the site. You can return to the submission page at any time to update your tweet, to update any of the categories you have selected, or (if you wish) to delete your tweet along with any information stored in the database.</p><br>
+				<p>We approve all submissions before they appear publicly on the home page. Like the login requirement, this process helps us to cut down on abuse of the site. You can return to the submission page at any time to update your tweet, to update any of the categories you have selected, or (if you wish) to delete your tweet along with any information stored in the database.</p>
 
 				<h3>Site issues</h3>
 

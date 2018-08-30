@@ -53682,7 +53682,6 @@ module.exports = Vue.component("index", {
 						
 						ref3.once("value").then(function(snapshot3){
 							let userData = snapshot3.val();
-							console.log(level, userData.professionalLevel);
 							
 							if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 								count--;
@@ -53771,6 +53770,14 @@ module.exports = Vue.component("index", {
 				self.loadTweetsFromCategory(true);
 			}
 		});
+		
+		let t = setInterval(function(){
+			if (document.body.scrollHeight <= window.innerHeight){
+				self.loadTweetsFromCategory(true);
+			} else {
+				clearInterval(t);
+			}
+		}, 100);
 	},
 });
 

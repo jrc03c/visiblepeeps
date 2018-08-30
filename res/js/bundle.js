@@ -54643,6 +54643,7 @@ module.exports = Vue.component("profile", {
 			// Push the updates to the database.
 			db.ref().update(updates).then(function(){
 				self.message = "Saved!";
+				self.$router.push("/");
 			}).catch(function(error){
 				self.message = "There was an error saving your profile information. :(";
 			});
@@ -54735,7 +54736,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-d5fd22ee", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-d5fd22ee", __vue__options__)
+    hotAPI.reload("data-v-d5fd22ee", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],25:[function(require,module,exports){

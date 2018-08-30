@@ -204,6 +204,7 @@
 				// Push the updates to the database.
 				db.ref().update(updates).then(function(){
 					self.message = "Saved!";
+					self.$router.push("/");
 				}).catch(function(error){
 					self.message = "There was an error saving your profile information. :(";
 				});

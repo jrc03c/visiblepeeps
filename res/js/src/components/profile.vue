@@ -68,7 +68,11 @@
 
 					<p>Once you have made a submission and been approved, you can at any point return to this page to update your submitted tweet, update any categories you have picked, or (if you wish) delete your tweet from the site.</p><br>
 
-					<button @click="$store.dispatch('login')">Login</button>
+					<p>
+						<button @click="$store.dispatch('login')">Login</button>
+					</p><br>
+					
+					<p><i>NOTE: Sometimes, there are problems with the login process. This is a known bug related to how Firebase authenticates with Twitter. If your login attempt fails, please just try again. Sorry for any inconvenience! :)</i></p>
 				</div>
 			</div>
 		</div>

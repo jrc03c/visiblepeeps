@@ -53577,7 +53577,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-08c4ef26", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-08c4ef26", __vue__options__)
+    hotAPI.reload("data-v-08c4ef26", __vue__options__)
   }
 })()}
 },{"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],19:[function(require,module,exports){
@@ -54926,7 +54926,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-c9275616", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-c9275616", __vue__options__)
+    hotAPI.reload("data-v-c9275616", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"jquery":10,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],26:[function(require,module,exports){

@@ -39,7 +39,8 @@
 		watch: {
 			"$store.state.currentLevel": function(){
 				let self = this;
-				self.loadTweetsFromCategory(true);
+				self.finishedLoading = true;
+				self.loadTweetsFromCategory(false);
 			},
 			
 			"$store.state.currentCategory": function(){
@@ -97,6 +98,7 @@
 							
 							ref3.once("value").then(function(snapshot3){
 								let userData = snapshot3.val();
+								console.log(level, userData.professionalLevel);
 								
 								if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 									count--;

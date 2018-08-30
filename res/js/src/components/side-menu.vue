@@ -37,7 +37,7 @@
 				
 				<li style="font-weight:500;" v-for="level in levels">
 					<a @click="setCurrentLevel(level)" class="fake-a">
-						{{ level }}
+						{{ level + "s" }}
 					</a>
 				</li>
 				
@@ -67,7 +67,7 @@
 	module.exports = Vue.component("side-menu", {
 		data: function(){
 			return {
-				levels: ["Professional Creatives", "Students", "Hobbyists"],
+				levels: ["Professional Creative", "Student", "Hobbyist"],
 				isAdmin: false,
 			};
 		},

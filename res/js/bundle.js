@@ -53623,7 +53623,8 @@ module.exports = Vue.component("index", {
 	watch: {
 		"$store.state.currentLevel": function(){
 			let self = this;
-			self.loadTweetsFromCategory(true);
+			self.finishedLoading = true;
+			self.loadTweetsFromCategory(false);
 		},
 		
 		"$store.state.currentCategory": function(){
@@ -53681,6 +53682,7 @@ module.exports = Vue.component("index", {
 						
 						ref3.once("value").then(function(snapshot3){
 							let userData = snapshot3.val();
+							console.log(level, userData.professionalLevel);
 							
 							if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 								count--;
@@ -54811,7 +54813,7 @@ let $ = require("jquery");
 module.exports = Vue.component("side-menu", {
 	data: function(){
 		return {
-			levels: ["Professional Creatives", "Students", "Hobbyists"],
+			levels: ["Professional Creative", "Student", "Hobbyist"],
 			isAdmin: false,
 		};
 	},
@@ -54908,7 +54910,7 @@ module.exports = Vue.component("side-menu", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',[_c('router-link',{staticClass:"fake-a li-fat",attrs:{"to":"/profile"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',[_c('a',{staticClass:"fake-a li-fat",staticStyle:{"font-weight":"500"},on:{"click":function($event){_vm.$store.dispatch('logout')}}},[_vm._v("Log out")])]):_vm._e(),_vm._v(" "),(_vm.isAdmin)?_c('span',[_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/"}},[_vm._v("Home")])],1),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/users"}},[_vm._v("\n\t\t\t\t\t\tUsers\n\t\t\t\t\t")])],1),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/categories"}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])],1)]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_vm._m(0),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',{staticStyle:{"font-weight":"500"}},[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentCategory(category)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',[_c('router-link',{staticClass:"fake-a li-fat",attrs:{"to":"/profile"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',[_c('a',{staticClass:"fake-a li-fat",staticStyle:{"font-weight":"500"},on:{"click":function($event){_vm.$store.dispatch('logout')}}},[_vm._v("Log out")])]):_vm._e(),_vm._v(" "),(_vm.isAdmin)?_c('span',[_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/"}},[_vm._v("Home")])],1),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/users"}},[_vm._v("\n\t\t\t\t\t\tUsers\n\t\t\t\t\t")])],1),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/categories"}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])],1)]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_vm._m(0),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',{staticStyle:{"font-weight":"500"}},[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level + "s")+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",on:{"click":function($event){_vm.setCurrentCategory(category)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"li-fat"},[_c('a',{attrs:{"href":""}},[_vm._v("SHOW ALL")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

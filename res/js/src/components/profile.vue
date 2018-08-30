@@ -8,7 +8,7 @@
 			<div class="submit-page">
 				<div v-if="isLoggedIn">
 					
-					<p>Hi again! We are so happy you want to join! :D You can at any point return to this page to, update your submitted tweet, update any categories you have picked, or if you wish, delete your tweet from the site.</p><br>
+					<p>Hi again! We are so happy you want to join! :D Remember you can at any point return to this page to, update your submitted tweet, update any categories you have picked, or if you wish, delete your tweet from the site.</p><br>
 						
 					<p>Please only submit tweets including the following hashtags: <span style="color:rgb(29,161,242);">#VisibleWomen · #VisibleWoman · #VisibleNB · #VisibileNBs</span></p>
 						

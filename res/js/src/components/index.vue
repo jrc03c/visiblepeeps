@@ -11,9 +11,9 @@
 
 			<div class="module-grid" ref="tweetContainer"></div>
 			
-			<div v-if="!finishedLoading">
+			<div v-if="message.length > 0">
 				<br><br><br>
-				Loading...
+				{{ message }}
 				<br><br><br>
 			</div>
 		</div>
@@ -32,6 +32,7 @@
 				lastUserUID: "-1",
 				finishedLoading: true,
 				numberOfTweetsToLoadAtOnce: 6,
+				message: "",
 			};
 		},
 		
@@ -53,6 +54,7 @@
 				
 				if (!self.finishedLoading) return;
 				self.finishedLoading = false;
+				self.message = "Loading...";
 				
 				let category = self.$store.state.currentCategory;
 				let level = self.$store.state.currentLevel;
@@ -67,7 +69,10 @@
 				
 				ref.once("value").then(function(snapshot){
 					let userUIDs = snapshot.val();
-					if (!userUIDs) return;
+					if (!userUIDs){
+						self.message = "There are no more tweets in this category.";
+						return;
+					}
 					
 					let uids = Object.keys(userUIDs);
 					self.lastUserUID = uids[uids.length-1];

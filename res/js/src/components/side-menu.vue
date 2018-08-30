@@ -29,7 +29,7 @@
 
 				<br><br>
 
-				<li class="li-fat"><a href="">SHOW ALL</a></li> <!-- Needs wiring -->
+				<li class="li-fat"><a class="fake-a" @click="setCurrentLevel('ALL'); setCurrentCategory('ALL');">SHOW ALL</a></li>
 				
 				<br><br>
 

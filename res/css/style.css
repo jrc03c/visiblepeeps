@@ -181,7 +181,7 @@ ul.category li span {
 	padding:0;
 }
 
-ul.category li span.new-users {
+ul.category li router-link span.new-users {
 	color:rgb(240,0,0);
 }
 

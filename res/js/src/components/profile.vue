@@ -66,11 +66,11 @@
 				<div v-else>
 					<p>Hi! Before you can submit your tweet to the site, we need to ask you to log in with your Twitter account. This is necessary both to prevent any malicious misuse of the site and to verify that the tweet you submit is your own; but we do not store any personal data besides your username, and we can't access or control any part your Twitter account.</p><br>
 
-					<p>Once you have made a submission and been approved, you can at any point return to this page to update your submitted tweet, update any categories you have picked, or (if you wish) delete your tweet from the site.</p><br>
+					<p>Once you have made a submission and been approved, you can at any point return to this page to update your submitted tweet, update any categories you have picked, or (if you wish) delete your tweet from the site.</p><br><br>
 
 					<p>
 						<button @click="$store.dispatch('login')">Login</button>
-					</p><br>
+					</p><br><br>
 					
 					<p><i>NOTE: Sometimes, there are problems with the login process. This is a known bug related to how Firebase authenticates with Twitter. If your login attempt fails, please just try again. Sorry for any inconvenience! :)</i></p>
 				</div>

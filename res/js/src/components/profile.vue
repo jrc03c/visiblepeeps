@@ -192,7 +192,7 @@
 				if (hasAtLeastOneCategory){
 					updates["/tweets/ALL/" + self.user.uid] = true;
 				} else {
-					updates["/tweets/ALL/" + self.user.uid] = true;
+					updates["/tweets/ALL/" + self.user.uid] = null;
 				}
 				
 				// Also update the user's profile tweet URL.

@@ -53628,6 +53628,7 @@ module.exports = Vue.component("index", {
 		
 		"$store.state.currentCategory": function(){
 			let self = this;
+			self.finishedLoading = true;
 			self.loadTweetsFromCategory(false);
 		},
 	},
@@ -54831,14 +54832,14 @@ module.exports = Vue.component("side-menu", {
 		
 		setCurrentLevel: function(level){
 			let self = this;
-			self.$store.state.currentLevel = level;
 			self.$router.push("/");
+			self.$store.state.currentLevel = level;
 		},
 		
 		setCurrentCategory: function(category){
 			let self = this;
-			self.$store.state.currentCategory = category;
 			self.$router.push("/");
+			self.$store.state.currentCategory = category;
 		},
 		
 		onAuthStateChanged: function(){

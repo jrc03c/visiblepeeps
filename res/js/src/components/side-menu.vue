@@ -88,14 +88,14 @@
 			
 			setCurrentLevel: function(level){
 				let self = this;
-				self.$store.state.currentLevel = level;
 				self.$router.push("/");
+				self.$store.state.currentLevel = level;
 			},
 			
 			setCurrentCategory: function(category){
 				let self = this;
-				self.$store.state.currentCategory = category;
 				self.$router.push("/");
+				self.$store.state.currentCategory = category;
 			},
 			
 			onAuthStateChanged: function(){

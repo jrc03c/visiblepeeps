@@ -44,6 +44,7 @@
 			
 			"$store.state.currentCategory": function(){
 				let self = this;
+				self.finishedLoading = true;
 				self.loadTweetsFromCategory(false);
 			},
 		},

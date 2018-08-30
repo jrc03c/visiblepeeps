@@ -139,7 +139,7 @@ img.peeps-lettering {
 	z-index:993;
 }
 
-#side-menu::-webkit-scrollbar { 
+#side-menu::-webkit-scrollbar #side-menu::-moz-scrollbars { 
     display:none; 
 }
 

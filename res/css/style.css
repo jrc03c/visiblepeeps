@@ -281,7 +281,7 @@ ul.category li span {
 	background:rgb(240,0,0);
 }
 
-input[type=text], input[id="tweet-url"] {
+#main-content .submit-page input[type=text] {
 	width:100%;
 	height:40px;
 	border:0;

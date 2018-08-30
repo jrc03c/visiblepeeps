@@ -88,6 +88,8 @@
 							if (!hasBeenApproved){
 								count--;
 								if (count <= 0) self.finishedLoading = true;
+								self.message = "There are no more tweets in this category.";
+								return;
 							}
 							
 							let ref3 = db.ref("/allUsers/" + uid);
@@ -98,6 +100,7 @@
 								if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 									count--;
 									if (count <= 0) self.finishedLoading = true;
+									self.message = "There are no more tweets in this category.";
 									return;
 								}
 								
@@ -138,6 +141,7 @@
 								script.onload = function(){
 									count--;
 									if (count <= 0) self.finishedLoading = true;
+									self.message = "There are no more tweets in this category.";
 								};
 								
 								// Put the anchor element inside the blockquote element.

@@ -14,7 +14,7 @@
 		
 					<li>
 						<router-link to="/manage/users" class="fake-a">
-							Users <span>({{ newUserCount }} new users!)</span>
+							Users <span class="new-users">({{ newUserCount }} new users)</span>
 						</router-link>
 					</li>
 					

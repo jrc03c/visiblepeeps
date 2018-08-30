@@ -45,7 +45,7 @@
 						<br>
 						
 						<div v-for="category in categories" class="profession">
-							<input type="checkbox" v-model="category.value" :id="category.name">
+							<input type="checkbox" v-model="category.value" :id="category.name" :disabled="enoughCategories && !category.value">
 							
 							<label :for="category.name">
 								{{ category.name }}
@@ -104,10 +104,24 @@
 				message: "",
 				user: null,
 				categories: [],
+				maxCategoryCount: 3,
 				selectedLevel: "",
 				levels: ["Professional Creative", "Hobbyist", "Student"],
 				url: "",
 			};
+		},
+		
+		computed: {
+			enoughCategories: function(){
+				let self = this;
+				let count = 0;
+				
+				self.categories.forEach(function(category){
+					if (category.value) count++;
+				});
+				
+				return count >= self.maxCategoryCount;
+			},
 		},
 		
 		watch: {

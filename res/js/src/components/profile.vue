@@ -204,10 +204,6 @@
 				// Push the updates to the database.
 				db.ref().update(updates).then(function(){
 					self.message = "Saved!";
-					
-					setTimeout(function(){
-						self.message = "";
-					}, 3000);
 				}).catch(function(error){
 					self.message = "There was an error saving your profile information. :(";
 				});

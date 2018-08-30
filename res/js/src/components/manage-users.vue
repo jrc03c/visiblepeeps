@@ -141,6 +141,7 @@
 				let updates = {};
 				updates["/approvedUsers/" + user.uid] = true;
 				updates["/newUsers/" + user.uid] = null;
+				updates["/blockedUsers/" + user.uid] = null;
 				
 				db.ref().update(updates);
 			},
@@ -157,7 +158,7 @@
 				let db = firebase.database();
 				
 				let updates = {};
-				updates["/flags/" + user.uid] = null;
+				updates["/flaggedUsers/" + user.uid] = null;
 				updates["/newUsers/" + user.uid] = null;
 				
 				db.ref().update(updates);

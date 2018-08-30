@@ -54076,6 +54076,7 @@ module.exports = Vue.component("manage-users", {
 			let updates = {};
 			updates["/approvedUsers/" + user.uid] = true;
 			updates["/newUsers/" + user.uid] = null;
+			updates["/blockedUsers/" + user.uid] = null;
 			
 			db.ref().update(updates);
 		},
@@ -54092,7 +54093,7 @@ module.exports = Vue.component("manage-users", {
 			let db = firebase.database();
 			
 			let updates = {};
-			updates["/flags/" + user.uid] = null;
+			updates["/flaggedUsers/" + user.uid] = null;
 			updates["/newUsers/" + user.uid] = null;
 			
 			db.ref().update(updates);
@@ -54878,7 +54879,6 @@ Vue.use(Vuex);
 let firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-window.firebase = firebase;
 
 window.onload = function(){
 	firebase.initializeApp({

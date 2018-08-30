@@ -287,7 +287,7 @@ ul.category li span {
 	border:0;
 	background:rgb(247,247,247);
 	resize:none;
-	padding:0 0 0 1em;
+	padding:0 0 0 1em !important;
 }
 
 select[name="level"] {

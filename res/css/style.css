@@ -133,13 +133,13 @@ img.peeps-lettering {
 	margin:0;
 	position:fixed;
 	width:225px;
-	overflow-y:scroll;
+	overflow-y:scroll -moz-scrollbars-none;
 	height:100%;
 	-ms-overflow-style: none;
 	z-index:993;
 }
 
-#side-menu::-webkit-scrollbar #side-menu::-moz-scrollbars { 
+#side-menu::-webkit-scrollbar { 
     display:none; 
 }
 

@@ -341,6 +341,14 @@ input[type=text], .profession label {
 	background-color:rgb(29,161,242);
 }
 
+.profession input[type="checkbox"]:disabled {
+	background-color: white;
+}
+
+.checkbox-disabled label {
+	color: rgb(215, 215, 215);
+}
+
 input[type=text]:focus, select[name="level"]:focus {
 	outline-color:rgb(29,161,242);
 }

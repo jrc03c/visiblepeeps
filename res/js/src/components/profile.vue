@@ -44,7 +44,7 @@
 						
 						<br>
 						
-						<div v-for="category in categories" class="profession">
+						<div v-for="category in categories" class="profession" :class="{'checkbox-disabled': enoughCategories && !category.value}">
 							<input type="checkbox" v-model="category.value" :id="category.name" :disabled="enoughCategories && !category.value">
 							
 							<label :for="category.name">

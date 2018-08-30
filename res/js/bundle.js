@@ -54086,7 +54086,7 @@ module.exports = Vue.component("manage-users", {
 			let updates = {};
 			updates["/approvedUsers/" + user.uid] = true;
 			updates["/newUsers/" + user.uid] = null;
-			updates["/blockedUsers/" + user.uid] = null;
+			updates["/blockedUsers/" + user.username] = null;
 			
 			db.ref().update(updates);
 		},

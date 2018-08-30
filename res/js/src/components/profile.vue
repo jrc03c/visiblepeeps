@@ -14,7 +14,7 @@
 						
 					<br><br>
 					
-					<form @submit.prevent="save">
+					<form @submit.prevent="save" @click="message = ''" @keydown="message = ''">
 						<label for="tweet-url">
 							<p style="font-weight:500;">Tweet URL</p>
 						</label>

@@ -14,7 +14,7 @@
 		
 					<li>
 						<router-link to="/manage/users" class="fake-a">
-							Users
+							Users <span>({{ newUserCount }} new users!)</span>
 						</router-link>
 					</li>
 					
@@ -69,6 +69,7 @@
 			return {
 				levels: ["Professional Creative", "Student", "Hobbyist"],
 				isAdmin: false,
+				newUserCount: 0,
 			};
 		},
 		
@@ -115,6 +116,15 @@
 						ref2.on("value", function(snapshot2){
 							let isAdmin = snapshot2.val();
 							self.isAdmin = !!isAdmin;
+							
+							if (self.isAdmin){
+								let ref3 = db.ref("/newUsers");
+								ref3.once("value").then(function(snapshot3){
+									let newUsers = snapshot3.val();
+									if (!newUsers) return;
+									self.newUserCount = Object.keys(newUsers).length;
+								});
+							}
 						});
 					});
 				} else {

@@ -17,7 +17,7 @@
 
 				<p>Once you have logged in the first time and been approved. You can return to the submission page to, update your tweet or any of the categories you have selected, or if you wish, delete your tweet together with any information stored in the database.</p><br>
 
-				<p>Note: The reason we ask you to login with your Twitter account is solely to prevert malicious misuse of the site.</p>
+				<p>Note: The reason we ask you to login with your Twitter account is solely to prevent any malicious misuse of the site, and to verify that the tweet you submit is your own. We can't access or control any part your Twitter account.</p>
 
 				<h3>Site issues</h3>
 

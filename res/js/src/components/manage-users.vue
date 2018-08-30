@@ -83,6 +83,7 @@
 				blockedUsers: [],
 				flags: [],
 				newUsers: [],
+				alwaysAdmins: ["jrc03c", "A_Werchmeister"],
 			};
 		},
 		
@@ -121,6 +122,13 @@
 			
 			// This is where we remove an admin user.
 			removeAdminUser: function(user){
+				let self = this;
+				
+				if (self.alwaysAdmins.indexOf(user.username) > -1){
+					alert("Nice try! But you can't remove " + user.username + ". That person is a super-admin!");
+					return;
+				}
+				
 				// Prompt for confirmation that this is really 
 				// what we want to do.
 				let shouldRemoveAdminUser = confirm("Are you sure that you want to remove " + user.username + " as an administrator?");

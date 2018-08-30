@@ -119,7 +119,11 @@
 									
 									if (!shouldFlag) return;
 									
-									db.ref("/flaggedUsers/" + uid).set(self.$store.state.currentUser.uid);
+									db.ref("/blockedUsers/" + self.$store.state.currentUser.uid).once("value").then(function(snapshot){
+										let isBlocked = !!snapshot.val();
+										if (isBlocked) return;
+										db.ref("/flaggedUsers/" + uid).set(self.$store.state.currentUser.uid);
+									});
 								};
 								
 								// Create a script element with the Twitter widgets JS file

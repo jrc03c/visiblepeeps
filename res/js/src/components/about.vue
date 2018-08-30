@@ -21,11 +21,11 @@
 
 				<h3>Site issues</h3>
 
-				<p>In case you experience any issues with the site, please contact <a href="https://twitter.com/jrc03c">jrc03c</a> or <a href="https://twitter.com/A_Werchmeister">A_Werchmeister</a> on Twitter.</p>
+				<p>In case you experience any issues with the site or if you'd like to share your feedback, please feel free to contact either <a href="https://twitter.com/jrc03c">jrc03c</a> or <a href="https://twitter.com/A_Werchmeister">A_Werchmeister</a> on Twitter.</p>
 
-				<h3>Report mean people</h3>
+				<h3>Report inappropriate or irrelevant tweets</h3>
 
-				<p>If you see a tweet that is either offensive or doesn't belong, you'll be able to flag the tweet for review by clicking the report button on the tweet in question.</p>
+				<p>If you see a tweet that is either offensive or doesn't belong, you'll be able to flag the tweet for review by clicking the red flag button in the bottom corner of the tweet in question.</p>
 
 				<h3>Legal</h3>
 

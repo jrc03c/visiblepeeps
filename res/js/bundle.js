@@ -53710,11 +53710,17 @@ module.exports = Vue.component("index", {
 								let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to report this tweet. Would you like to report this tweet as inappropriate or irrelevant?");
 								
 								if (!shouldFlag) return;
+								let userUid = self.$store.state.currentUser.uid;
 								
-								db.ref("/blockedUsers/" + self.$store.state.currentUser.uid).once("value").then(function(snapshot){
-									let isBlocked = !!snapshot.val();
-									if (isBlocked) return;
-									db.ref("/flaggedUsers/" + uid).set(self.$store.state.currentUser.uid);
+								db.ref("/allUsers/" + userUid + "/username").once("value").then(function(snapshot){
+									let username = snapshot.val();
+									if (!username) return;
+									
+									db.ref("/blockedUsers/" + username).once("value").then(function(snapshot){
+										let isBlocked = !!snapshot.val();
+										if (isBlocked) return;
+										db.ref("/flaggedUsers/" + uid).set(userUid);
+									});
 								});
 							};
 							
@@ -53778,7 +53784,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b556332", __vue__options__)
   } else {
-    hotAPI.reload("data-v-1b556332", __vue__options__)
+    hotAPI.rerender("data-v-1b556332", __vue__options__)
   }
 })()}
 },{"./main-header.vue":20,"./side-menu.vue":25,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){
@@ -54110,7 +54116,7 @@ module.exports = Vue.component("manage-users", {
 			
 			// Get a reference to /blockedUsers	in the database
 			// and set their username's value to true.
-			db.ref("/blockedUsers/" + user.uid).set(true);
+			db.ref("/blockedUsers/" + user.username).set(true);
 			db.ref("/approvedUsers/" + user.uid).set(null);
 		},
 		
@@ -54122,11 +54128,7 @@ module.exports = Vue.component("manage-users", {
 			
 			ref.once("value").then(function(snapshot){
 				let users = snapshot.val();
-				
-				if (!users){
-					alert("This user hasn't logged in yet.");
-					return;
-				}
+				if (!users) return;
 				
 				Object.keys(users).forEach(function(uid){
 					self.blockUser(users[uid]);
@@ -54147,7 +54149,7 @@ module.exports = Vue.component("manage-users", {
 			// Get a reference to /blockedUsers in the database
 			// and set their username's value to null.
 			let db = firebase.database();
-			db.ref("/blockedUsers/" + user.uid).set(null);
+			db.ref("/blockedUsers/" + user.username).set(null);
 			db.ref("/approvedUsers/" + user.uid).set(true);
 		},
 		
@@ -54188,12 +54190,12 @@ module.exports = Vue.component("manage-users", {
 				}
 				
 				pushUserDataFromRefToList("adminUsers");
-				pushUserDataFromRefToList("blockedUsers");
 				pushUserDataFromRefToList("newUsers");
 				
-				let ref = db.ref("/flaggedUsers");
+				let ref1 = db.ref("/flaggedUsers");
+				refs.push(ref1);
 				
-				ref.on("value", function(snapshot){
+				ref1.on("value", function(snapshot){
 					self.flags = [];
 					let flags = snapshot.val();
 					if (!flags) return;
@@ -54221,6 +54223,30 @@ module.exports = Vue.component("manage-users", {
 						});
 						
 						self.flags.push(flag);
+					});
+				});
+				
+				let ref2 = db.ref("/blockedUsers");
+				refs.push(ref2);
+				
+				ref2.on("value", function(snapshot2){
+					self.blockedUsers = [];
+					let blockedUsers = snapshot2.val();
+					if (!blockedUsers) return;
+					
+					Object.keys(blockedUsers).forEach(function(username){
+						let ref3 = db.ref("/allUsers").orderByChild("username").equalTo(username);
+						
+						ref3.once("value").then(function(snapshot3){
+							let users = snapshot3.val();
+							if (!users) return;
+							
+							Object.keys(users).forEach(function(uid){
+								let userData = users[uid];
+								userData.uid = uid;
+								self.blockedUsers.push(userData);
+							});
+						});
 					});
 				});
 			}
@@ -54254,7 +54280,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-00c0df20", __vue__options__)
   } else {
-    hotAPI.reload("data-v-00c0df20", __vue__options__)
+    hotAPI.rerender("data-v-00c0df20", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],23:[function(require,module,exports){

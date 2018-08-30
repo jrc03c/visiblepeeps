@@ -171,7 +171,7 @@
 				
 				// Get a reference to /blockedUsers	in the database
 				// and set their username's value to true.
-				db.ref("/blockedUsers/" + user.uid).set(true);
+				db.ref("/blockedUsers/" + user.username).set(true);
 				db.ref("/approvedUsers/" + user.uid).set(null);
 			},
 			
@@ -183,11 +183,7 @@
 				
 				ref.once("value").then(function(snapshot){
 					let users = snapshot.val();
-					
-					if (!users){
-						alert("This user hasn't logged in yet.");
-						return;
-					}
+					if (!users) return;
 					
 					Object.keys(users).forEach(function(uid){
 						self.blockUser(users[uid]);
@@ -208,7 +204,7 @@
 				// Get a reference to /blockedUsers in the database
 				// and set their username's value to null.
 				let db = firebase.database();
-				db.ref("/blockedUsers/" + user.uid).set(null);
+				db.ref("/blockedUsers/" + user.username).set(null);
 				db.ref("/approvedUsers/" + user.uid).set(true);
 			},
 			
@@ -249,12 +245,12 @@
 					}
 					
 					pushUserDataFromRefToList("adminUsers");
-					pushUserDataFromRefToList("blockedUsers");
 					pushUserDataFromRefToList("newUsers");
 					
-					let ref = db.ref("/flaggedUsers");
+					let ref1 = db.ref("/flaggedUsers");
+					refs.push(ref1);
 					
-					ref.on("value", function(snapshot){
+					ref1.on("value", function(snapshot){
 						self.flags = [];
 						let flags = snapshot.val();
 						if (!flags) return;
@@ -282,6 +278,30 @@
 							});
 							
 							self.flags.push(flag);
+						});
+					});
+					
+					let ref2 = db.ref("/blockedUsers");
+					refs.push(ref2);
+					
+					ref2.on("value", function(snapshot2){
+						self.blockedUsers = [];
+						let blockedUsers = snapshot2.val();
+						if (!blockedUsers) return;
+						
+						Object.keys(blockedUsers).forEach(function(username){
+							let ref3 = db.ref("/allUsers").orderByChild("username").equalTo(username);
+							
+							ref3.once("value").then(function(snapshot3){
+								let users = snapshot3.val();
+								if (!users) return;
+								
+								Object.keys(users).forEach(function(uid){
+									let userData = users[uid];
+									userData.uid = uid;
+									self.blockedUsers.push(userData);
+								});
+							});
 						});
 					});
 				}

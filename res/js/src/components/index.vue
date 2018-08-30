@@ -126,11 +126,17 @@
 									let shouldFlag = confirm("Tweet flagging should be reserved for inappropriate or irrelevant tweets. Once a tweet has been flagged, we will review it for appropriateness and relevance. Please note that your username will be recorded if you choose to report this tweet. Would you like to report this tweet as inappropriate or irrelevant?");
 									
 									if (!shouldFlag) return;
+									let userUid = self.$store.state.currentUser.uid;
 									
-									db.ref("/blockedUsers/" + self.$store.state.currentUser.uid).once("value").then(function(snapshot){
-										let isBlocked = !!snapshot.val();
-										if (isBlocked) return;
-										db.ref("/flaggedUsers/" + uid).set(self.$store.state.currentUser.uid);
+									db.ref("/allUsers/" + userUid + "/username").once("value").then(function(snapshot){
+										let username = snapshot.val();
+										if (!username) return;
+										
+										db.ref("/blockedUsers/" + username).once("value").then(function(snapshot){
+											let isBlocked = !!snapshot.val();
+											if (isBlocked) return;
+											db.ref("/flaggedUsers/" + uid).set(userUid);
+										});
 									});
 								};
 								

@@ -469,10 +469,10 @@ input[type="submit"]:hover, button:hover {
 		text-align: center;
 	}
 	
-	.tweet-wrapper, .twitter-tweet {
-		min-width: 100% !important;
-		width: 100% !important;
-		max-width: 100% !important;
+	.tweet-wrapper {
+		min-width: calc(100%) !important;
+		width: calc(100%) !important;
+		max-width: calc(100%) !important;
 	}
 
 }

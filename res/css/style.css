@@ -196,6 +196,10 @@ span.new-users:hover {
 	background:rgb(29,161,242);
 }
 
+.selected-menu-item:hover {
+	color:rgb(247,247,247);
+}
+
 .submit-button {
 	color:rgb(254,254,254);	
 	font-weight:500;

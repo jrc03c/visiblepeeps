@@ -210,7 +210,8 @@ span.new-users:hover {
 
 .flaggy {
 	position:absolute;
-	margin:-50px 0 0 211px;
+	margin:-50px 0 0 -45px;
+	text-align: right;
 	color:rgb(240,0,0);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;
@@ -426,8 +427,12 @@ input[type="submit"]:hover, button:hover {
 	}
 
 	#main-content {
-		width:100%;
-		margin:0 auto;
+		/* width:100%;
+		margin:0 auto; */
+		width:calc(100% - 4em);
+		max-width:calc(100% - 4em);
+		margin:0 2em auto;
+		margin-bottom: 2em;
 	}
 
 	ul.category {
@@ -446,8 +451,24 @@ input[type="submit"]:hover, button:hover {
 		margin:0 auto;
 	}
 
-	.flaggy {
-		margin:-50px 0 0 126px;
+	/* .flaggy {
+		margin:-50px 0 0 25%;
+	} */
+	
+	.module-grid {
+		margin:0 auto;
+		min-width:100%;
+		width: 100%;
+		padding:0;
+		display:block;
+		justify-content: center;
+		text-align: center;
+	}
+	
+	.tweet-wrapper, .twitter-tweet {
+		min-width: 100% !important;
+		width: 100% !important;
+		max-width: 100% !important;
 	}
 
 }
@@ -461,6 +482,10 @@ input[type="submit"]:hover, button:hover {
 	grid-row-gap:0;
 	grid-template-columns:auto auto auto;
 	justify-content:center;
+}
+
+.tweet-wrapper {
+	text-align: right;
 }
 
 @media (max-width:1850px) {
@@ -478,22 +503,6 @@ input[type="submit"]:hover, button:hover {
 	}
 
 }
-
-@media (max-width:1050px) {
-
-	.module-grid {
-		margin:0 auto;
-		min-width:100%;
-		padding:3.5em 0 5em;
-		display:block;
-		grid-column-gap:0;
-		grid-row-gap:0;
-		grid-template-columns:auto;
-		justify-content:center;
-	}
-
-}
-
 
 /* --- Manage page --- */
 
@@ -599,16 +608,6 @@ input[type="submit"]:hover, button:hover {
 #app #manage-menu ul li a:hover {
 	color:rgb(246,246,246);
 	background:rgb(29,161,242);
-}
-
-@media (max-width:1050px) {
-
-	#app #manage-content {
-		width:calc(100% - 4em);
-		margin:0 2em auto;
-		margin-bottom: 2em;
-	}
-
 }
 
 i {

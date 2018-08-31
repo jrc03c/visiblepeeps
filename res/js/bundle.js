@@ -70801,6 +70801,7 @@ module.exports = Vue.component("index", {
 							}
 							
 							let wrapper = document.createElement("div");
+							wrapper.className += " tweet-wrapper";
 							
 							// Create a blockquote element of class "twitter-tweet".
 							let blockquote = document.createElement("blockquote");
@@ -71420,7 +71421,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-00c0df20", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-00c0df20", __vue__options__)
+    hotAPI.reload("data-v-00c0df20", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],24:[function(require,module,exports){
@@ -71710,7 +71711,7 @@ module.exports = Vue.component("side-menu", {
 		self.onAuthStateChanged();
 		
 		let oldWidth = 0;
-
+		
 		function toggleMenu(e){
 			e.preventDefault();
 			$("#side-menu").slideToggle("fast");
@@ -71719,21 +71720,15 @@ module.exports = Vue.component("side-menu", {
 		
 		function setCSSRules(event){
 			let newWidth = $(window).width();
-			
+		
 			if (newWidth === oldWidth) return;
-			
+		
 			if (newWidth > 1050) {
-				$('.mobile-nav').css('display','none');
-				$('#side-menu').show();
 				$("#side-menu").off("click");
-			}
-			
-			else {
-				$('.mobile-nav').css('display','block');
-				$('#side-menu').hide();
+			} else {
 				$("#side-menu").click(toggleMenu);
 			}
-			
+		
 			oldWidth = newWidth;
 		}
 		
@@ -71756,7 +71751,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-c9275616", __vue__options__)
   } else {
-    hotAPI.reload("data-v-c9275616", __vue__options__)
+    hotAPI.rerender("data-v-c9275616", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"jquery":10,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],26:[function(require,module,exports){

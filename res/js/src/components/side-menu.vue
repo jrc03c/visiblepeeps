@@ -150,7 +150,7 @@
 			self.onAuthStateChanged();
 			
 			let oldWidth = 0;
-
+			
 			function toggleMenu(e){
 				e.preventDefault();
 				$("#side-menu").slideToggle("fast");
@@ -159,21 +159,15 @@
 			
 			function setCSSRules(event){
 				let newWidth = $(window).width();
-				
+			
 				if (newWidth === oldWidth) return;
-				
+			
 				if (newWidth > 1050) {
-					$('.mobile-nav').css('display','none');
-					$('#side-menu').show();
 					$("#side-menu").off("click");
-				}
-				
-				else {
-					$('.mobile-nav').css('display','block');
-					$('#side-menu').hide();
+				} else {
 					$("#side-menu").click(toggleMenu);
 				}
-				
+			
 				oldWidth = newWidth;
 			}
 			

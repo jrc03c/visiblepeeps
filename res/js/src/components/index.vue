@@ -108,6 +108,7 @@
 								}
 								
 								let wrapper = document.createElement("div");
+								wrapper.className += " tweet-wrapper";
 								
 								// Create a blockquote element of class "twitter-tweet".
 								let blockquote = document.createElement("blockquote");

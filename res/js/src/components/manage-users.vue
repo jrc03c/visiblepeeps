@@ -25,7 +25,7 @@
 					{{ user.username }}
 				</a> / 
 				
-				<a :href="user.profileTweet">
+				<a :href="user.profileTweet" target="_blank">
 					{{ user.profileTweet }}
 				</a>
 			</li>

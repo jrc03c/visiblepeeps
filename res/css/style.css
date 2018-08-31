@@ -210,7 +210,7 @@ span.new-users:hover {
 
 .flaggy {
 	position:absolute;
-	margin:-50px 0 0 213px;
+	margin:-50px 0 0 211px;
 	color:rgb(240,0,0);	
 	font-weight:500;
 	font-family: 'Roboto', sans-serif;
@@ -467,7 +467,7 @@ input[type="submit"]:hover, button:hover {
 	.module-grid {
 		grid-template-columns:auto auto;
 	}
-	
+
 }
 
 @media (max-width:1350px) {

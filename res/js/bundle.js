@@ -71652,13 +71652,23 @@ module.exports = Vue.component("side-menu", {
 		setCurrentLevel: function(level){
 			let self = this;
 			self.$router.push("/");
-			self.$store.state.currentLevel = level;
+			
+			if (self.$store.state.currentLevel === level){
+				self.$store.state.currentLevel = "ALL";
+			} else {
+				self.$store.state.currentLevel = level;
+			}
 		},
 		
 		setCurrentCategory: function(category){
 			let self = this;
 			self.$router.push("/");
-			self.$store.state.currentCategory = category;
+			
+			if (self.$store.state.currentCategory === category){
+				self.$store.state.currentCategory = "ALL";
+			} else {
+				self.$store.state.currentCategory = category;
+			}
 		},
 		
 		onAuthStateChanged: function(){
@@ -72050,7 +72060,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-acb60230", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-acb60230", __vue__options__)
+    hotAPI.reload("data-v-acb60230", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],27:[function(require,module,exports){

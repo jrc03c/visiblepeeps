@@ -23,6 +23,7 @@
 <script>
 	let Vue = require("vue/dist/vue");
 	let firebase = require("firebase/app");
+	let _ = require("lodash");
 	require("./side-menu.vue");
 	require("./main-header.vue");
 	
@@ -51,7 +52,7 @@
 		},
 		
 		methods: {
-			loadTweetsFromCategory: function(shouldKeepCurrentTweets){
+			loadTweetsFromCategory: _.debounce(function(shouldKeepCurrentTweets){
 				let self = this;
 				
 				if (!self.finishedLoading) return;
@@ -167,7 +168,7 @@
 						});
 					});
 				});
-			},
+			}, 100),
 		},
 		
 		mounted: function(){

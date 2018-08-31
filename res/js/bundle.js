@@ -71964,7 +71964,7 @@ module.exports = Vue.component("profile", {
 			
 			// Push the updates to the database.
 			db.ref().update(updates).then(function(){
-				self.message = "Saved!<br><br>Note that if you've just signed up, your submission will need be approved before it'll appear on the home screen. Thanks!";
+				self.message = "Saved!<br><br>Note that if you've just signed up, your submission will need to be approved before it'll appear on the home screen. Thanks!";
 				// self.$router.push("/");
 			}).catch(function(error){
 				self.message = "There was an error saving your profile information. :(";
@@ -72058,7 +72058,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-acb60230", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-acb60230", __vue__options__)
+    hotAPI.reload("data-v-acb60230", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],27:[function(require,module,exports){

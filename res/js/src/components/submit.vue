@@ -56,9 +56,7 @@
 						
 						<input type="submit" value="Save"><a class="delete-profile" @click="$store.dispatch('deleteAccount')">Delete</a>
 						
-						<p v-if="message.length > 0" class="profile-msg">
-							{{ message }}
-						</p>
+						<p v-if="message.length > 0" class="profile-msg" v-html="message"></p>
 						
 					</form>
 				</div>
@@ -203,8 +201,8 @@
 				
 				// Push the updates to the database.
 				db.ref().update(updates).then(function(){
-					self.message = "Saved!";
-					self.$router.push("/");
+					self.message = "Saved!<br><br>Note that if you've just signed up, your submission will need be approved before it'll appear on the home screen. Thanks!";
+					// self.$router.push("/");
 				}).catch(function(error){
 					self.message = "There was an error saving your profile information. :(";
 				});

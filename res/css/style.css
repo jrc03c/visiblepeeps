@@ -481,7 +481,7 @@ input[type="submit"]:hover, button:hover {
 		width:100%;
 		max-width:90%;
 		grid-template-columns:inherit;
-		padding:0;
+		justify-content:inherit;
 	}
 
 }

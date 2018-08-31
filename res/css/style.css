@@ -483,9 +483,8 @@ input[type="submit"]:hover, button:hover {
 
 	.module-grid {
 		margin:0 auto;
-		min-width:90%;
-		max-width:90%;
-		padding:3.5em 0 5em;
+		min-width:100%;
+		padding:3.5em 2em 5em;
 		display:block;
 		grid-column-gap:1em;
 		grid-row-gap:0;

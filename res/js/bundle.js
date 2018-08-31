@@ -53695,6 +53695,7 @@ module.exports = Vue.component("index", {
 							// Create a blockquote element of class "twitter-tweet".
 							let blockquote = document.createElement("blockquote");
 							blockquote.className += "twitter-tweet";
+							blockquote.setAttribute("data-dnt", true);
 							
 							// Create an anchor element with the tweet's url as its href.
 							let a = document.createElement("a");
@@ -53794,7 +53795,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b556332", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-1b556332", __vue__options__)
+    hotAPI.reload("data-v-1b556332", __vue__options__)
   }
 })()}
 },{"./main-header.vue":20,"./side-menu.vue":24,"firebase/app":7,"vue":15,"vue-hot-reload-api":12,"vue/dist/vue":14}],20:[function(require,module,exports){

@@ -111,6 +111,7 @@
 								// Create a blockquote element of class "twitter-tweet".
 								let blockquote = document.createElement("blockquote");
 								blockquote.className += "twitter-tweet";
+								blockquote.setAttribute("data-dnt", true);
 								
 								// Create an anchor element with the tweet's url as its href.
 								let a = document.createElement("a");

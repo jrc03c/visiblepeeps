@@ -164,6 +164,7 @@ ul.category li {
 
 ul.category li a:hover {
 	color:rgb(29,161,242);
+	cursor:pointer;
 }
 
 ul.category .li-heading {
@@ -187,10 +188,6 @@ span.new-users:hover {
 
 .selected-menu-item {
 	color:rgb(29,161,242);
-}
-
-ul.category li a.selected-menu-item:hover {
-	cursor:pointer;
 }
 
 .submit-button {

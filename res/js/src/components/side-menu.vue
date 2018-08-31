@@ -36,8 +36,9 @@
 				<li class="li-heading">FILTER BY LEVEL</li>
 				
 				<li style="font-weight:500;" v-for="level in levels">
-					<a @click="setCurrentLevel(level)" class="fake-a">
+					<a @click="setCurrentLevel(level)" class="fake-a" :class="{'selected-menu-item': level === $store.state.currentLevel}">
 						{{ level + "s" }}
+						<span class="check-mark" v-if="level === $store.state.currentLevel">&#x2714;</span>
 					</a>
 				</li>
 				
@@ -46,8 +47,9 @@
 				<li class="li-heading">FILTER BY PROFESSION</li>
 				
 				<li v-for="category in $store.state.categories">
-					<a @click="setCurrentCategory(category)" class="fake-a">
+					<a @click="setCurrentCategory(category)" class="fake-a" :class="{'selected-menu-item': category === $store.state.currentCategory}">
 						{{ category }}
+						<span class="check-mark" v-if="category === $store.state.currentCategory">&#x2714;</span>
 					</a>
 				</li>
 				

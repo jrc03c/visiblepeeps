@@ -596,3 +596,7 @@ input[type="submit"]:hover, button:hover {
 i {
 	font-style: italic;
 }
+
+.selected-menu-item {
+	color: hsl(348, 100%, 61%);
+}

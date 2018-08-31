@@ -54949,7 +54949,6 @@ Vue.use(Vuex);
 let firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-window.firebase = firebase;
 
 window.onload = function(){
 	firebase.initializeApp({

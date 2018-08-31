@@ -482,6 +482,7 @@ input[type="submit"]:hover, button:hover {
 		max-width:90%;
 		grid-template-columns:inherit;
 		justify-content:inherit;
+		text-align:center;
 	}
 
 }

@@ -185,7 +185,7 @@ span.new-users:hover {
 	color:rgb(29,161,242);
 }
 
-ul.category li a.selected-menu-item {
+.selected-menu-item {
 	color:rgb(29,161,242);
 }
 

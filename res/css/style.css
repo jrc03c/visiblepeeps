@@ -484,7 +484,7 @@ input[type="submit"]:hover, button:hover {
 		display:block;
 		grid-column-gap:1em;
 		grid-row-gap:0;
-		grid-template-columns:auto auto auto;
+		grid-template-columns:auto;
 		justify-content:center;
 	}
 

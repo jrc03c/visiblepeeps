@@ -151,7 +151,7 @@ ul.category {
 
 ul.category li {
 	display:block;
-	padding:0.55em 0.5em 0.55em 0.5em;
+	padding:0.55em 0.5em 0.551em 0.5em;
 	color:rgb(0,0,0);
 	font-family: 'Roboto', sans-serif;
 	font-size:12.5px;

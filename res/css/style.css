@@ -471,9 +471,14 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1350px) {
 
 	.module-grid {
+		grid-template-columns:auto;
+	}
+
+@media (max-width:1050px) {
+
+	.module-grid {
 		display:block;
 		min-width:100%;
-		grid-template-columns:auto;
 	}
 
 }

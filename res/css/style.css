@@ -480,7 +480,7 @@ input[type="submit"]:hover, button:hover {
 		display:block;
 		width:100%;
 		max-width:90%;
-		grid-template-columns:none;
+		grid-template-columns:inherit;
 		padding:0;
 	}
 

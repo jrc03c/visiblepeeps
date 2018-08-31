@@ -352,7 +352,7 @@ input[type=text], .profession label {
 }
 
 .profession input[type="checkbox"]:disabled {
-	background-color: white;
+	background-color:rgb(254,254,254);
 }
 
 .checkbox-disabled label {

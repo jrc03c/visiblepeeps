@@ -477,9 +477,8 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1050px) {
 
 	.module-grid {
-		display:inline-grid;
-		width:100%;
-		max-width:90%;
+		display:block;
+		min-width:100%;
 	}
 
 }

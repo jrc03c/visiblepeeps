@@ -54824,7 +54824,7 @@ module.exports = Vue.component("profile", {
 			categories: [],
 			maxCategoryCount: 3,
 			selectedLevel: "",
-			levels: ["Professional Creative", "Hobbyist", "Student"],
+			levels: ["Professional", "Hobbyist", "Student"],
 			url: "",
 		};
 	},
@@ -55085,7 +55085,7 @@ let $ = require("jquery");
 module.exports = Vue.component("side-menu", {
 	data: function(){
 		return {
-			levels: ["Professional Creative", "Student", "Hobbyist"],
+			levels: ["Professional", "Student", "Hobbyist"],
 			isAdmin: false,
 			newUserCount: 0,
 		};

@@ -110,7 +110,7 @@
 				categories: [],
 				maxCategoryCount: 3,
 				selectedLevel: "",
-				levels: ["Professional Creative", "Hobbyist", "Student"],
+				levels: ["Professional", "Hobbyist", "Student"],
 				url: "",
 			};
 		},

@@ -478,7 +478,10 @@ input[type="submit"]:hover, button:hover {
 
 	.module-grid {
 		display:block;
-		min-width:100%;
+		width:100%;
+		max-width:90%;
+		grid-template-columns:none;
+		padding:0;
 	}
 
 }

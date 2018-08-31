@@ -25,7 +25,7 @@ window.onload = function(){
 	let routes = [
 		{path: "/", component: require("./components/index.vue")},
 		{path: "/about", component: require("./components/about.vue")},
-		{path: "/profile", component: require("./components/profile.vue")},
+		{path: "/submit", component: require("./components/submit.vue")},
 		{path: "/manage", component: require("./components/manage.vue"), children: [
 			{path: "users", component: require("./components/manage-users.vue")},
 			{path: "categories", component: require("./components/manage-categories.vue")},

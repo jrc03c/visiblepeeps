@@ -5,7 +5,7 @@
 		<div id="side-menu">
 
 			<ul class="category">				
-				<li><router-link to="/profile" class="fake-a li-fat">Submit Tweet</router-link></li>
+				<li><router-link to="/submit" class="fake-a li-fat">Submit Tweet</router-link></li>
 				<li v-if="$store.state.currentUser"><a style="font-weight:500;" class="fake-a li-fat" @click="$store.dispatch('logout')">Log out</a></li>
 				
 				<span v-if="isAdmin">

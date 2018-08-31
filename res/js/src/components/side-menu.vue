@@ -155,6 +155,7 @@
 				if (newWidth > 1050) {
 					$('.mobile-nav').css('display','none');
 					$('#side-menu').show();
+					$("#side-menu").off("click");
 				}
 				
 				else {

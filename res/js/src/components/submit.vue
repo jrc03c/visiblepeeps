@@ -201,7 +201,7 @@
 				
 				// Push the updates to the database.
 				db.ref().update(updates).then(function(){
-					self.message = "Saved!<br><br>Note that if you've just signed up, your submission will need be approved before it'll appear on the home screen. Thanks!";
+					self.message = "Saved!<br><br>Note that if you've just signed up, your submission will need to be approved before it'll appear on the home screen. Thanks!";
 					// self.$router.push("/");
 				}).catch(function(error){
 					self.message = "There was an error saving your profile information. :(";

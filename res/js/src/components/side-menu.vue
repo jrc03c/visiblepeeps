@@ -10,7 +10,7 @@
 				
 				<span v-if="isAdmin">
 
-					<li><router-link to="/" class="fake-a">Home</router-link></li>
+					<li><a @click="setCurrentLevel('ALL'); setCurrentCategory('ALL');" class="fake-a">Home</a></li>
 		
 					<li>
 						<router-link to="/manage/users" class="fake-a">
@@ -92,13 +92,23 @@
 			setCurrentLevel: function(level){
 				let self = this;
 				self.$router.push("/");
-				self.$store.state.currentLevel = level;
+				
+				if (self.$store.state.currentLevel === level){
+					self.$store.state.currentLevel = "ALL";
+				} else {
+					self.$store.state.currentLevel = level;
+				}
 			},
 			
 			setCurrentCategory: function(category){
 				let self = this;
 				self.$router.push("/");
-				self.$store.state.currentCategory = category;
+				
+				if (self.$store.state.currentCategory === category){
+					self.$store.state.currentCategory = "ALL";
+				} else {
+					self.$store.state.currentCategory = category;
+				}
 			},
 			
 			onAuthStateChanged: function(){

@@ -430,7 +430,7 @@ input[type="submit"]:hover, button:hover {
 	#main-content {
 		/* width:100% !important;
 		margin:0 auto !important; */
-		min-width: calc(100% - 2em);
+		min-width:calc(100% - 2em);
 		width:calc(100% - 2em);
 		max-width:calc(100% - 2em);
 		margin:0 1em auto;

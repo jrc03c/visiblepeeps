@@ -161,15 +161,17 @@
 								};
 								
 								// Put the anchor element inside the blockquote element.
-								blockquote.appendChild(a);
-								
-								// Put the blockquote and the script inside the tweetContainer
-								// element, which is referenced up in the HTML.
-								wrapper.appendChild(blockquote);
-								wrapper.appendChild(flagButton);
-								wrapper.appendChild(script);
-								
-								self.$refs.tweetContainer.appendChild(wrapper);
+								try {
+									blockquote.appendChild(a);
+									
+									// Put the blockquote and the script inside the tweetContainer
+									// element, which is referenced up in the HTML.
+									wrapper.appendChild(blockquote);
+									wrapper.appendChild(flagButton);
+									wrapper.appendChild(script);
+									
+									self.$refs.tweetContainer.appendChild(wrapper);
+								} catch (error){}
 							});
 						});
 					});

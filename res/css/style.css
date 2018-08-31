@@ -477,12 +477,10 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1050px) {
 
 	.module-grid {
-		display:block;
+		display:inline-grid;
 		width:100%;
 		max-width:90%;
 		grid-template-columns:inherit;
-		justify-content:inherit;
-		text-align:center;
 	}
 
 }

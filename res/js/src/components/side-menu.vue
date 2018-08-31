@@ -10,7 +10,7 @@
 				
 				<span v-if="isAdmin">
 
-					<li><router-link to="/" class="fake-a">Home</router-link></li>
+					<li><a @click="setCurrentLevel('ALL'); setCurrentCategory('ALL');" class="fake-a">Home</a></li>
 		
 					<li>
 						<router-link to="/manage/users" class="fake-a">

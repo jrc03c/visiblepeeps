@@ -18,6 +18,9 @@
 		
 		<ul v-if="newUsers.length > 0" class="manage-text">
 			<li v-for="user in newUsers">
+				<button @click="approveUser(user)">Approve</button>
+				<button @click="ignoreUser(user); blockUser(user)">Block</button>
+
 				<a :href="'https://twitter.com/' + user.username">
 					{{ user.username }}
 				</a> / 
@@ -25,9 +28,6 @@
 				<a :href="user.profileTweet">
 					{{ user.profileTweet }}
 				</a>
-				
-				<button @click="approveUser(user)">Approve</button>
-				<button @click="ignoreUser(user); blockUser(user)">Block</button>
 			</li>
 		</ul>
 		
@@ -39,9 +39,9 @@
 		
 		<ul v-if="flags.length > 0" class="manage-text">
 			<li v-for="flag in flags">
-				<a :href="flag.flaggedUser.profileTweet">tweet</a> by {{ flag.flaggedUser.username }}, flagged by {{ flag.flaggedBy.username }} (<a :href="flag.flaggedBy.profileTweet">tweet</a>)
-				
 				<button @click="resolveFlag(flag)">Resolve Flag</button>
+								
+				<a :href="flag.flaggedUser.profileTweet">tweet</a> by {{ flag.flaggedUser.username }}, flagged by {{ flag.flaggedBy.username }} (<a :href="flag.flaggedBy.profileTweet">tweet</a>)			
 			</li>
 		</ul>
 		

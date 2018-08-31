@@ -435,6 +435,11 @@ input[type="submit"]:hover, button:hover {
 		margin:0 2em auto;
 		margin-bottom: 2em;
 	}
+	
+	#manage-content {
+		width: calc(100% - 4em) !important;
+		margin: 0 2em 4em 2em !important;
+	}
 
 	ul.category {
 		position:relative;
@@ -518,7 +523,7 @@ input[type="submit"]:hover, button:hover {
 #app #manage-content {
 	position:relative;
 	display:block;
-	width:calc(100% - 250px);
+	width:calc(100% - (250px + 5em));
 	height:auto;
 	margin:0 5em 5em calc(5em + 250px);
 	text-align:left;

@@ -162,7 +162,7 @@ ul.category li {
 	margin:0 0 0 3.5em;
 }
 
-ul.category li a:hover {
+ul.category li a:hover, ul.category span li a:hover {
 	color:rgb(29,161,242);
 	cursor:pointer;
 }

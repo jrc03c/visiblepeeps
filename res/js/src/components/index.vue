@@ -122,6 +122,7 @@
 								let flagButton = document.createElement("button");
 								flagButton.className += "flaggy";
 								flagButton.innerText = "⚑";
+								flagButton.style.opacity = 0;
 								flagButton.onclick = function(){
 									if (!self.$store.state.currentUser){
 										alert("You must be logged in to report tweets. Please log in and then try again.");
@@ -153,6 +154,10 @@
 									count--;
 									if (count <= 0) self.finishedLoading = true;
 									self.message = "There are no more tweets in this category.";
+									
+									setTimeout(function(){
+										flagButton.style.opacity = 1;
+									}, 1000);
 								};
 								
 								// Put the anchor element inside the blockquote element.

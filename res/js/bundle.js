@@ -70790,7 +70790,7 @@ module.exports = Vue.component("index", {
 				} else {
 					clearInterval(t);
 				}
-			}, 500);
+			}, 100);
 		},
 		
 		loadMoreTweets: function(){

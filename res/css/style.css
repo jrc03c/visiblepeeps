@@ -245,7 +245,7 @@ span.new-users:hover {
 	padding:0 0 0.5em;
 }
 
-.about-page a, .fake-a {
+.about-page a, #back-to-top-link {
 	color:rgb(29,161,242);	
 }
 

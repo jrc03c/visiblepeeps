@@ -16,6 +16,10 @@
 				{{ message }}
 				<br><br><br>
 			</div>
+			
+			<a class="fake-a" id="back-to-top-link" @click="scrollToTop">&#8593; back to top &#8593;</a>
+			
+			<br><br><br>
 		</div>
 	</div>
 </template>
@@ -220,6 +224,10 @@
 					
 					self.$refs.tweetContainer.appendChild(wrapper);
 				} catch (error){}
+			},
+			
+			scrollToTop: function(){
+				window.scrollTo(0, 0);
 			},
 		},
 		

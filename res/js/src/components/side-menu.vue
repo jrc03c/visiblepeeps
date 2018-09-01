@@ -10,7 +10,7 @@
 				
 				<span v-if="isAdmin">
 
-					<li><a @click="setCurrentLevel('ALL'); setCurrentCategory('ALL');" class="fake-a">Home</a></li>
+					<li><a href="/" class="fake-a">Home</a></li>
 		
 					<li>
 						<router-link to="/manage/users" class="fake-a">
@@ -29,7 +29,7 @@
 
 				<br><br>
 
-				<li class="li-fat"><a class="fake-a" @click="setCurrentLevel('ALL'); setCurrentCategory('ALL');">SHOW ALL</a></li>
+				<li class="li-fat"><a class="fake-a" href="/">SHOW ALL</a></li>
 				
 				<br><br>
 

@@ -71764,9 +71764,9 @@ module.exports = Vue.component("side-menu", {
 		let oldWidth = 0;
 		
 		function toggleMenu(e){
-			e.preventDefault();
+			// e.preventDefault();
 			$("#side-menu").slideToggle("fast");
-			return false;
+			// return false;
 		}
 		
 		function setCSSRules(event){

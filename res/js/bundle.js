@@ -70782,6 +70782,15 @@ module.exports = Vue.component("index", {
 				
 				self.loadMoreTweets();
 			});
+			
+			let t = setInterval(function(){
+				if (document.body.scrollHeight <= window.innerHeight){
+					if (!self.finishedLoading) return;
+					self.loadMoreTweets();
+				} else {
+					clearInterval(t);
+				}
+			}, 500);
 		},
 		
 		loadMoreTweets: function(){
@@ -70924,14 +70933,6 @@ module.exports = Vue.component("index", {
 				self.loadMoreTweets();
 			}
 		});
-		
-		let t = setInterval(function(){
-			if (document.body.scrollHeight <= window.innerHeight){
-				self.loadMoreTweets();
-			} else {
-				clearInterval(t);
-			}
-		}, 100);
 	},
 });
 

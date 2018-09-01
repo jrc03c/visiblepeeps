@@ -89,6 +89,15 @@
 					
 					self.loadMoreTweets();
 				});
+				
+				let t = setInterval(function(){
+					if (document.body.scrollHeight <= window.innerHeight){
+						if (!self.finishedLoading) return;
+						self.loadMoreTweets();
+					} else {
+						clearInterval(t);
+					}
+				}, 500);
 			},
 			
 			loadMoreTweets: function(){
@@ -231,14 +240,6 @@
 					self.loadMoreTweets();
 				}
 			});
-			
-			let t = setInterval(function(){
-				if (document.body.scrollHeight <= window.innerHeight){
-					self.loadMoreTweets();
-				} else {
-					clearInterval(t);
-				}
-			}, 100);
 		},
 	});
 </script>

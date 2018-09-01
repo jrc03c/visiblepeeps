@@ -73,13 +73,14 @@
 				let ref = db.ref("/tweets/" + category);
 				
 				self.$refs.tweetContainer.innerHTML = "";
+				self.message = "Loading...";
 				
 				ref.once("value").then(function(snapshot){
 					self.tweets = [];
 					let tweets = snapshot.val();
 					
 					if (!tweets){
-						self.message = "There are no more tweets in this category.";
+						self.message = "";
 					} else {
 						self.tweets = Object.keys(tweets).shuffle();
 					}
@@ -108,14 +109,13 @@
 				
 				if (!self.finishedLoading) return;
 				self.finishedLoading = false;
-				self.message = "Loading...";
 				
 				let uids = self.tweets.slice(self.index, self.index + self.numberOfTweetsToLoadAtOnce);
 				self.count = uids.length;
 				self.index += self.numberOfTweetsToLoadAtOnce;
 				
 				if (self.count === 0){
-					self.message = "There are no more tweets in this category.";
+					self.message = "";
 					return;
 				}
 				
@@ -128,7 +128,7 @@
 						if (!hasBeenApproved){
 							self.count--;
 							if (self.count <= 0) self.finishedLoading = true;
-							self.message = "There are no more tweets in this category.";
+							self.message = "";
 							return;
 						}
 						
@@ -140,7 +140,7 @@
 							if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
 								self.count--;
 								if (self.count <= 0) self.finishedLoading = true;
-								self.message = "There are no more tweets in this category.";
+								self.message = "";
 								return;
 							}
 							
@@ -201,7 +201,7 @@
 				script.onload = function(){
 					self.count--;
 					if (self.count <= 0) self.finishedLoading = true;
-					self.message = "There are no more tweets in this category.";
+					self.message = "";
 					
 					setTimeout(function(){
 						flagButton.style.opacity = 1;

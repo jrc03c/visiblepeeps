@@ -71793,7 +71793,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-c9275616", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-c9275616", __vue__options__)
+    hotAPI.reload("data-v-c9275616", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"jquery":10,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],26:[function(require,module,exports){

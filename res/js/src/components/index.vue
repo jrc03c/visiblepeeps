@@ -77,13 +77,13 @@
 				let db = firebase.database();
 				let ref = db.ref("/tweets/" + category);
 				
-				// self.$refs.tweetContainer.innerHTML = "";
 				self.message = "Loading...";
 				
 				self.domElements.forEach(function(el){
 					el.parentElement.removeChild(el);
 				});
 				
+				self.$refs.tweetContainer.innerHTML = "";				
 				self.domElements = [];
 				
 				ref.once("value").then(function(snapshot){

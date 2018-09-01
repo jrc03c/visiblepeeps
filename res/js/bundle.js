@@ -70745,6 +70745,7 @@ module.exports = Vue.component("index", {
 			numberOfTweetsToLoadAtOnce: 6,
 			message: "",
 			tweets: [],
+			domElements: [],
 			index: 0,
 			count: 0,
 		};
@@ -70769,8 +70770,14 @@ module.exports = Vue.component("index", {
 			let db = firebase.database();
 			let ref = db.ref("/tweets/" + category);
 			
-			self.$refs.tweetContainer.innerHTML = "";
+			// self.$refs.tweetContainer.innerHTML = "";
 			self.message = "Loading...";
+			
+			self.domElements.forEach(function(el){
+				el.parentElement.removeChild(el);
+			});
+			
+			self.domElements = [];
 			
 			ref.once("value").then(function(snapshot){
 				self.tweets = [];
@@ -70917,6 +70924,7 @@ module.exports = Vue.component("index", {
 				wrapper.appendChild(script);
 				
 				self.$refs.tweetContainer.appendChild(wrapper);
+				self.domElements.push(wrapper);
 			} catch (error){}
 		},
 		

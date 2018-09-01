@@ -71,7 +71,7 @@
 		},
 		
 		methods: {
-			fetchTweetsFromCategory: function(){
+			fetchTweetsFromCategory: _.throttle(function(){
 				let self = this;
 				let category = self.$store.state.currentCategory;
 				let db = firebase.database();
@@ -110,7 +110,7 @@
 						clearInterval(t);
 					}
 				}, 100);
-			},
+			}, 1000),
 			
 			loadMoreTweets: function(){
 				let self = this;

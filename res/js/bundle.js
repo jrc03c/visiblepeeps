@@ -70764,7 +70764,7 @@ module.exports = Vue.component("index", {
 	},
 	
 	methods: {
-		fetchTweetsFromCategory: function(){
+		fetchTweetsFromCategory: _.throttle(function(){
 			let self = this;
 			let category = self.$store.state.currentCategory;
 			let db = firebase.database();
@@ -70803,7 +70803,7 @@ module.exports = Vue.component("index", {
 					clearInterval(t);
 				}
 			}, 100);
-		},
+		}, 1000),
 		
 		loadMoreTweets: function(){
 			let self = this;

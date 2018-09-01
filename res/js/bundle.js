@@ -70803,6 +70803,7 @@ module.exports = Vue.component("index", {
 			if (self.tweets.length === 0) return;
 			let db = firebase.database();
 			let level = self.$store.state.currentLevel;
+			let category = self.$store.state.currentCategory;
 			
 			if (!self.finishedLoading) return;
 			self.finishedLoading = false;
@@ -70834,7 +70835,7 @@ module.exports = Vue.component("index", {
 					ref3.once("value").then(function(snapshot3){
 						let userData = snapshot3.val();
 						
-						if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel)){
+						if (!userData || !userData.profileTweet || !userData.professionalLevel || (level !== "ALL" && level !== userData.professionalLevel) || (category !== "ALL" && !userData["categories"][category])){
 							self.count--;
 							if (self.count <= 0) self.finishedLoading = true;
 							self.message = "";

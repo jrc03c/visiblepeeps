@@ -383,6 +383,7 @@ input[type="submit"]:hover, button:hover {
 	top:20px;
 	left:20px;
 	z-index:10001;
+	margin:0;
 }
 
 .mobile-nav:hover {
@@ -406,7 +407,8 @@ input[type="submit"]:hover, button:hover {
 	position:fixed;
 	bottom:20px;
 	right:20px;
-	z-index:10001;	
+	z-index:10002;	
+	margin:0;
 }
 
 #back-to-top-link:hover {

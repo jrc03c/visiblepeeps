@@ -467,7 +467,7 @@ input[type="submit"]:hover, button:hover {
 		width:100%;
 		top:0;
 		padding:60px;
-
+		left:0;
 	}
 
 	#main-content {
@@ -490,7 +490,6 @@ input[type="submit"]:hover, button:hover {
 		padding:1em 0 3em;
 		background:rgb(254,254,254);
 		border-bottom:1px solid black;
-		top:59px;
 	}
 
 	ul.category li {

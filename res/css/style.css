@@ -528,6 +528,7 @@ input[type="submit"]:hover, button:hover {
 	
 	#side-menu {
 		width:50%;
+		border-right:1px solid black;
 	}
 
 }
@@ -555,7 +556,7 @@ input[type="submit"]:hover, button:hover {
 
 }
 
-@media (max-width:1275px) {
+@media (max-width:1250px) {
 
 	.module-grid {
 		grid-template-columns:auto;

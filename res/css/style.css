@@ -524,6 +524,14 @@ input[type="submit"]:hover, button:hover {
 
 }
 
+@media (max-width:1050px) and (orientation: landscape) {
+	
+	#side-menu {
+		width:50%;
+	}
+
+}
+
 .module-grid {
 	margin:0 auto;
 	width:90%;

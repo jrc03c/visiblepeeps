@@ -399,7 +399,7 @@ input[type="submit"]:hover, button:hover {
 	font-size:0.9em;
 	font-weight:700;
 	letter-spacing:0;
-	padding:1em 1.25em;
+	padding:0.9em 1.2em 1.1em 1.2em;
 	border-radius:4px;
 	color:rgb(254,254,254);	
 	background:rgb(29,161,242);

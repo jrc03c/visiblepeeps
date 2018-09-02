@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<h2>Approved User Count</h2>
+		
+		<p>There are {{ approvedUsers.length }} approved users on the site!</p>
+		
 		<h2>Admin Users</h2>
 		
 		<form @submit.prevent="addAdminUser(userToAdmin)">
@@ -86,6 +90,7 @@
 				flags: [],
 				newUsers: [],
 				alwaysAdmins: ["jrc03c", "A_Werchmeister"],
+				approvedUsers: [],
 			};
 		},
 		
@@ -253,6 +258,7 @@
 			// Use the helper function to get the list of admin users and new users.
 			pushUserDataFromRefToList("adminUsers");
 			pushUserDataFromRefToList("newUsers");
+			pushUserDataFromRefToList("approvedUsers");
 			
 			// For flagged users and blocked users, the process is a little more complicated because we need to construct local data.
 			let ref1 = db.ref("/flaggedUsers");

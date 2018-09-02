@@ -372,16 +372,17 @@ input[type="submit"]:hover, button:hover {
 .mobile-nav {
 	display:none;
 	color:rgb(29,161,242);	
-	font-size:13px;
+	font-size:18px;
 	letter-spacing:1px;
 	padding:1em 1.25em;
 	border-radius:4px;
 	background:rgb(254,254,254);
 	border:1px solid rgb(29,161,242);
 	position:fixed;
-	top:20px;
-	left:20px;
+	top:12px;
+	left:12px;
 	z-index:10001;
+	margin-left:5px;
 }
 
 .mobile-nav:hover {
@@ -397,7 +398,6 @@ input[type="submit"]:hover, button:hover {
 	margin:0;
 	position:fixed;
 	width:225px;
-	font-weight:700;
 	overflow-y:scroll;
 	-webkit-overflow-scrolling:touch;
 	height:100%;

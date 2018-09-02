@@ -7,8 +7,8 @@
 			<input type="submit" value="Add">
 		</form>
 		
-		<ul v-if="Object.keys(categories).length > 0" class="manage-text">
-			<li v-for="category in Object.keys(categories)">
+		<ul v-if="categories.length > 0" class="manage-text">
+			<li v-for="category in categories">
 				<button  style="margin:0 2em 0 0" @click="removeCategory(category)">Delete</button>
 
 				{{ category }}
@@ -25,22 +25,15 @@
 	let Vue = require("vue/dist/vue");
 	let firebase = require("firebase/app");
 	
-	// Keep a list of the database-listening refs so that we can turn them off when we destroy the component.
-	let refs = [];
+	// Keep track of this database-listening reference so that we can turn it off when we destroy the component.
+	let categoryListRef;
 
 	module.exports = Vue.component("manage-users", {
 		data: function(){
 			return {
 				categoryToAdd: "",
-				categories: {},
+				categories: [],
 			};
-		},
-		
-		watch: {
-			"$store.state.currentUser": function(){
-				let self = this;
-				self.onAuthStateChanged();
-			},
 		},
 		
 		methods: {
@@ -56,50 +49,25 @@
 				let db = firebase.database();
 				db.ref("/categoryList/" + category).set(null);
 			},
-			
-			onAuthStateChanged: function(){
-				let self = this;
-				let user = self.$store.state.currentUser;
-				
-				// Set the isLoggedIn variable.
-				self.isLoggedIn = !!user;
-				
-				// If the references are still listening, then 
-				// turn them off.
-				refs.forEach(function(ref){
-					ref.off();
-				});
-				
-				refs = [];
-				
-				// If the user is logged in, then...
-				if (user){
-					let db = firebase.database();
-					
-					let ref6 = db.ref("/categoryList");
-					refs.push(ref6);
-					
-					ref6.on("value", function(snapshot){
-						self.categories = {};
-						let categories = snapshot.val();
-						if (!categories) return;
-						self.categories = categories;
-					});
-				}
-			},
 		},
 		
 		mounted: function(){
 			let self = this;
-			self.onAuthStateChanged();
+			let db = firebase.database();
+			
+			// Get the list of categories from the database.
+			let categoryListRef = db.ref("/categoryList");
+			
+			categoryListRef.on("value", function(snapshot){
+				self.categories = [];
+				let categories = snapshot.val();
+				if (!categories) return;
+				self.categories = Object.keys(categories);
+			});
 		},
 		
 		beforeDestroy: function(){
-			refs.forEach(function(ref){
-				ref.off();
-			});
-			
-			refs = [];
+			categoryListRef.off();
 		},
 	});
 </script>

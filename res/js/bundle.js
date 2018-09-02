@@ -71086,22 +71086,15 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
 
-// Keep a list of the database-listening refs so that we can turn them off when we destroy the component.
-let refs = [];
+// Keep track of this database-listening reference so that we can turn it off when we destroy the component.
+let categoryListRef;
 
 module.exports = Vue.component("manage-users", {
 	data: function(){
 		return {
 			categoryToAdd: "",
-			categories: {},
+			categories: [],
 		};
-	},
-	
-	watch: {
-		"$store.state.currentUser": function(){
-			let self = this;
-			self.onAuthStateChanged();
-		},
 	},
 	
 	methods: {
@@ -71117,50 +71110,25 @@ module.exports = Vue.component("manage-users", {
 			let db = firebase.database();
 			db.ref("/categoryList/" + category).set(null);
 		},
-		
-		onAuthStateChanged: function(){
-			let self = this;
-			let user = self.$store.state.currentUser;
-			
-			// Set the isLoggedIn variable.
-			self.isLoggedIn = !!user;
-			
-			// If the references are still listening, then 
-			// turn them off.
-			refs.forEach(function(ref){
-				ref.off();
-			});
-			
-			refs = [];
-			
-			// If the user is logged in, then...
-			if (user){
-				let db = firebase.database();
-				
-				let ref6 = db.ref("/categoryList");
-				refs.push(ref6);
-				
-				ref6.on("value", function(snapshot){
-					self.categories = {};
-					let categories = snapshot.val();
-					if (!categories) return;
-					self.categories = categories;
-				});
-			}
-		},
 	},
 	
 	mounted: function(){
 		let self = this;
-		self.onAuthStateChanged();
+		let db = firebase.database();
+		
+		// Get the list of categories from the database.
+		let categoryListRef = db.ref("/categoryList");
+		
+		categoryListRef.on("value", function(snapshot){
+			self.categories = [];
+			let categories = snapshot.val();
+			if (!categories) return;
+			self.categories = Object.keys(categories);
+		});
 	},
 	
 	beforeDestroy: function(){
-		refs.forEach(function(ref){
-			ref.off();
-		});
-		
-		refs = [];
+		categoryListRef.off();
 	},
 });
 
@@ -71168,7 +71136,7 @@ module.exports = Vue.component("manage-users", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Categories")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addNewCategory(_vm.categoryToAdd)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.categoryToAdd),expression:"categoryToAdd"}],attrs:{"type":"text"},domProps:{"value":(_vm.categoryToAdd)},on:{"input":function($event){if($event.target.composing){ return; }_vm.categoryToAdd=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),(Object.keys(_vm.categories).length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((Object.keys(_vm.categories)),function(category){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeCategory(category)}}},[_vm._v("Delete")]),_vm._v("\n\n\t\t\t"+_vm._s(category)+"\n\t\t")])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no categories.\n\t")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Categories")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addNewCategory(_vm.categoryToAdd)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.categoryToAdd),expression:"categoryToAdd"}],attrs:{"type":"text"},domProps:{"value":(_vm.categoryToAdd)},on:{"input":function($event){if($event.target.composing){ return; }_vm.categoryToAdd=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),(_vm.categories.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.categories),function(category){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeCategory(category)}}},[_vm._v("Delete")]),_vm._v("\n\n\t\t\t"+_vm._s(category)+"\n\t\t")])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no categories.\n\t")])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

@@ -194,7 +194,7 @@ span.new-users:hover {
 
 .flaggy {
 	position:absolute;
-	margin:-50px 0 0 -45px;
+	margin:-50px 0 0 -40px;
 	text-align: right;
 	color:rgb(240,0,0);	
 	font-weight:500;
@@ -398,6 +398,7 @@ input[type="submit"]:hover, button:hover {
 	position:fixed;
 	width:225px;
 	overflow-y:scroll;
+	-webkit-overflow-scrolling:touch;
 	height:100%;
 	-ms-overflow-style: none;
 	z-index:993;

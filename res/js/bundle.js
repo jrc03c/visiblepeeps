@@ -71518,6 +71518,8 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
+//
+//
 
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");	
@@ -71527,7 +71529,7 @@ module.exports = Vue.component("manage", {});
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"manage-content"}},[(_vm.$store.state.currentUser && _vm.$store.state.isAdmin)?_c('div',[_c('router-view')],1):_c('div',[_c('h2',[_vm._v("Log in")]),_vm._v(" "),_c('p',[_vm._v("You are not logged in. Please log in to manage stuff.")])])])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"manage-content"}},[(_vm.$store.state.currentUser && _vm.$store.state.isAdmin)?_c('div',[_c('router-view')],1):_c('div',[_c('h2',[_vm._v("Log in")]),_vm._v(" "),_c('p',[_vm._v("You are not logged in. Please log in to manage stuff.")]),_c('br'),_c('br'),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.$store.dispatch('login')}}},[_vm._v("Login")])])])],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -71536,7 +71538,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b368704", __vue__options__)
   } else {
-    hotAPI.reload("data-v-1b368704", __vue__options__)
+    hotAPI.rerender("data-v-1b368704", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],25:[function(require,module,exports){

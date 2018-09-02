@@ -10,7 +10,9 @@
 			<div v-else>
 				<h2>Log in</h2>
 				
-				<p>You are not logged in. Please log in to manage stuff.</p>
+				<p>You are not logged in. Please log in to manage stuff.</p><br><br>
+				
+				<button @click="$store.dispatch('login')">Login</button>
 			</div>
 		</div>
 	</div>

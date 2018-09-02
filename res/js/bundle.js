@@ -71372,7 +71372,6 @@ module.exports = Vue.component("manage-users", {
 	
 	mounted: function(){
 		let self = this;
-		let user = self.$store.state.currentUser;
 		let db = firebase.database();
 		
 		// If the references are still listening, then turn them off.

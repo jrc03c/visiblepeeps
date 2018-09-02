@@ -436,6 +436,21 @@ input[type="submit"]:hover, button:hover {
     display:none; 
 }
 
+#attention {
+	display:block;	
+	width:100%;
+	position:fixed;
+	top:0;
+	margin:0 auto;
+	padding:1em 0;
+	color:rgb(254,254,254);	
+	background:rgb(29,161,242);
+	font-family: 'Roboto', sans-serif;
+	font-size:14px;
+	font-weight:400;
+	line-height:26px;
+}
+
 @media (max-width:1050px) {
 
 	#back-to-top-link {

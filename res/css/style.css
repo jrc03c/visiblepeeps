@@ -435,8 +435,8 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1050px) {
 
 	#back-to-top-link {
-		font-size:0.8em;
-		padding:1em 1.25em;
+		font-size:0.867em;
+		padding:1em 1.1em;
 		top:12px;
 		left:67px;
 		bottom:auto;

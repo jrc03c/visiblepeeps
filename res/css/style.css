@@ -451,6 +451,11 @@ input[type="submit"]:hover, button:hover {
 	line-height:24px;
 }
 
+#attention a {
+	color:rgb(254,254,254);	
+}
+
+
 @media (max-width:1050px) {
 
 	#back-to-top-link {

@@ -172,6 +172,7 @@
 				let blockquote = document.createElement("blockquote");
 				blockquote.className += "twitter-tweet";
 				blockquote.setAttribute("data-dnt", true);
+				blockquote.setAttribute("data-conversation", "none");
 				
 				// Create an anchor element with the tweet's url as its href.
 				let a = document.createElement("a");

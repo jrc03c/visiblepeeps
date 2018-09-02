@@ -388,11 +388,6 @@ input[type="submit"]:hover, button:hover {
 	cursor:pointer;
 }
 
-/*.mobile-nav:hover #side-menu {
-    transition: 1s;
-    left: 0;
-}*/
-
 .mobile-nav:focus {
 	outline:0;
 }
@@ -428,14 +423,8 @@ input[type="submit"]:hover, button:hover {
 		display:none;
 		width:450px;
 		height:100%;
-		overflow-y:scroll;
-		left:0;
 		transition:1s;
 		-ms-overflow-style: none;
-	}
-
-	#side-menu::-webkit-scrollbar { 
-	    display:none; 
 	}
 
 	#main-content {

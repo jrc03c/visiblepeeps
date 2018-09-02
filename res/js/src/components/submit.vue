@@ -116,6 +116,11 @@
 				let self = this;
 				self.onAuthStateChanged();
 			},
+			
+			"$store.state.categories": function(){
+				let self = this;
+				self.updateCategories();
+			},
 		},
 		
 		methods: {
@@ -219,26 +224,28 @@
 						
 						self.url = self.user.profileTweet || "";
 						self.selectedLevel = self.user.professionalLevel || "";
-												
-						let ref2 = db.ref("/categoryList");
-						refs.push(ref2);
 						
-						ref2.on("value", function(snapshot){
-							self.categories = [];
-							
-							let categories = snapshot.val();
-							if (!categories) return;
-							
-							Object.keys(categories).forEach(function(category){
-								self.categories.push({
-									name: category,
-									value: self.user.categories && self.user.categories[category],
-								});
-							});
-						});
+						self.updateCategories();
 					});
 				}
 			},
+			
+			updateCategories: function(){
+				let self = this;
+				self.categories = [];
+				
+				self.$store.state.categories.forEach(function(category){
+					self.categories.push({
+						name: category,
+						value: self.user && self.user.categories && self.user.categories[category],
+					});
+				});
+			},
+		},
+		
+		mounted: function(){
+			let self = this;
+			self.onAuthStateChanged();
 		},
 		
 		beforeDestroy: function(){

@@ -71086,14 +71086,10 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
 
-// Keep track of this database-listening reference so that we can turn it off when we destroy the component.
-let categoryListRef;
-
 module.exports = Vue.component("manage-users", {
 	data: function(){
 		return {
 			categoryToAdd: "",
-			categories: [],
 		};
 	},
 	
@@ -71111,32 +71107,13 @@ module.exports = Vue.component("manage-users", {
 			db.ref("/categoryList/" + category).set(null);
 		},
 	},
-	
-	mounted: function(){
-		let self = this;
-		let db = firebase.database();
-		
-		// Get the list of categories from the database.
-		categoryListRef = db.ref("/categoryList");
-		
-		categoryListRef.on("value", function(snapshot){
-			self.categories = [];
-			let categories = snapshot.val();
-			if (!categories) return;
-			self.categories = Object.keys(categories);
-		});
-	},
-	
-	beforeDestroy: function(){
-		if (categoryListRef) categoryListRef.off();
-	},
 });
 
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Categories")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addNewCategory(_vm.categoryToAdd)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.categoryToAdd),expression:"categoryToAdd"}],attrs:{"type":"text"},domProps:{"value":(_vm.categoryToAdd)},on:{"input":function($event){if($event.target.composing){ return; }_vm.categoryToAdd=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),(_vm.categories.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.categories),function(category){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeCategory(category)}}},[_vm._v("Delete")]),_vm._v("\n\n\t\t\t"+_vm._s(category)+"\n\t\t")])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no categories.\n\t")])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('h2',[_vm._v("Categories")]),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();_vm.addNewCategory(_vm.categoryToAdd)}}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.categoryToAdd),expression:"categoryToAdd"}],attrs:{"type":"text"},domProps:{"value":(_vm.categoryToAdd)},on:{"input":function($event){if($event.target.composing){ return; }_vm.categoryToAdd=$event.target.value}}}),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Add"}})]),_vm._v(" "),(_vm.$store.state.categories.length > 0)?_c('ul',{staticClass:"manage-text"},_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('button',{staticStyle:{"margin":"0 2em 0 0"},on:{"click":function($event){_vm.removeCategory(category)}}},[_vm._v("Delete")]),_vm._v("\n\n\t\t\t"+_vm._s(category)+"\n\t\t")])})):_c('div',{staticStyle:{"padding":"1em 0 0","font-size":"13px"}},[_vm._v("\n\t\tThere are currently no categories.\n\t")])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -71611,7 +71588,6 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
-//
 
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
@@ -71706,7 +71682,7 @@ module.exports = Vue.component("side-menu", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',[_c('router-link',{staticClass:"fake-a li-fat",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',[_c('a',{staticClass:"fake-a li-fat",staticStyle:{"font-weight":"500"},on:{"click":function($event){_vm.$store.dispatch('logout')}}},[_vm._v("Log out")])]):_vm._e(),_vm._v(" "),(_vm.$store.state.isAdmin)?_c('span',[_vm._m(0),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/users"}},[_vm._v("\n\t\t\t\t\t\tUsers "),(_vm.newUserCount > 0)?_c('span',{staticClass:"new-users"},[_vm._v("("+_vm._s(_vm.newUserCount)+" new users)")]):_vm._e()])],1),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/categories"}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])],1)]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_vm._m(1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',{staticStyle:{"font-weight":"500"}},[_c('a',{staticClass:"fake-a",class:{'selected-menu-item': level === _vm.$store.state.currentLevel},on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level + "s")+"\n\t\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",class:{'selected-menu-item': category === _vm.$store.state.currentCategory},on:{"click":function($event){_vm.setCurrentCategory(category)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"mobile-nav"},[_vm._v("☰")]),_vm._v(" "),_c('div',{attrs:{"id":"side-menu"}},[_c('ul',{staticClass:"category"},[_c('li',[_c('router-link',{staticClass:"fake-a li-fat",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),(_vm.$store.state.currentUser)?_c('li',[_c('a',{staticClass:"fake-a li-fat",staticStyle:{"font-weight":"500"},on:{"click":function($event){_vm.$store.dispatch('logout')}}},[_vm._v("Log out")])]):_vm._e(),_vm._v(" "),(_vm.$store.state.isAdmin)?_c('span',[_vm._m(0),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/users"}},[_vm._v("\n\t\t\t\t\t\tUsers "),(_vm.newUserCount > 0)?_c('span',{staticClass:"new-users"},[_vm._v("("+_vm._s(_vm.newUserCount)+" new users)")]):_vm._e()])],1),_vm._v(" "),_c('li',[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/manage/categories"}},[_vm._v("\n\t\t\t\t\t\tCategories\n\t\t\t\t\t")])],1)]):_vm._e(),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_vm._m(1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY LEVEL")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('li',{staticStyle:{"font-weight":"500"}},[_c('a',{staticClass:"fake-a",class:{'selected-menu-item': level === _vm.$store.state.currentLevel},on:{"click":function($event){_vm.setCurrentLevel(level)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(level + "s")+"\n\t\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-heading"},[_vm._v("FILTER BY PROFESSION")]),_vm._v(" "),_vm._l((_vm.$store.state.categories),function(category){return _c('li',[_c('a',{staticClass:"fake-a",class:{'selected-menu-item': category === _vm.$store.state.currentCategory},on:{"click":function($event){_vm.setCurrentCategory(category)}}},[_vm._v("\n\t\t\t\t\t"+_vm._s(category)+"\n\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('li',{staticClass:"li-fat"},[_c('router-link',{staticClass:"fake-a",attrs:{"to":"/about"}},[_vm._v("About")])],1)],2)])])}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',[_c('a',{staticClass:"fake-a",attrs:{"href":"/"}},[_vm._v("Home")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"li-fat"},[_c('a',{staticClass:"fake-a",attrs:{"href":"/"}},[_vm._v("SHOW ALL")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -71838,6 +71814,11 @@ module.exports = Vue.component("profile", {
 			let self = this;
 			self.onAuthStateChanged();
 		},
+		
+		"$store.state.categories": function(){
+			let self = this;
+			self.updateCategories();
+		},
 	},
 	
 	methods: {
@@ -71941,26 +71922,28 @@ module.exports = Vue.component("profile", {
 					
 					self.url = self.user.profileTweet || "";
 					self.selectedLevel = self.user.professionalLevel || "";
-											
-					let ref2 = db.ref("/categoryList");
-					refs.push(ref2);
 					
-					ref2.on("value", function(snapshot){
-						self.categories = [];
-						
-						let categories = snapshot.val();
-						if (!categories) return;
-						
-						Object.keys(categories).forEach(function(category){
-							self.categories.push({
-								name: category,
-								value: self.user.categories && self.user.categories[category],
-							});
-						});
-					});
+					self.updateCategories();
 				});
 			}
 		},
+		
+		updateCategories: function(){
+			let self = this;
+			self.categories = [];
+			
+			self.$store.state.categories.forEach(function(category){
+				self.categories.push({
+					name: category,
+					value: self.user && self.user.categories && self.user.categories[category],
+				});
+			});
+		},
+	},
+	
+	mounted: function(){
+		let self = this;
+		self.onAuthStateChanged();
 	},
 	
 	beforeDestroy: function(){
@@ -71985,7 +71968,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-acb60230", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-acb60230", __vue__options__)
+    hotAPI.reload("data-v-acb60230", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],27:[function(require,module,exports){
@@ -72000,6 +71983,7 @@ require("firebase/auth");
 require("firebase/database");
 
 window.onload = function(){
+	// Initialize the Firebase app.
 	firebase.initializeApp({
 		apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 		authDomain: "visiblewomen-net.firebaseapp.com",
@@ -72009,6 +71993,7 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
+	// Listen for auth state changes and for whether the currently-logged-in user is an admin.
 	let adminRef;
 	
 	firebase.auth().onAuthStateChanged(function(user){
@@ -72028,6 +72013,7 @@ window.onload = function(){
 		}
 	});
 	
+	// Set up the routes.
 	let routes = [
 		{path: "/", component: require("./components/index.vue")},
 		{path: "/about", component: require("./components/about.vue")},
@@ -72040,10 +72026,12 @@ window.onload = function(){
 	
 	let router = new VueRouter({routes});
 	
+	// After moving to each new view, scroll back to the top of the page.
 	router.afterEach(function(to, from){
 		window.scrollTo(0, 0);
 	});
 	
+	// Create the store.
 	let store = new Vuex.Store({
 		state: {
 			categories: [],
@@ -72062,16 +72050,14 @@ window.onload = function(){
 				firebase.auth().signInWithPopup(provider).then(function(result){
 					let db = firebase.database();
 					
-					// We make sure that we grab the user's Twitter username.
-					// For some stupid reason, this is the only time that
-					// this information is available to us.
+					// We make sure that we grab the user's Twitter username. For some stupid reason, this is the only time that this information is available to us.
 					let username = result.additionalUserInfo.username;
 					
-					// We store the username in the database under their 
-					// Firebase auth UID.
+					// We store the username in the database under their Firebase auth UID.
 					db.ref("/allUsers/" + result.user.uid + "/username").set(username);
 					db.ref("/allUsers/" + result.user.uid + "/uid").set(result.user.uid);
 					
+					// Check to see if the user is in the approved users list. If they're not, then add them to the new users list. NOTE: This will mean that blocked users can log out, log back in, and be added to the new users list!
 					let ref2 = db.ref("/approvedUsers/" + result.user.uid);
 					
 					ref2.once("value").then(function(snapshot){
@@ -72087,18 +72073,18 @@ window.onload = function(){
 				});
 			},
 			
-			// This the typical Firebase sign-out method, though
-			// this is where we also stop listening to the database
-			// references.
 			logout: function(){
 				firebase.auth().signOut();
 			},
 			
 			deleteAccount: function(){
+				// Check to see that the user really wants to delete their account.
 				let shouldDeleteAccount = confirm("Are you sure that you want to remove your tweet from this site?");
 				
+				// If they don't, then do nothing.
 				if (!shouldDeleteAccount) return;
 				
+				// Remove the user from as many locations in the database as a non-admin user has access to.
 				let self = this;
 				let db = firebase.database();
 				let user = firebase.auth().currentUser;
@@ -72123,6 +72109,7 @@ window.onload = function(){
 		},
 	});
 	
+	// Create the Firebase app.
 	let app = new Vue({
 		el: "#app",
 		router,
@@ -72135,6 +72122,7 @@ window.onload = function(){
 			let categoryListRef = db.ref("/categoryList");
 			
 			categoryListRef.on("value", function(snapshot){
+				store.state.categories = [];
 				let categories = snapshot.val();
 				if (!categories) return;
 				store.state.categories = Object.keys(categories);

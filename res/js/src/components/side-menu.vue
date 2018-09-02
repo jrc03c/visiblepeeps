@@ -49,7 +49,6 @@
 				<li v-for="category in $store.state.categories">
 					<a @click="setCurrentCategory(category)" class="fake-a" :class="{'selected-menu-item': category === $store.state.currentCategory}">
 						{{ category }}
-						<!-- <span class="check-mark" v-if="category === $store.state.currentCategory">&#x2714;</span> -->
 					</a>
 				</li>
 				

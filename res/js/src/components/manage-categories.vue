@@ -7,8 +7,8 @@
 			<input type="submit" value="Add">
 		</form>
 		
-		<ul v-if="categories.length > 0" class="manage-text">
-			<li v-for="category in categories">
+		<ul v-if="$store.state.categories.length > 0" class="manage-text">
+			<li v-for="category in $store.state.categories">
 				<button  style="margin:0 2em 0 0" @click="removeCategory(category)">Delete</button>
 
 				{{ category }}
@@ -24,15 +24,11 @@
 <script>
 	let Vue = require("vue/dist/vue");
 	let firebase = require("firebase/app");
-	
-	// Keep track of this database-listening reference so that we can turn it off when we destroy the component.
-	let categoryListRef;
 
 	module.exports = Vue.component("manage-users", {
 		data: function(){
 			return {
 				categoryToAdd: "",
-				categories: [],
 			};
 		},
 		
@@ -49,25 +45,6 @@
 				let db = firebase.database();
 				db.ref("/categoryList/" + category).set(null);
 			},
-		},
-		
-		mounted: function(){
-			let self = this;
-			let db = firebase.database();
-			
-			// Get the list of categories from the database.
-			categoryListRef = db.ref("/categoryList");
-			
-			categoryListRef.on("value", function(snapshot){
-				self.categories = [];
-				let categories = snapshot.val();
-				if (!categories) return;
-				self.categories = Object.keys(categories);
-			});
-		},
-		
-		beforeDestroy: function(){
-			if (categoryListRef) categoryListRef.off();
 		},
 	});
 </script>

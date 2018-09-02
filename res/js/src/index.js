@@ -9,6 +9,7 @@ require("firebase/auth");
 require("firebase/database");
 
 window.onload = function(){
+	// Initialize the Firebase app.
 	firebase.initializeApp({
 		apiKey: "AIzaSyDahkALUP2HDnuLqiXOt-ScOPobhqFoW84",
 		authDomain: "visiblewomen-net.firebaseapp.com",
@@ -18,6 +19,7 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
+	// Listen for auth state changes and for whether the currently-logged-in user is an admin.
 	let adminRef;
 	
 	firebase.auth().onAuthStateChanged(function(user){
@@ -37,6 +39,7 @@ window.onload = function(){
 		}
 	});
 	
+	// Set up the routes.
 	let routes = [
 		{path: "/", component: require("./components/index.vue")},
 		{path: "/about", component: require("./components/about.vue")},
@@ -49,10 +52,12 @@ window.onload = function(){
 	
 	let router = new VueRouter({routes});
 	
+	// After moving to each new view, scroll back to the top of the page.
 	router.afterEach(function(to, from){
 		window.scrollTo(0, 0);
 	});
 	
+	// Create the store.
 	let store = new Vuex.Store({
 		state: {
 			categories: [],
@@ -71,16 +76,14 @@ window.onload = function(){
 				firebase.auth().signInWithPopup(provider).then(function(result){
 					let db = firebase.database();
 					
-					// We make sure that we grab the user's Twitter username.
-					// For some stupid reason, this is the only time that
-					// this information is available to us.
+					// We make sure that we grab the user's Twitter username. For some stupid reason, this is the only time that this information is available to us.
 					let username = result.additionalUserInfo.username;
 					
-					// We store the username in the database under their 
-					// Firebase auth UID.
+					// We store the username in the database under their Firebase auth UID.
 					db.ref("/allUsers/" + result.user.uid + "/username").set(username);
 					db.ref("/allUsers/" + result.user.uid + "/uid").set(result.user.uid);
 					
+					// Check to see if the user is in the approved users list. If they're not, then add them to the new users list. NOTE: This will mean that blocked users can log out, log back in, and be added to the new users list!
 					let ref2 = db.ref("/approvedUsers/" + result.user.uid);
 					
 					ref2.once("value").then(function(snapshot){
@@ -96,18 +99,18 @@ window.onload = function(){
 				});
 			},
 			
-			// This the typical Firebase sign-out method, though
-			// this is where we also stop listening to the database
-			// references.
 			logout: function(){
 				firebase.auth().signOut();
 			},
 			
 			deleteAccount: function(){
+				// Check to see that the user really wants to delete their account.
 				let shouldDeleteAccount = confirm("Are you sure that you want to remove your tweet from this site?");
 				
+				// If they don't, then do nothing.
 				if (!shouldDeleteAccount) return;
 				
+				// Remove the user from as many locations in the database as a non-admin user has access to.
 				let self = this;
 				let db = firebase.database();
 				let user = firebase.auth().currentUser;
@@ -132,6 +135,7 @@ window.onload = function(){
 		},
 	});
 	
+	// Create the Firebase app.
 	let app = new Vue({
 		el: "#app",
 		router,
@@ -144,6 +148,7 @@ window.onload = function(){
 			let categoryListRef = db.ref("/categoryList");
 			
 			categoryListRef.on("value", function(snapshot){
+				store.state.categories = [];
 				let categories = snapshot.val();
 				if (!categories) return;
 				store.state.categories = Object.keys(categories);

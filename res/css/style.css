@@ -380,8 +380,8 @@ input[type="submit"]:hover, button:hover {
 	background:rgb(254,254,254);
 	border:1px solid rgb(29,161,242);
 	position:fixed;
-	top:12px;
-	left:12px;
+	top:20px;
+	left:20px;
 	z-index:10001;
 }
 
@@ -455,6 +455,8 @@ input[type="submit"]:hover, button:hover {
 
 	.mobile-nav {
 		display:block;
+		top:12px;
+		left:12px;
 	}
 
 	#side-menu {

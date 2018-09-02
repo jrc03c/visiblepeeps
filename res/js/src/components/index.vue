@@ -305,9 +305,9 @@
 			self.fetchTweetsFromCategory();
 			
 			// Add a scroll listener to the page. If the user has scrolled past 80% of the page height, then start loading more tweets. In other words, this is the "lazy-loading" stuff.
-			let previousST = 0;
-			let defaultDisplayForBackToTopButton = self.$refs.backToTopButton.style.display;
-			
+			let defaultDisplay = self.$refs.backToTopButton.style.display;
+			self.$refs.backToTopButton.style.display = "none";
+					
 			window.addEventListener("scroll", function(event){
 				let h = document.documentElement;
 				let b = document.body;
@@ -320,15 +320,7 @@
 					self.loadMoreTweets();
 				}
 				
-				let delta = (h[st]||b[st]) - previousST;
-				
-				if (delta > 0){
-					self.$refs.backToTopButton.style.display = "none";
-				} else {
-					self.$refs.backToTopButton.style.display = defaultDisplayForBackToTopButton;
-				}
-				
-				previousST = h[st]||b[st];
+				self.$refs.backToTopButton.style.display = (h[st]||b[st]) < 500 ? "none" : defaultDisplay;
 			});
 		},
 	});

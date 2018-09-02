@@ -1,8 +1,9 @@
 <template>
 	<div>
-		<side-menu></side-menu>
 
 		<div id="attention">HI THERE! We JUST launched the site, so you experience any issue or have any feedback, please feel free to contact either jrc03c or A_Werchmeister on Twitter!</div>
+
+		<side-menu></side-menu>
 		
 		<div id="main-content">
 			<main-header></main-header>

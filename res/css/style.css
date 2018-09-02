@@ -421,7 +421,7 @@ input[type="submit"]:hover, button:hover {
 
 	#side-menu {
 		display:none;
-		width:450px;
+		width:100%;
 		left:0;
 	}
 
@@ -449,9 +449,9 @@ input[type="submit"]:hover, button:hover {
 	}
 
 	ul.category li {
-		padding:2em 0 0;
+		padding:1em 0 0;
 		text-align:center;
-		font-size:16px;
+		font-size:14px;
 		margin:0 auto;
 	}
 	

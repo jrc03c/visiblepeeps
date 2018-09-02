@@ -70728,6 +70728,8 @@ let _ = require("lodash");
 require("./side-menu.vue");
 require("./main-header.vue");
 
+let scrollListener;
+
 // Add shuffle capability to arrays. This enables us to randomize the order of the tweets we display.
 Array.prototype.shuffle = function(){
 	let out = [];
@@ -71003,7 +71005,7 @@ module.exports = Vue.component("index", {
 		let defaultDisplay = self.$refs.backToTopButton.style.display;
 		self.$refs.backToTopButton.style.display = "none";
 				
-		window.addEventListener("scroll", function(event){
+		scrollListener = function(event){
 			let h = document.documentElement;
 			let b = document.body;
 			let st = "scrollTop";
@@ -71016,7 +71018,13 @@ module.exports = Vue.component("index", {
 			}
 			
 			self.$refs.backToTopButton.style.display = (h[st]||b[st]) < 500 ? "none" : defaultDisplay;
-		});
+		};
+		
+		window.addEventListener("scroll", scrollListener);
+	},
+	
+	beforeDestroy: function(){
+		window.removeEventListener("scroll", scrollListener);
 	},
 });
 
@@ -71033,7 +71041,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-36ae37fa", __vue__options__)
   } else {
-    hotAPI.reload("data-v-36ae37fa", __vue__options__)
+    hotAPI.rerender("data-v-36ae37fa", __vue__options__)
   }
 })()}
 },{"./main-header.vue":21,"./side-menu.vue":25,"firebase/app":7,"lodash":11,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],21:[function(require,module,exports){

@@ -33,6 +33,8 @@
 	require("./side-menu.vue");
 	require("./main-header.vue");
 	
+	let scrollListener;
+	
 	// Add shuffle capability to arrays. This enables us to randomize the order of the tweets we display.
 	Array.prototype.shuffle = function(){
 		let out = [];
@@ -308,7 +310,7 @@
 			let defaultDisplay = self.$refs.backToTopButton.style.display;
 			self.$refs.backToTopButton.style.display = "none";
 					
-			window.addEventListener("scroll", function(event){
+			scrollListener = function(event){
 				let h = document.documentElement;
 				let b = document.body;
 				let st = "scrollTop";
@@ -321,7 +323,13 @@
 				}
 				
 				self.$refs.backToTopButton.style.display = (h[st]||b[st]) < 500 ? "none" : defaultDisplay;
-			});
+			};
+			
+			window.addEventListener("scroll", scrollListener);
+		},
+		
+		beforeDestroy: function(){
+			window.removeEventListener("scroll", scrollListener);
 		},
 	});
 </script>

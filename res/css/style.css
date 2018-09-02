@@ -439,8 +439,8 @@ input[type="submit"]:hover, button:hover {
 		padding:1em 1.25em;
 		top:12px;
 		left:42px;
-		bottom:inherit;
-		right:inherit;
+		bottom:auto;
+		right:auto;
 	}
 
 	#back-to-top-link:hover {

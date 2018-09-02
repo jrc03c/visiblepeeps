@@ -556,7 +556,7 @@ input[type="submit"]:hover, button:hover {
 
 }
 
-@media (max-width:1250px) {
+@media (max-width:1325px) {
 
 	.module-grid {
 		grid-template-columns:auto;

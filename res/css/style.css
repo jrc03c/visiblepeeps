@@ -282,7 +282,7 @@ input[type=text] {
 	border:0;
 	background:rgb(247,247,247);
 	resize:none;
-	padding:1em 0.75em 0;
+	padding:0 0.75em;
 }
 
 select[name="level"] {

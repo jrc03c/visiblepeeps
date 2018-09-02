@@ -194,7 +194,7 @@ span.new-users:hover {
 
 .flaggy {
 	position:absolute;
-	margin:-50px 0 0 -50px;
+	margin:-50px 0 0 -40px;
 	text-align: right;
 	color:rgb(240,0,0);	
 	font-weight:500;

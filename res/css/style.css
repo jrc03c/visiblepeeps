@@ -426,6 +426,7 @@ input[type="submit"]:hover, button:hover {
 	-ms-overflow-style: none;
 	z-index:993;
 	left:0;
+	padding:0;
 }
 
 #side-menu::-webkit-scrollbar { 
@@ -464,7 +465,9 @@ input[type="submit"]:hover, button:hover {
 	#side-menu {
 		display:none;
 		width:100%;
-		left:0;
+		top:0;
+		padding:60px;
+
 	}
 
 	#main-content {

@@ -18,8 +18,23 @@ window.onload = function(){
 		messagingSenderId: "532732660193"
 	});
 	
+	let adminRef;
+	
 	firebase.auth().onAuthStateChanged(function(user){
 		store.state.currentUser = user;
+		
+		if (adminRef) adminRef.off();
+		
+		if (user){
+			let db = firebase.database();
+			adminRef = db.ref("/adminUsers/" + user.uid);
+			
+			adminRef.on("value", function(snapshot){
+				store.state.isAdmin = !!snapshot.val();
+			});
+		} else {
+			store.state.isAdmin = false;
+		}
 	});
 	
 	let routes = [
@@ -44,6 +59,7 @@ window.onload = function(){
 			currentLevel: "ALL",
 			currentCategory: "ALL",
 			currentUser: null,
+			isAdmin: false,
 		},
 		getters: {},
 		mutations: {},

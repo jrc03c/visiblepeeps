@@ -8,7 +8,7 @@
 				<li><router-link to="/submit" class="fake-a li-fat">Submit Tweet</router-link></li>
 				<li v-if="$store.state.currentUser"><a style="font-weight:500;" class="fake-a li-fat" @click="$store.dispatch('logout')">Log out</a></li>
 				
-				<span v-if="isAdmin">
+				<span v-if="$store.state.isAdmin">
 
 					<li><a href="/" class="fake-a">Home</a></li>
 		
@@ -70,15 +70,22 @@
 		data: function(){
 			return {
 				levels: ["Professional", "Student", "Hobbyist"],
-				isAdmin: false,
 				newUserCount: 0,
 			};
 		},
 		
 		watch: {
-			"$store.state.currentUser": function(){
+			"$store.state.isAdmin": function(){
 				let self = this;
-				self.onAuthStateChanged();
+				
+				if (self.$store.state.isAdmin){
+					db.ref("/newUsers").once("value").then(function(snapshot3){
+						self.newUserCount = 0;
+						let newUsers = snapshot3.val();
+						if (!newUsers) return;
+						self.newUserCount = Object.keys(newUsers).length;
+					});
+				}
 			},
 		},
 		
@@ -110,44 +117,10 @@
 					self.$store.state.currentCategory = category;
 				}
 			},
-			
-			onAuthStateChanged: function(){
-				let self = this;
-				let user = self.$store.state.currentUser;
-				
-				if (user){
-					let db = firebase.database();
-					let ref1 = db.ref("/allUsers/" + user.uid);
-					
-					ref1.on("value", function(snapshot1){
-						let userData = snapshot1.val();
-						if (!userData) return;
-						
-						let ref2 = db.ref("/adminUsers/" + user.uid);
-						
-						ref2.on("value", function(snapshot2){
-							let isAdmin = snapshot2.val();
-							self.isAdmin = !!isAdmin;
-							
-							if (self.isAdmin){
-								let ref3 = db.ref("/newUsers");
-								ref3.once("value").then(function(snapshot3){
-									let newUsers = snapshot3.val();
-									if (!newUsers) return;
-									self.newUserCount = Object.keys(newUsers).length;
-								});
-							}
-						});
-					});
-				} else {
-					self.isAdmin = false;
-				}
-			},
 		},
 		
 		mounted: function(){
 			let self = this;
-			self.onAuthStateChanged();
 			
 			let oldWidth = 0;
 			

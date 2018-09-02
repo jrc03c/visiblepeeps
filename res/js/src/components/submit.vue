@@ -21,7 +21,7 @@
 							<p style="font-weight:500;">Tweet URL</p>
 						</label>
 						
-						<p style="font-style:italic; color:rgb(135,135,135); padding:0 0 2em;">This can be found by pressing the downward arrow in the top right corner on your tweet, and then clicking "Copy link to tweet."</p>	
+						<p style="font-style:italic; color:rgb(135,135,135); padding:0 0 1.75em;">This can be found by pressing the downward arrow in the top right corner on your tweet, and then clicking "Copy link to tweet."</p>	
 						
 						<input type="text" v-model="url" id="tweet-url" @keydown="message = ''">
 						

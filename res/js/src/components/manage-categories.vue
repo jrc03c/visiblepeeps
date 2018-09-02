@@ -24,6 +24,8 @@
 <script>
 	let Vue = require("vue/dist/vue");
 	let firebase = require("firebase/app");
+	
+	// Keep a list of the database-listening refs so that we can turn them off when we destroy the component.
 	let refs = [];
 
 	module.exports = Vue.component("manage-users", {
@@ -44,18 +46,15 @@
 		methods: {
 			addNewCategory: function(category){
 				let self = this;
-				self.categories[category] = true;
 				let db = firebase.database();
-				db.ref("/categoryList").set(self.categories);
+				db.ref("/categoryList/" + self.categoryToAdd).set(true);
 				self.categoryToAdd = "";
 			},
 			
 			removeCategory: function(category){
 				let self = this;
-				self.categories[category] = null;
 				let db = firebase.database();
-				db.ref("/categoryList").set(self.categories);
-				db.ref("/tweets/" + category).set(null);
+				db.ref("/categoryList/" + category).set(null);
 			},
 			
 			onAuthStateChanged: function(){

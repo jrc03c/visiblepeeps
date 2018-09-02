@@ -397,6 +397,7 @@ input[type="submit"]:hover, button:hover {
 	margin:0;
 	position:fixed;
 	width:225px;
+	font-weight:700;
 	overflow-y:scroll;
 	-webkit-overflow-scrolling:touch;
 	height:100%;

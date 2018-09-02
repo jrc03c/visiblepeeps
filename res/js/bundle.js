@@ -71296,8 +71296,8 @@ module.exports = Vue.component("index", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{attrs:{"id":"attention"}},[_vm._v("HI THERE! We JUST launched the site, so you experience any issue or have any feedback, please feel free to contact either jrc03c or A_Werchmeister on Twitter!")]),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
-__vue__options__.staticRenderFns = []
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._m(0),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"attention"}},[_vm._v("HI THERE! We JUST launched the site, so you experience any issue or have any feedback, please feel free to contact either "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter!")])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -71305,7 +71305,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-6f9faaac", __vue__options__)
   } else {
-    hotAPI.reload("data-v-6f9faaac", __vue__options__)
+    hotAPI.rerender("data-v-6f9faaac", __vue__options__)
   }
 })()}
 },{"./main-header.vue":23,"./side-menu.vue":27,"firebase/app":9,"lodash":13,"vue":18,"vue-hot-reload-api":15,"vue/dist/vue":17}],23:[function(require,module,exports){

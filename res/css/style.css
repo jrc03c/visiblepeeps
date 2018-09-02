@@ -584,6 +584,14 @@ input[type="submit"]:hover, button:hover {
 
 }
 
+@media (max-width:1050px) {
+
+	.module-grid {
+		width:95%;
+	}
+
+}
+
 /* --- Manage page --- */
 
 #app {

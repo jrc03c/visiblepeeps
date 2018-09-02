@@ -438,11 +438,11 @@ input[type="submit"]:hover, button:hover {
 
 #attention {
 	display:block;	
-	width:calc(100% - 100px);
+	width:calc(100% - 250px);
 	position:relative;
 	top:0;
 	margin:0 auto;
-	padding:0.75em 0 0.75em 100px;
+	padding:0.75em 0 0.75em 250px;
 	color:rgb(29,161,242);	
 	background:rgb(254,254,254);
 	font-family: 'Roboto', sans-serif;

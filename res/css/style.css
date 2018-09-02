@@ -435,10 +435,10 @@ input[type="submit"]:hover, button:hover {
 @media (max-width:1050px) {
 
 	#back-to-top-link {
-		font-size:15px;
+		font-size:14.5px;
 		padding:1em 1.25em;
 		top:12px;
-		left:62px;
+		left:67px;
 		bottom:auto;
 		right:auto;
 	}

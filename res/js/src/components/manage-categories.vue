@@ -56,7 +56,7 @@
 			let db = firebase.database();
 			
 			// Get the list of categories from the database.
-			let categoryListRef = db.ref("/categoryList");
+			categoryListRef = db.ref("/categoryList");
 			
 			categoryListRef.on("value", function(snapshot){
 				self.categories = [];
@@ -67,7 +67,7 @@
 		},
 		
 		beforeDestroy: function(){
-			categoryListRef.off();
+			if (categoryListRef) categoryListRef.off();
 		},
 	});
 </script>

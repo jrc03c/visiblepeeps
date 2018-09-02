@@ -1,7 +1,6 @@
 <template>
 	<div>
-
-		<div id="attention">HI! We JUST launched the site! If you experience any issues or have any feedback, please feel free to contact either <a href="https://twitter.com/jrc03c">jrc03c</a> or <a href="https://twitter.com/A_Werchmeister">A_Werchmeister</a> on Twitter!</div>
+		<div id="attention">HI FRIEND! We JUST launched the site! If you experience any issues or have any feedback, please feel free to contact either <a href="https://twitter.com/jrc03c">jrc03c</a> or <a href="https://twitter.com/A_Werchmeister">A_Werchmeister</a> on Twitter!</div>
 
 		<side-menu></side-menu>
 		

@@ -427,7 +427,7 @@ input[type="submit"]:hover, button:hover {
 	z-index:993;
 	left:0;
 	top:0;
-	padding:60px 0 0;
+	padding:0;
 }
 
 #side-menu::-webkit-scrollbar { 
@@ -467,7 +467,7 @@ input[type="submit"]:hover, button:hover {
 		display:none;
 		width:100%;
 		top:0;
-		padding:60px 0 0;
+		padding:0;
 	}
 
 	#main-content {
@@ -490,6 +490,7 @@ input[type="submit"]:hover, button:hover {
 		padding:1em 0 3em;
 		background:rgb(254,254,254);
 		border-bottom:1px solid black;
+		top:0;
 	}
 
 	ul.category li {

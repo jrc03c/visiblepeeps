@@ -136,8 +136,10 @@
 				if (newWidth === oldWidth) return;
 			
 				if (newWidth > 1050) {
+					$("#side-menu").show();
 					$("#side-menu").off("click");
 				} else {
+					$("#side-menu").hide();
 					$("#side-menu").click(toggleMenu);
 				}
 			

@@ -495,17 +495,15 @@ input[type="submit"]:hover, button:hover {
 		padding:0;
 	}
 
-/*	#main-content {
+	#main-content {
 		/* width:100% !important;
-		margin:0 auto !important; 
-		min-width:calc(100% - 2em);
-		width:calc(100% - 2em);
-		max-width:calc(100% - 2em);
-		margin:0 1em auto;
+		margin:0 auto !important; */
+		min-width:calc(100% - 1em);
+		width:calc(100% - 1em);
+		max-width:calc(100% - 1em);
+		margin:0 0.5em auto;
 		margin-bottom: 2em;
 	}
-
-	*/
 	
 	#manage-content {
 		width: calc(100% - 4em) !important;

@@ -65,6 +65,7 @@ window.onload = function(){
 			currentCategory: "ALL",
 			currentUser: null,
 			isAdmin: false,
+			newUserCount: 0,
 		},
 		getters: {},
 		mutations: {},
@@ -152,6 +153,15 @@ window.onload = function(){
 				let categories = snapshot.val();
 				if (!categories) return;
 				store.state.categories = Object.keys(categories);
+			});
+			
+			let newUsersRef = db.ref("/newUsers");
+			
+			newUsersRef.on("value", function(snapshot){
+				store.state.newUsersCount = 0;
+				let newUsers = snapshot.val();
+				if (!newUsers) return;
+				store.state.newUsersCount = Object.keys(newUsers).length;
 			});
 		},
 	});

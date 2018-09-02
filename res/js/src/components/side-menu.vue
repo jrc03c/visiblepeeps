@@ -77,6 +77,7 @@
 		watch: {
 			"$store.state.isAdmin": function(){
 				let self = this;
+				let db = firebase.database();
 				
 				if (self.$store.state.isAdmin){
 					db.ref("/newUsers").once("value").then(function(snapshot3){

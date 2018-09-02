@@ -372,7 +372,8 @@ input[type="submit"]:hover, button:hover {
 .mobile-nav {
 	display:none;
 	color:rgb(29,161,242);	
-	font-size:18px;
+	font-size:13px;
+	font-weight:700;
 	letter-spacing:1px;
 	padding:1em 1.25em;
 	border-radius:4px;

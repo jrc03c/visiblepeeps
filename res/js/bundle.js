@@ -71280,7 +71280,7 @@ module.exports = Vue.component("index", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("⯅")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -71289,7 +71289,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-6f9faaac", __vue__options__)
   } else {
-    hotAPI.reload("data-v-6f9faaac", __vue__options__)
+    hotAPI.rerender("data-v-6f9faaac", __vue__options__)
   }
 })()}
 },{"./main-header.vue":23,"./side-menu.vue":27,"firebase/app":9,"lodash":13,"vue":18,"vue-hot-reload-api":15,"vue/dist/vue":17}],23:[function(require,module,exports){

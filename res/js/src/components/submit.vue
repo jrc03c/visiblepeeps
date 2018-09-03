@@ -149,7 +149,7 @@
 				}
 				
 				// Only allow users to submit tweets from their own profile.
-				if (pathParts[1] !== self.user.username){
+				if (pathParts[1].toLowerCase() !== self.user.username.toLowerCase()){
 					self.message = "It looks like the tweet you provided isn't one of yours. Please only submit your own tweets. Thanks!";
 					return;
 				}
@@ -181,7 +181,7 @@
 				}
 				
 				// Also update the user's profile tweet URL.
-				updates["/allUsers/" + self.user.uid + "/profileTweet"] = "https://twitter.com/" + self.user.username + "/status/" + pathParts[3];
+				updates["/allUsers/" + self.user.uid + "/profileTweet"] = "https://twitter.com/" + self.user.username.toLowerCase() + "/status/" + pathParts[3];
 				
 				// Also update the user's professional level.
 				updates["/allUsers/" + self.user.uid + "/professionalLevel"] = self.selectedLevel;

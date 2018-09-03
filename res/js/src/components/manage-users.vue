@@ -98,9 +98,10 @@
 			addAdminUser: function(username){
 				let self = this;
 				let db = firebase.database();
+				username = username.toLowerCase();
 				
 				// Get the user from the database whose username matches the value from the input field. If there are multiple such users, then so be it; they'll all be added as admins, since we probably don't know which UID points to the actually-existing user. I mean, we could figure it out, but that'd take too much work.
-				let ref = db.ref("/allUsers").orderByChild("username").equalTo(self.userToAdmin);
+				let ref = db.ref("/allUsers").orderByChild("username").equalTo(username.toLowerCase());
 				
 				ref.once("value").then(function(snapshot){
 					let users = snapshot.val();
@@ -125,7 +126,7 @@
 				let self = this;
 				
 				// If the user to remove as an admin is in the list of "always admins" (i.e., super-admins), then don't remove them.
-				if (self.alwaysAdmins.indexOf(user.username) > -1){
+				if (self.alwaysAdmins.indexOf(user.username.toLowerCase()) > -1){
 					alert("Nice try! But you can't remove " + user.username + ". That person is a super-admin!");
 					return;
 				}
@@ -149,7 +150,7 @@
 				let updates = {};
 				updates["/approvedUsers/" + user.uid] = true;
 				updates["/newUsers/" + user.uid] = null;
-				updates["/blockedUsers/" + user.username] = null;
+				updates["/blockedUsers/" + user.username.toLowerCase()] = null;
 				
 				db.ref().update(updates);
 			},
@@ -174,7 +175,7 @@
 				if (user.uid.length > 0) updates["/approvedUsers/" + user.uid] = null;
 
 				// Add the user to the blocked users list.
-				updates["/blockedUsers/" + user.username] = true;
+				updates["/blockedUsers/" + user.username.toLowerCase()] = true;
 				
 				// Push all the changes to the database.
 				db.ref().update(updates);
@@ -184,6 +185,7 @@
 				// We call this function when an admin has typed a username into the input field.
 				let self = this;
 				let db = firebase.database();
+				username = username.toLowerCase();
 				
 				// Get all of the users in the database whose username matches the one entered into the input field. Note that there may be multiple results, in which case we'll block all of them.
 				let ref = db.ref("/allUsers").orderByChild("username").equalTo(username);
@@ -218,7 +220,7 @@
 				
 				// Remove them from the blocked users list and (if a UID has been supplied) add them to the approved users list.
 				let db = firebase.database();
-				db.ref("/blockedUsers/" + user.username).set(null);
+				db.ref("/blockedUsers/" + user.username.toLowerCase()).set(null);
 				if (user.uid.length > 0) db.ref("/approvedUsers/" + user.uid).set(true);
 			},
 		},
@@ -311,7 +313,7 @@
 				// Blocked users are listed by username, which means that it's possible that they don't exist in the list of all users (i.e., they were pre-blocked before they logged in, or remained blocked even after they deleted their account). So, for each username...
 				Object.keys(blockedUsers).forEach(function(username){
 					// Get the user data for the user whose username matches this one.
-					let ref3 = db.ref("/allUsers").orderByChild("username").equalTo(username);
+					let ref3 = db.ref("/allUsers").orderByChild("username").equalTo(username.toLowerCase());
 					
 					ref3.once("value").then(function(snapshot3){
 						let users = snapshot3.val();

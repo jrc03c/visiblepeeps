@@ -239,6 +239,7 @@
 					db.ref("/allUsers/" + userUid + "/username").once("value").then(function(snapshot){
 						let username = snapshot.val();
 						if (!username) return;
+						username = username.toLowerCase();
 						
 						// Check to see if the flagging user is in the blocked users list.
 						db.ref("/blockedUsers/" + username).once("value").then(function(snapshot){

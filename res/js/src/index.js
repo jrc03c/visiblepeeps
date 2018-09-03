@@ -78,7 +78,7 @@ window.onload = function(){
 					let db = firebase.database();
 					
 					// We make sure that we grab the user's Twitter username. For some stupid reason, this is the only time that this information is available to us.
-					let username = result.additionalUserInfo.username;
+					let username = result.additionalUserInfo.username.toLowerCase();
 					
 					// We store the username in the database under their Firebase auth UID.
 					db.ref("/allUsers/" + result.user.uid + "/username").set(username);

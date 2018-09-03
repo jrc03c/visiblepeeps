@@ -112,7 +112,7 @@
 
 					if (!tweets){
 						// If there are no tweets returned from this query, then we're finished loading because there are no tweets in this category.
-						self.message = "";
+						self.message = "There are no tweets in this category.";
 					} else {
 						// Otherwise, grab the list of key values.
 						tweets = Object.keys(tweets).shuffle();
@@ -124,7 +124,7 @@
 								
 								if (!users){
 									// If there are no such users at this level, then we're done.
-									self.message = "";
+									self.message = "There are no tweets in this category.";
 								} else {
 									// Otherwise...
 									tweets.forEach(function(uid){
@@ -133,7 +133,13 @@
 										}
 									});
 									
-									self.loadMoreTweets();
+									if (self.tweets.length === 0){
+										// If we couldn't find any users with that level in that category, then we're done.
+										self.message = "There are no tweets in this category.";
+									} else {
+										// Otherwise, load the tweets.
+										self.loadMoreTweets();
+									}
 								}
 							});
 						} else {
@@ -183,7 +189,7 @@
 				
 				// If there are no tweets left to load, then do nothing.
 				if (self.count === 0){
-					self.message = "";
+					self.message = "There are no more tweets in this category. You've seen them all!";
 					return;
 				}
 				

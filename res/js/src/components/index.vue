@@ -19,7 +19,7 @@
 				<br><br><br>
 			</div>
 			
-			<a class="fake-a" id="back-to-top-link" @click="scrollToTop" ref="backToTopButton">▲</a>
+			<a class="fake-a" id="back-to-top-link" @click="scrollToTop" ref="backToTopButton">&#9650;</a>
 			
 			<br><br><br>
 		</div>

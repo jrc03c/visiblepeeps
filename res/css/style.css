@@ -373,9 +373,9 @@ input[type="submit"]:hover, button:hover {
 	display:none;
 	color:rgb(29,161,242);	
 	font-size:0.8em;
-	font-weight:700;
+	font-weight:400;
 	letter-spacing:0;
-	padding:1em 1.25em;
+	padding:0.95em 1.15em 1.05em 1.15em;
 	border-radius:4px;
 	background:rgb(254,254,254);
 	border:1px solid rgb(29,161,242);
@@ -384,7 +384,8 @@ input[type="submit"]:hover, button:hover {
 	left:20px;
 	z-index:10001;
 	margin:0;
-	font-family: 'Roboto', sans-serif;
+	font-family: monospace;
+	line-height:initial;
 }
 
 .mobile-nav:hover {
@@ -398,7 +399,7 @@ input[type="submit"]:hover, button:hover {
 #back-to-top-link {
 	display:block;
 	font-size:0.9em;
-	font-weight:700;
+	font-weight:400;
 	letter-spacing:0;
 	padding:0.95em 1.15em 1.05em 1.15em;
 	border-radius:4px;
@@ -410,7 +411,8 @@ input[type="submit"]:hover, button:hover {
 	right:20px;
 	z-index:10002;	
 	margin:0;
-	font-family: 'Roboto', sans-serif;
+	font-family: monospace;
+	line-height:initial;
 }
 
 #back-to-top-link:hover {
@@ -462,8 +464,8 @@ input[type="submit"]:hover, button:hover {
 	}
 
 	#back-to-top-link {
-		font-size:0.9em;
-		padding:1em 1.15em;
+		font-size:0.8em;
+		padding:1em 1.25em;
 		top:12px;
 		left:67px;
 		bottom:auto;

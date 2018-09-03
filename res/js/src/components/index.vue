@@ -235,7 +235,7 @@
 					if (!shouldFlag) return;
 					let userUid = self.$store.state.currentUser.uid;
 					
-					// Get the flagged user's username out of the database.
+					// Get the flagging user's username out of the database.
 					db.ref("/allUsers/" + userUid + "/username").once("value").then(function(snapshot){
 						let username = snapshot.val();
 						if (!username) return;
@@ -247,7 +247,7 @@
 							if (isBlocked) return;
 							
 							// Otherwise, set the UID of the flagged tweet's user as the key and the UID of the flagging user as the value.
-							db.ref("/flaggedUsers/" + uid).set(userUid);
+							db.ref("/flaggedUsers/" + userData.uid).set(userUid);
 						});
 					});
 				};

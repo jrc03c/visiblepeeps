@@ -70930,7 +70930,7 @@ module.exports = Vue.component("index", {
 				if (!shouldFlag) return;
 				let userUid = self.$store.state.currentUser.uid;
 				
-				// Get the flagged user's username out of the database.
+				// Get the flagging user's username out of the database.
 				db.ref("/allUsers/" + userUid + "/username").once("value").then(function(snapshot){
 					let username = snapshot.val();
 					if (!username) return;
@@ -70942,7 +70942,7 @@ module.exports = Vue.component("index", {
 						if (isBlocked) return;
 						
 						// Otherwise, set the UID of the flagged tweet's user as the key and the UID of the flagging user as the value.
-						db.ref("/flaggedUsers/" + uid).set(userUid);
+						db.ref("/flaggedUsers/" + userData.uid).set(userUid);
 					});
 				});
 			};
@@ -71042,7 +71042,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-36ae37fa", __vue__options__)
   } else {
-    hotAPI.reload("data-v-36ae37fa", __vue__options__)
+    hotAPI.rerender("data-v-36ae37fa", __vue__options__)
   }
 })()}
 },{"./main-header.vue":21,"./side-menu.vue":25,"firebase/app":7,"lodash":11,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],21:[function(require,module,exports){

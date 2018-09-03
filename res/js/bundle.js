@@ -16072,7 +16072,7 @@ exports.DataSnapshot = DataSnapshot;
 exports.OnDisconnect = OnDisconnect;
 
 }).call(this,require('_process'))
-},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":28,"tslib":12}],4:[function(require,module,exports){
+},{"@firebase/app":1,"@firebase/logger":4,"@firebase/util":6,"_process":29,"tslib":12}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -17795,7 +17795,7 @@ var iterator = _wksExt.f('iterator');
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":29,"whatwg-fetch":18}],6:[function(require,module,exports){
+},{"timers":30,"whatwg-fetch":18}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -50236,7 +50236,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":28}],15:[function(require,module,exports){
+},{"_process":29}],15:[function(require,module,exports){
 (function (global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -61187,7 +61187,7 @@ return Vue;
 })));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"timers":29}],16:[function(require,module,exports){
+},{"timers":30}],16:[function(require,module,exports){
 (function (process,global,setImmediate){
 /*!
  * Vue.js v2.5.17
@@ -69225,7 +69225,7 @@ if (inBrowser) {
 module.exports = Vue;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"_process":28,"timers":29}],17:[function(require,module,exports){
+},{"_process":29,"timers":30}],17:[function(require,module,exports){
 (function (process){
 /**
  * vuex v3.0.1
@@ -70161,7 +70161,7 @@ var index = {
 module.exports = index;
 
 }).call(this,require('_process'))
-},{"_process":28}],18:[function(require,module,exports){
+},{"_process":29}],18:[function(require,module,exports){
 (function(self) {
   'use strict';
 
@@ -70679,8 +70679,8 @@ module.exports = Vue.component("about", {});
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._m(0),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_vm._m(1)],1)],1)}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"attention"}},[_vm._v("HI FRIEND! We JUST launched the site! If you experience any issues or have any feedback, please feel free to contact either "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter!")])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"about-page"},[_c('p',[_vm._v("Visible Peeps is a site where women, non-binary, and trans creators of all skill levels can share their tweets from the popular hashtags #VisibleWomen and #VisibleNB on Twitter. Started by the folks at "),_c('a',{attrs:{"href":"https://milkfed.us/"}},[_vm._v("Milkfed Criminal Masterminds")]),_vm._v(", these hashtags are intended to raise the visiblity of women, non-binary, and trans creators. The goal of this site is to facilitate the purpose of the hashtag by creating a place where people can explore and discover new creators, their tweets, and their work.")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("Visible Peeps was built by "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("Josh Castle")]),_vm._v(" and designed by "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("Andreas Werchmeister")]),_vm._v(", together with the gracious support and help of "),_c('a',{attrs:{"href":"https://twitter.com/LetsWoolgather"}},[_vm._v("Toby Brommerich")]),_vm._v(", "),_c('a',{attrs:{"href":"https://twitter.com/kylemadkins"}},[_vm._v("Kyle Adkins")]),_vm._v(", and "),_c('a',{attrs:{"href":"https://twitter.com/tarakeet"}},[_vm._v("Tara Han-Tran Johnson")]),_vm._v(" (who created the beautiful title logo).")]),_vm._v(" "),_c('h3',[_vm._v("How to use the site")]),_vm._v(" "),_c('p',[_vm._v("To submit a tweet, all you have to do is click the \"Submit Tweet\" link on the menu. Before submitting a tweet, we ask that you log in with your Twitter account. This helps us to prevent malicious misuse of the site and to verify that the submitted tweet belongs to you; but we do not store any personal data besides your username, and we can't access or control any part your Twitter account. Once you have logged in using your Twitter account, you'll be able to submit your tweet by simply copying and pasting the URL to your tweet into the submission form, selecting up to three categories you want your tweet to appear in, and hitting the \"Save\" button. That's it! :D")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("We approve all submissions before they appear publicly on the home page. Like the login requirement, this process helps us to cut down on abuse of the site. You can return to the submission page at any time to update your tweet, to update any of the categories you have selected, or (if you wish) to delete your tweet along with any information stored in the database.")]),_vm._v(" "),_c('h3',[_vm._v("Site issues")]),_vm._v(" "),_c('p',[_vm._v("If you experience any issues with the site or if you'd like to share your feedback, please feel free to contact either "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter!")]),_vm._v(" "),_c('h3',[_vm._v("Report inappropriate or irrelevant tweets")]),_vm._v(" "),_c('p',[_vm._v("If you see a tweet that either is offensive or doesn't belong, please flag the tweet for review by clicking the red flag button in the bottom right corner of the tweet in question.")]),_vm._v(" "),_c('h3',[_vm._v("Legal")]),_vm._v(" "),_c('p',[_vm._v("Copyright: We don't own any of the content contained within the tweets featured on the site. All tweets and their included content have been submitted by their respective owners.")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("Personal Data: We don't store any personal data except your Twitter username, the categories you select for your tweet to be featured in, and the URL of your submitted tweet. You can delete these pieces of information at any point from the submission page.")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('attention'),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_vm._m(0)],1)],1)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"about-page"},[_c('p',[_vm._v("Visible Peeps is a site where women, non-binary, and trans creators of all skill levels can share their tweets from the popular hashtags #VisibleWomen and #VisibleNB on Twitter. Started by the folks at "),_c('a',{attrs:{"href":"https://milkfed.us/"}},[_vm._v("Milkfed Criminal Masterminds")]),_vm._v(", these hashtags are intended to raise the visiblity of women, non-binary, and trans creators. The goal of this site is to facilitate the purpose of the hashtag by creating a place where people can explore and discover new creators, their tweets, and their work.")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("Visible Peeps was built by "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("Josh Castle")]),_vm._v(" and designed by "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("Andreas Werchmeister")]),_vm._v(", together with the gracious support and help of "),_c('a',{attrs:{"href":"https://twitter.com/LetsWoolgather"}},[_vm._v("Toby Brommerich")]),_vm._v(", "),_c('a',{attrs:{"href":"https://twitter.com/kylemadkins"}},[_vm._v("Kyle Adkins")]),_vm._v(", and "),_c('a',{attrs:{"href":"https://twitter.com/tarakeet"}},[_vm._v("Tara Han-Tran Johnson")]),_vm._v(" (who created the beautiful title logo).")]),_vm._v(" "),_c('h3',[_vm._v("How to use the site")]),_vm._v(" "),_c('p',[_vm._v("To submit a tweet, all you have to do is click the \"Submit Tweet\" link on the menu. Before submitting a tweet, we ask that you log in with your Twitter account. This helps us to prevent malicious misuse of the site and to verify that the submitted tweet belongs to you; but we do not store any personal data besides your username, and we can't access or control any part your Twitter account. Once you have logged in using your Twitter account, you'll be able to submit your tweet by simply copying and pasting the URL to your tweet into the submission form, selecting up to three categories you want your tweet to appear in, and hitting the \"Save\" button. That's it! :D")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("We approve all submissions before they appear publicly on the home page. Like the login requirement, this process helps us to cut down on abuse of the site. You can return to the submission page at any time to update your tweet, to update any of the categories you have selected, or (if you wish) to delete your tweet along with any information stored in the database.")]),_vm._v(" "),_c('h3',[_vm._v("Site issues")]),_vm._v(" "),_c('p',[_vm._v("If you experience any issues with the site or if you'd like to share your feedback, please feel free to contact either "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter!")]),_vm._v(" "),_c('h3',[_vm._v("Report inappropriate or irrelevant tweets")]),_vm._v(" "),_c('p',[_vm._v("If you see a tweet that either is offensive or doesn't belong, please flag the tweet for review by clicking the red flag button in the bottom right corner of the tweet in question.")]),_vm._v(" "),_c('h3',[_vm._v("Legal")]),_vm._v(" "),_c('p',[_vm._v("Copyright: We don't own any of the content contained within the tweets featured on the site. All tweets and their included content have been submitted by their respective owners.")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("Personal Data: We don't store any personal data except your Twitter username, the categories you select for your tweet to be featured in, and the URL of your submitted tweet. You can delete these pieces of information at any point from the submission page.")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -70692,6 +70692,32 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   }
 })()}
 },{"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],20:[function(require,module,exports){
+;(function(){
+//
+//
+//
+//
+
+let Vue = require("vue/dist/vue");
+module.exports = Vue.component("attention", {});
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"attention"}},[_vm._v("HI, FRIEND! We "),_c('i',[_vm._v("just")]),_vm._v(" launched the site! If you experience any issues or have any feedback for us, please feel free to contact either "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter!")])}]
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6ca93c62", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-6ca93c62", __vue__options__)
+  }
+})()}
+},{"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],21:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -70727,6 +70753,7 @@ let firebase = require("firebase/app");
 let _ = require("lodash");
 require("./side-menu.vue");
 require("./main-header.vue");
+require("./attention.vue");
 
 let scrollListener;
 
@@ -71066,8 +71093,8 @@ module.exports = Vue.component("index", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._m(0),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"attention"}},[_vm._v("HI, FRIEND! We "),_c('i',[_vm._v("just")]),_vm._v(" launched the site! If you experience any issues or have any feedback for us, please feel free to contact either "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter!")])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('attention'),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -71075,10 +71102,10 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-36ae37fa", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-36ae37fa", __vue__options__)
+    hotAPI.reload("data-v-36ae37fa", __vue__options__)
   }
 })()}
-},{"./main-header.vue":21,"./side-menu.vue":25,"firebase/app":7,"lodash":11,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],21:[function(require,module,exports){
+},{"./attention.vue":20,"./main-header.vue":22,"./side-menu.vue":26,"firebase/app":7,"lodash":11,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],22:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -71108,7 +71135,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-df2c8bdc", __vue__options__)
   }
 })()}
-},{"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],22:[function(require,module,exports){
+},{"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],23:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -71176,7 +71203,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-60cca835", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],23:[function(require,module,exports){
+},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],24:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -71539,10 +71566,10 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0831b27f", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-0831b27f", __vue__options__)
+    hotAPI.reload("data-v-0831b27f", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],24:[function(require,module,exports){
+},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],25:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -71585,7 +71612,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-1b368704", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],25:[function(require,module,exports){
+},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],26:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -71740,7 +71767,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-cafdf574", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"jquery":10,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],26:[function(require,module,exports){
+},{"firebase/app":7,"jquery":10,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],27:[function(require,module,exports){
 ;(function(){
 //
 //
@@ -72007,8 +72034,8 @@ module.exports = Vue.component("profile", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._m(0),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('div',{staticClass:"submit-page"},[(_vm.$store.state.currentUser)?_c('div',[_c('p',[_vm._v("Hi again! We are so happy that you want to join! :D Remember that you can at any point return to this page to update your submitted tweet, update any categories you have picked, or (if you wish) delete your tweet from the site.")]),_c('br'),_vm._v(" "),_vm._m(1),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.save($event)},"click":function($event){_vm.message = ''},"keydown":function($event){_vm.message = ''}}},[_vm._m(2),_vm._v(" "),_c('p',{staticStyle:{"font-style":"italic","color":"rgb(135,135,135)","padding":"0 0 1.75em"}},[_vm._v("This can be found by pressing the downward arrow in the top right corner on your tweet, and then clicking \"Copy link to tweet.\"")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text","id":"tweet-url"},domProps:{"value":(_vm.url)},on:{"keydown":function($event){_vm.message = ''},"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}}),_vm._v(" "),_c('br'),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Choose what level represents you")]),_vm._v(" "),_c('br'),_vm._v(" "),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.selectedLevel),expression:"selectedLevel"}],attrs:{"name":"level"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.selectedLevel=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"disabled":"","value":""}},[_vm._v("Please select one...")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('option',{domProps:{"value":level}},[_vm._v("\n\t\t\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t\t\t")])})],2),_vm._v(" "),_c('br'),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Choose up to 3 categories that best describe your profession")]),_vm._v(" "),_c('p',{staticStyle:{"font-style":"italic","color":"rgb(135,135,135)"}},[_vm._v("If you feel like a category that represents you is missing, please feel free to contact us, and we will sort it out. You can find contact info on the "),_c('router-link',{attrs:{"to":"/about"}},[_vm._v("About")]),_vm._v(" page under Site Issues.")],1),_vm._v(" "),_c('br'),_vm._v(" "),_vm._l((_vm.categories),function(category){return _c('div',{staticClass:"profession",class:{'checkbox-disabled': _vm.enoughCategories && !category.value}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(category.value),expression:"category.value"}],attrs:{"type":"checkbox","id":category.name,"disabled":_vm.enoughCategories && !category.value},domProps:{"checked":Array.isArray(category.value)?_vm._i(category.value,null)>-1:(category.value)},on:{"change":function($event){var $$a=category.value,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(category, "value", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(category, "value", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(category, "value", $$c)}}}}),_vm._v(" "),_c('label',{attrs:{"for":category.name}},[_vm._v("\n\t\t\t\t\t\t\t"+_vm._s(category.name)+"\n\t\t\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Save"}}),_c('a',{staticClass:"delete-profile",on:{"click":function($event){_vm.$store.dispatch('deleteAccount')}}},[_vm._v("Delete")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',{staticClass:"profile-msg",domProps:{"innerHTML":_vm._s(_vm.message)}}):_vm._e()],2)]):_c('div',[_c('p',[_vm._v("Hi! Before you can submit your tweet to the site, we need to ask you to log in with your Twitter account. This is necessary both to prevent any malicious misuse of the site and to verify that the tweet you submit is your own; but we do not store any personal data besides your username, and we can't access or control any part your Twitter account.")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("Once you have made a submission and been approved, you can at any point return to this page to update your submitted tweet, update any categories you have picked, or (if you wish) delete your tweet from the site.")]),_c('br'),_c('br'),_vm._v(" "),_c('p',[_c('button',{on:{"click":function($event){_vm.$store.dispatch('login')}}},[_vm._v("Login")])]),_c('br'),_c('br'),_vm._v(" "),_vm._m(3)])])],1)],1)}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"attention"}},[_vm._v("HI FRIEND! We JUST launched the site! If you experience any issues or have any feedback, please feel free to contact either "),_c('a',{attrs:{"href":"https://twitter.com/jrc03c"}},[_vm._v("jrc03c")]),_vm._v(" or "),_c('a',{attrs:{"href":"https://twitter.com/A_Werchmeister"}},[_vm._v("A_Werchmeister")]),_vm._v(" on Twitter!")])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',[_vm._v("Please only submit tweets that include the following hashtags: "),_c('span',{staticStyle:{"color":"rgb(29,161,242)"}},[_vm._v("#VisibleWomen · #VisibleWoman · #VisibleNB · #VisibileNBs")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('label',{attrs:{"for":"tweet-url"}},[_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Tweet URL")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',[_c('i',[_vm._v("NOTE: Sometimes, there are problems with the login process. This is a known bug related to how Firebase authenticates with Twitter. If your login attempt fails, please just try again. Sorry for any inconvenience! :)")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('attention'),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('div',{staticClass:"submit-page"},[(_vm.$store.state.currentUser)?_c('div',[_c('p',[_vm._v("Hi again! We are so happy that you want to join! :D Remember that you can at any point return to this page to update your submitted tweet, update any categories you have picked, or (if you wish) delete your tweet from the site.")]),_c('br'),_vm._v(" "),_vm._m(0),_vm._v(" "),_c('br'),_c('br'),_vm._v(" "),_c('form',{on:{"submit":function($event){$event.preventDefault();return _vm.save($event)},"click":function($event){_vm.message = ''},"keydown":function($event){_vm.message = ''}}},[_vm._m(1),_vm._v(" "),_c('p',{staticStyle:{"font-style":"italic","color":"rgb(135,135,135)","padding":"0 0 1.75em"}},[_vm._v("This can be found by pressing the downward arrow in the top right corner on your tweet, and then clicking \"Copy link to tweet.\"")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.url),expression:"url"}],attrs:{"type":"text","id":"tweet-url"},domProps:{"value":(_vm.url)},on:{"keydown":function($event){_vm.message = ''},"input":function($event){if($event.target.composing){ return; }_vm.url=$event.target.value}}}),_vm._v(" "),_c('br'),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Choose what level represents you")]),_vm._v(" "),_c('br'),_vm._v(" "),_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.selectedLevel),expression:"selectedLevel"}],attrs:{"name":"level"},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.selectedLevel=$event.target.multiple ? $$selectedVal : $$selectedVal[0]}}},[_c('option',{attrs:{"disabled":"","value":""}},[_vm._v("Please select one...")]),_vm._v(" "),_vm._l((_vm.levels),function(level){return _c('option',{domProps:{"value":level}},[_vm._v("\n\t\t\t\t\t\t\t"+_vm._s(level)+"\n\t\t\t\t\t\t")])})],2),_vm._v(" "),_c('br'),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Choose up to 3 categories that best describe your profession")]),_vm._v(" "),_c('p',{staticStyle:{"font-style":"italic","color":"rgb(135,135,135)"}},[_vm._v("If you feel like a category that represents you is missing, please feel free to contact us, and we will sort it out. You can find contact info on the "),_c('router-link',{attrs:{"to":"/about"}},[_vm._v("About")]),_vm._v(" page under Site Issues.")],1),_vm._v(" "),_c('br'),_vm._v(" "),_vm._l((_vm.categories),function(category){return _c('div',{staticClass:"profession",class:{'checkbox-disabled': _vm.enoughCategories && !category.value}},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(category.value),expression:"category.value"}],attrs:{"type":"checkbox","id":category.name,"disabled":_vm.enoughCategories && !category.value},domProps:{"checked":Array.isArray(category.value)?_vm._i(category.value,null)>-1:(category.value)},on:{"change":function($event){var $$a=category.value,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(category, "value", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(category, "value", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(category, "value", $$c)}}}}),_vm._v(" "),_c('label',{attrs:{"for":category.name}},[_vm._v("\n\t\t\t\t\t\t\t"+_vm._s(category.name)+"\n\t\t\t\t\t\t")])])}),_vm._v(" "),_c('br'),_c('br'),_c('br'),_c('br'),_vm._v(" "),_c('input',{attrs:{"type":"submit","value":"Save"}}),_c('a',{staticClass:"delete-profile",on:{"click":function($event){_vm.$store.dispatch('deleteAccount')}}},[_vm._v("Delete")]),_vm._v(" "),(_vm.message.length > 0)?_c('p',{staticClass:"profile-msg",domProps:{"innerHTML":_vm._s(_vm.message)}}):_vm._e()],2)]):_c('div',[_c('p',[_vm._v("Hi! Before you can submit your tweet to the site, we need to ask you to log in with your Twitter account. This is necessary both to prevent any malicious misuse of the site and to verify that the tweet you submit is your own; but we do not store any personal data besides your username, and we can't access or control any part your Twitter account.")]),_c('br'),_vm._v(" "),_c('p',[_vm._v("Once you have made a submission and been approved, you can at any point return to this page to update your submitted tweet, update any categories you have picked, or (if you wish) delete your tweet from the site.")]),_c('br'),_c('br'),_vm._v(" "),_c('p',[_c('button',{on:{"click":function($event){_vm.$store.dispatch('login')}}},[_vm._v("Login")])]),_c('br'),_c('br'),_vm._v(" "),_vm._m(2)])])],1)],1)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',[_vm._v("Please only submit tweets that include the following hashtags: "),_c('span',{staticStyle:{"color":"rgb(29,161,242)"}},[_vm._v("#VisibleWomen · #VisibleWoman · #VisibleNB · #VisibileNBs")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('label',{attrs:{"for":"tweet-url"}},[_c('p',{staticStyle:{"font-weight":"500"}},[_vm._v("Tweet URL")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p',[_c('i',[_vm._v("NOTE: Sometimes, there are problems with the login process. This is a known bug related to how Firebase authenticates with Twitter. If your login attempt fails, please just try again. Sorry for any inconvenience! :)")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -72019,7 +72046,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-0ac19837", __vue__options__)
   }
 })()}
-},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],27:[function(require,module,exports){
+},{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],28:[function(require,module,exports){
 let Vue = require("vue/dist/vue");
 let VueRouter = require("vue-router");
 let Vuex = require("vuex");
@@ -72190,7 +72217,7 @@ window.onload = function(){
 	
 	document.getElementById("app").style.display = "block";
 };
-},{"./components/about.vue":19,"./components/index.vue":20,"./components/manage-categories.vue":22,"./components/manage-users.vue":23,"./components/manage.vue":24,"./components/submit.vue":26,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":14,"vue/dist/vue":15,"vuex":17}],28:[function(require,module,exports){
+},{"./components/about.vue":19,"./components/index.vue":21,"./components/manage-categories.vue":23,"./components/manage-users.vue":24,"./components/manage.vue":25,"./components/submit.vue":27,"firebase/app":7,"firebase/auth":8,"firebase/database":9,"vue-router":14,"vue/dist/vue":15,"vuex":17}],29:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -72376,7 +72403,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -72455,4 +72482,4 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":28,"timers":29}]},{},[27]);
+},{"process/browser.js":29,"timers":30}]},{},[28]);

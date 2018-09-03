@@ -80,11 +80,6 @@
 			// Here we fetch new tweets from the current category. Note that this function is throttled and will at most be called once per second. In other words, the user can't change professional levels or categories quicker than once per second. Hopefully, this throttling helps to cut down on duplicate tweet loading.
 			fetchTweetsFromCategory: _.throttle(function(){
 				let self = this;
-				let category = self.$store.state.currentCategory;
-				
-				// Get a reference to all of the tweets in the current category.
-				let db = firebase.database();
-				let ref = db.ref("/tweets/" + category);
 				
 				// Indicate to users that we're loading new tweets.
 				self.message = "Loading...";
@@ -98,24 +93,55 @@
 				self.domElements = [];
 				
 				// Get the list of user UIDs from the category. I refer to them as "tweets" in this section, but that's technically not the data here; instead, it's a list of the users (by UID) that fall into that category.
-				ref.once("value").then(function(snapshot){
+				let category = self.$store.state.currentCategory;
+				let level = self.$store.state.currentLevel;
+				let db = firebase.database();
+				
+				db.ref("/tweets/" + category).once("value").then(function(snapshot){
+					// Reset the tweets list.
 					self.tweets = [];
-					let tweets = snapshot.val();
 					
+					// Reset the index.
+					self.index = 0;
+					
+					// We're finished loading!
+					self.finishedLoading = true;
+					
+					// Get the data, and then check to see if it exists.
+					let tweets = snapshot.val();
+
 					if (!tweets){
 						// If there are no tweets returned from this query, then we're finished loading because there are no tweets in this category.
 						self.message = "";
 					} else {
 						// Otherwise, grab the list of key values.
-						self.tweets = Object.keys(tweets).shuffle();
+						tweets = Object.keys(tweets).shuffle();
+						
+						if (level !== "ALL"){
+							// If we're viewing a specific professional level, then find those users in the database first, and then actually load the tweets.
+							db.ref("/allUsers").orderByChild("professionalLevel").equalTo(level).once("value").then(function(snapshot2){
+								let users = snapshot2.val();
+								
+								if (!users){
+									// If there are no such users at this level, then we're done.
+									self.message = "";
+								} else {
+									// Otherwise...
+									tweets.forEach(function(uid){
+										if (users[uid]){
+											self.tweets.push(uid);
+										}
+									});
+									
+									self.loadMoreTweets();
+								}
+							});
+						} else {
+							// However, if we're not viewing a specific level, then just load all of the returned tweets.
+							self.tweets = tweets;
+							self.loadMoreTweets();
+						}
 					}
-					
-					// Reset the index. As we inject more tweets into the page, the index tells us how far into the list we've gotten.
-					self.index = 0;
-					
-					// Inject the first of the tweets into the page.
-					self.finishedLoading = true;
-					self.loadMoreTweets();
 				});
 				
 				// Continue injecting tweets until the height of the document is greater than the height of the page.

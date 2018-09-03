@@ -384,6 +384,7 @@ input[type="submit"]:hover, button:hover {
 	left:20px;
 	z-index:10001;
 	margin:0;
+	font-family: 'Roboto', sans-serif;
 }
 
 .mobile-nav:hover {
@@ -409,6 +410,7 @@ input[type="submit"]:hover, button:hover {
 	right:20px;
 	z-index:10002;	
 	margin:0;
+	font-family: 'Roboto', sans-serif;
 }
 
 #back-to-top-link:hover {

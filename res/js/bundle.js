@@ -71845,7 +71845,7 @@ module.exports = Vue.component("profile", {
 			let urlObj;
 			
 			try {
-				urlObj = new URL(self.url);
+				urlObj = new URL(self.url.toLowerCase());
 			} catch (error){
 				// If it fails, then it's probably because they didn't enter a valid URL. Let them know about it and then return.
 				self.message = "It looks like you entered an invalid URL. Please enter a URL that points directly to a tweet.";

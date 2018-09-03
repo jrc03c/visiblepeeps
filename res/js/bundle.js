@@ -70894,6 +70894,7 @@ module.exports = Vue.component("index", {
 		
 		appendTweetToDOM: function(userData){
 			let self = this;
+			let db = firebase.database();
 			
 			// Create the wrapper element. This is necessary for the whole grid thing.
 			let wrapper = document.createElement("div");
@@ -71041,7 +71042,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-36ae37fa", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-36ae37fa", __vue__options__)
+    hotAPI.reload("data-v-36ae37fa", __vue__options__)
   }
 })()}
 },{"./main-header.vue":21,"./side-menu.vue":25,"firebase/app":7,"lodash":11,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],21:[function(require,module,exports){
@@ -71503,7 +71504,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0831b27f", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-0831b27f", __vue__options__)
+    hotAPI.reload("data-v-0831b27f", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],24:[function(require,module,exports){
@@ -71546,7 +71547,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1b368704", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-1b368704", __vue__options__)
+    hotAPI.reload("data-v-1b368704", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],25:[function(require,module,exports){
@@ -71701,7 +71702,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-cafdf574", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-cafdf574", __vue__options__)
+    hotAPI.reload("data-v-cafdf574", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"jquery":10,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],26:[function(require,module,exports){

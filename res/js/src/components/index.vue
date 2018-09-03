@@ -199,6 +199,7 @@
 			
 			appendTweetToDOM: function(userData){
 				let self = this;
+				let db = firebase.database();
 				
 				// Create the wrapper element. This is necessary for the whole grid thing.
 				let wrapper = document.createElement("div");

@@ -71060,7 +71060,7 @@ module.exports = Vue.component("index", {
 		let self = this;
 		
 		if (!!navigator.doNotTrack){
-			self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. If you want to view the tweets, you'll have to disable your browser's tracking protection feature. Sorry for the inconvenience!";
+			self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. We're currently trying to find a solution for this problem; but in the meantime, if you want to view the tweets, you'll have to disable your browser's tracking protection feature. Sorry for the inconvenience!";
 			return;
 		}
 		
@@ -71107,7 +71107,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-36ae37fa", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-36ae37fa", __vue__options__)
+    hotAPI.reload("data-v-36ae37fa", __vue__options__)
   }
 })()}
 },{"./attention.vue":20,"./main-header.vue":22,"./side-menu.vue":26,"firebase/app":7,"lodash":11,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],22:[function(require,module,exports){

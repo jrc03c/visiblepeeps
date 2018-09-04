@@ -714,9 +714,12 @@ i {
 	font-style: italic;
 }
 
-#home-message {
+#home-message, #home-warning {
 	width: 75%;
 	margin: 0 auto;
 	line-height: 26px;
 }
 
+#home-warning {
+	color: red;
+}

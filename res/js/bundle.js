@@ -70751,6 +70751,12 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 let Vue = require("vue/dist/vue");
 let firebase = require("firebase/app");
@@ -70786,6 +70792,8 @@ module.exports = Vue.component("index", {
 			domElements: [],
 			index: 0,
 			count: 0,
+			trackingIsBlocked: false,
+			successfullyLoadedAtLeastOneTweet: false,
 		};
 	},
 	
@@ -71017,6 +71025,7 @@ module.exports = Vue.component("index", {
 			
 			// When the script has finished loading, decrease the count. If the count is zero, then we're finished loading.
 			script.onload = function(){
+				self.successfullyLoadedAtLeastOneTweet = true;
 				self.count--;
 				if (self.count <= 0) self.finishedLoading = true;
 				self.message = "";
@@ -71063,9 +71072,7 @@ module.exports = Vue.component("index", {
 	mounted: function(){
 		let self = this;
 		
-		// if (!!navigator.doNotTrack){
-		// 	self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. We're currently trying to find a solution for this problem; but in the meantime, if you want to view the tweets, you'll have to disable your browser's tracking protection feature or add an exception for this website. Sorry for the inconvenience!";
-		// }
+		self.trackingIsBlocked = !!navigator.doNotTrack;
 		
 		// Fetch the tweets from the current category.
 		self.fetchTweetsFromCategory();
@@ -71101,7 +71108,7 @@ module.exports = Vue.component("index", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('attention'),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',{attrs:{"id":"home-message"}},[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('attention'),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(!_vm.successfullyLoadedAtLeastOneTweet && _vm.trackingIsBlocked)?_c('div',{attrs:{"id":"home-warning"}},[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\tIf the tweets below aren't loading, then it's probably because your browser has its tracking protection feature enabled. If you want to see the tweets, you'll need either to disable the tracking protection feature or to add an exception for this site. See the "),_c('router-link',{attrs:{"to":"/about"}},[_vm._v("About")]),_vm._v(" page for more information. Sorry for the inconvenience!\n\t\t\t"),_c('br'),_c('br'),_c('br')],1):_vm._e(),_vm._v(" "),(_vm.message.length > 0)?_c('div',{attrs:{"id":"home-message"}},[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

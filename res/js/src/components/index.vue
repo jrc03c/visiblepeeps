@@ -13,6 +13,12 @@
 
 			<div class="module-grid" ref="tweetContainer"></div>
 			
+			<div v-if="!successfullyLoadedAtLeastOneTweet && trackingIsBlocked" id="home-warning">
+				<br><br><br>
+				If the tweets below aren't loading, then it's probably because your browser has its tracking protection feature enabled. If you want to see the tweets, you'll need either to disable the tracking protection feature or to add an exception for this site. See the <router-link to="/about">About</router-link> page for more information. Sorry for the inconvenience!
+				<br><br><br>
+			</div>
+			
 			<div v-if="message.length > 0" id="home-message">
 				<br><br><br>
 				{{ message }}
@@ -61,6 +67,8 @@
 				domElements: [],
 				index: 0,
 				count: 0,
+				trackingIsBlocked: false,
+				successfullyLoadedAtLeastOneTweet: false,
 			};
 		},
 		
@@ -292,6 +300,7 @@
 				
 				// When the script has finished loading, decrease the count. If the count is zero, then we're finished loading.
 				script.onload = function(){
+					self.successfullyLoadedAtLeastOneTweet = true;
 					self.count--;
 					if (self.count <= 0) self.finishedLoading = true;
 					self.message = "";
@@ -338,9 +347,7 @@
 		mounted: function(){
 			let self = this;
 			
-			// if (!!navigator.doNotTrack){
-			// 	self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. We're currently trying to find a solution for this problem; but in the meantime, if you want to view the tweets, you'll have to disable your browser's tracking protection feature or add an exception for this website. Sorry for the inconvenience!";
-			// }
+			self.trackingIsBlocked = !!navigator.doNotTrack;
 			
 			// Fetch the tweets from the current category.
 			self.fetchTweetsFromCategory();

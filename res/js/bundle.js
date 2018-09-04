@@ -71061,10 +71061,9 @@ module.exports = Vue.component("index", {
 	mounted: function(){
 		let self = this;
 		
-		if (!!navigator.doNotTrack){
-			self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. We're currently trying to find a solution for this problem; but in the meantime, if you want to view the tweets, you'll have to disable your browser's tracking protection feature or add an exception for this website. Sorry for the inconvenience!";
-			return;
-		}
+		// if (!!navigator.doNotTrack){
+		// 	self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. We're currently trying to find a solution for this problem; but in the meantime, if you want to view the tweets, you'll have to disable your browser's tracking protection feature or add an exception for this website. Sorry for the inconvenience!";
+		// }
 		
 		// Fetch the tweets from the current category.
 		self.fetchTweetsFromCategory();

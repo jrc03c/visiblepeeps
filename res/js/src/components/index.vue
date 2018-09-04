@@ -13,7 +13,7 @@
 
 			<div class="module-grid" ref="tweetContainer"></div>
 			
-			<div v-if="message.length > 0">
+			<div v-if="message.length > 0" id="home-message">
 				<br><br><br>
 				{{ message }}
 				<br><br><br>
@@ -337,6 +337,11 @@
 		// When the component has been mounted to the app...
 		mounted: function(){
 			let self = this;
+			
+			if (!!navigator.doNotTrack){
+				self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. If you want to view the tweets, you'll have to disable your browser's tracking protection feature. Sorry for the inconvenience!";
+				return;
+			}
 			
 			// Fetch the tweets from the current category.
 			self.fetchTweetsFromCategory();

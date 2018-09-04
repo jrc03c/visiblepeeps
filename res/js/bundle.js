@@ -71059,6 +71059,11 @@ module.exports = Vue.component("index", {
 	mounted: function(){
 		let self = this;
 		
+		if (!!navigator.doNotTrack){
+			self.message = "Your browser has its tracking protection feature enabled, which blocks the loading of tweets. If you want to view the tweets, you'll have to disable your browser's tracking protection feature. Sorry for the inconvenience!";
+			return;
+		}
+		
 		// Fetch the tweets from the current category.
 		self.fetchTweetsFromCategory();
 		
@@ -71093,7 +71098,7 @@ module.exports = Vue.component("index", {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('attention'),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('attention'),_vm._v(" "),_c('side-menu'),_vm._v(" "),_c('div',{attrs:{"id":"main-content"}},[_c('main-header'),_vm._v(" "),_c('p',{attrs:{"id":"submit-button-container"}},[_c('router-link',{staticClass:"submit-button",attrs:{"to":"/submit"}},[_vm._v("Submit Tweet")])],1),_vm._v(" "),_c('div',{ref:"tweetContainer",staticClass:"module-grid"}),_vm._v(" "),(_vm.message.length > 0)?_c('div',{attrs:{"id":"home-message"}},[_c('br'),_c('br'),_c('br'),_vm._v("\n\t\t\t"+_vm._s(_vm.message)+"\n\t\t\t"),_c('br'),_c('br'),_c('br')]):_vm._e(),_vm._v(" "),_c('a',{ref:"backToTopButton",staticClass:"fake-a",attrs:{"id":"back-to-top-link"},on:{"click":_vm.scrollToTop}},[_vm._v("▲")]),_vm._v(" "),_c('br'),_c('br'),_c('br')],1)],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -71102,7 +71107,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-36ae37fa", __vue__options__)
   } else {
-    hotAPI.reload("data-v-36ae37fa", __vue__options__)
+    hotAPI.rerender("data-v-36ae37fa", __vue__options__)
   }
 })()}
 },{"./attention.vue":20,"./main-header.vue":22,"./side-menu.vue":26,"firebase/app":7,"lodash":11,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],22:[function(require,module,exports){
@@ -71241,7 +71246,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-60cca835", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-60cca835", __vue__options__)
+    hotAPI.reload("data-v-60cca835", __vue__options__)
   }
 })()}
 },{"firebase/app":7,"vue":16,"vue-hot-reload-api":13,"vue/dist/vue":15}],24:[function(require,module,exports){

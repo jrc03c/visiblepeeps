@@ -22,6 +22,8 @@
 				<h3>Site issues</h3>
 
 				<p>There is a known issue related to browsers' tracking protection features. Specifically, newer versions of Firefox (as well as browsers which employ certain tracking protection plugins) typically block the loading of tweets on the home page, especially when running in "in private" or "incognito" mode. If you're unable to see the tweets on the home page, please try disabling your browser's tracking protection feature or adding an exception for this site and then reloading the page. We're in the process of trying to find a fix for this problem. Sorry for any inconvenience!</p><br>
+				
+				<p><img src="/res/img/tracking.gif"></p><br>
 
 				<p>If you experience any other issues with the site or if you'd like to share your feedback, please feel free to contact either <a href="https://twitter.com/jrc03c">jrc03c</a> or <a href="https://twitter.com/A_Werchmeister">A_Werchmeister</a> on Twitter!</p>
 

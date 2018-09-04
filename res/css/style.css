@@ -246,6 +246,10 @@ span.new-users:hover {
 	text-align:left;
 }
 
+.about-page img {
+	max-width: 100%;
+}
+
 .submit-page button {
 	outline:0;
 }

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<attention></attention>
+	 	<!-- <attention></attention> -->
 
 		<side-menu></side-menu>
 		
